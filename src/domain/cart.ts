@@ -26,8 +26,8 @@ export function setQty(s: CartState, id: string, size: SizeMl, qty: number): Car
 }
 
 /** Drop items whose product or size no longer exists (e.g. after a catalog update). */
-export function sanitize(s: CartState, byId: (id: string) => Product | undefined, sizes: SizeMl[]): CartState {
-  return { ...s, items: (s.items || []).filter((it) => byId(it.id) && sizes.includes(Number(it.size)) && it.qty > 0) };
+export function sanitize(s: CartState, byId: (id: string) => Product | undefined): CartState {
+  return { ...s, items: (s.items || []).filter((it) => (byId(it.id)?.prices[Number(it.size)] ?? 0) > 0 && it.qty > 0) };
 }
 
 export interface CartTotals {

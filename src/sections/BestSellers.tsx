@@ -1,7 +1,7 @@
 import { ProductImage } from "../components/product/parts";
 import { SectionHead } from "../components/ui/SectionHead";
 import { Icon } from "../components/ui/Icon";
-import { fmt, priceInfo } from "../domain/pricing";
+import { fmt, startingPrice } from "../domain/pricing";
 import { useStore } from "../state/StoreProvider";
 import { Reveal } from "../motion";
 
@@ -28,7 +28,7 @@ export function BestSellers() {
                 <span className="product-house">مستوحى من <bdi dir="ltr">{p.house}</bdi></span>
                 <span className="best-name">{p.name}</span>
                 <span className="best-en" dir="ltr">{p.nameEn}</span>
-                <span className="best-price">يبدأ من {fmt(priceInfo(p, settings.sizes[0], settings).final)} {settings.currency}</span>
+                <span className="best-price">يبدأ من {fmt(startingPrice(p, settings))} {settings.currency}</span>
               </span>
             </a>
           ))}

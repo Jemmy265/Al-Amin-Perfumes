@@ -31,3 +31,17 @@ describe("cart rules (same as the original site)", () => {
     expect(s.items).toHaveLength(0);
   });
 });
+
+describe("per-product sizes", () => {
+  it("drops cart items whose size the product no longer sells", async () => {
+    const { sanitize } = await import("../cart");
+    const s = sanitize({ ...EMPTY_CART, items: [{ id: "yara", size: 35, qty: 1 }, { id: "yara", size: 75, qty: 1 }, { id: "gone", size: 35, qty: 1 }] }, byId);
+    expect(s.items).toEqual([{ id: "yara", size: 35, qty: 1 }]);
+  });
+  it("derives sizes and the starting price from each product", async () => {
+    const { productSizes, startingPrice } = await import("../pricing");
+    const p = { ...byId("madawi")!, prices: { 110: 650, 50: 300 } };
+    expect(productSizes(p)).toEqual([50, 110]);
+    expect(startingPrice(p, SEED_SETTINGS)).toBe(300);
+  });
+});

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { fmt, priceInfo } from "../../domain/pricing";
+import { fmt, productSizes, startingPrice } from "../../domain/pricing";
 import { QUIZ, quizResults, type QuizAnswers, type QuizKey } from "../../domain/quiz";
 import { assetUrl } from "../../services/assets";
 import { useStore } from "../../state/StoreProvider";
@@ -95,12 +95,12 @@ export function QuizModal() {
                     <b>{p.name}</b>
                     <span className="quiz-result-en" dir="ltr">{p.nameEn}</span>
                     <span className="quiz-result-scents">{p.tags.scents.map((s) => labels.scents[s]?.label).join(" · ")}</span>
-                    <span className="quiz-price">يبدأ من {fmt(priceInfo(p, settings.sizes[0], settings).final)} {settings.currency}</span>
+                    <span className="quiz-price">يبدأ من {fmt(startingPrice(p, settings))} {settings.currency}</span>
                   </div>
                   <div className="quiz-result-actions">
                     <a className="btn btn-outline btn-sm" href={`#perfume/${p.id}`} onClick={closeQuiz}>التفاصيل</a>
-                    <button type="button" className="btn btn-navy btn-sm" onClick={() => addToCart(p, settings.sizes[0])}>
-                      <Icon name="bag" /><span>أضف {settings.sizes[0]} مل</span>
+                    <button type="button" className="btn btn-navy btn-sm" onClick={() => addToCart(p, productSizes(p)[0])}>
+                      <Icon name="bag" /><span>أضف {productSizes(p)[0]} مل</span>
                     </button>
                   </div>
                 </li>
