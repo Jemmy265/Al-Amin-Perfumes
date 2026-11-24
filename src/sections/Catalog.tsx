@@ -1,22 +1,26 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ProductCard } from "../components/product/ProductCard";
 import { Icon } from "../components/ui/Icon";
 import { SectionHead } from "../components/ui/SectionHead";
 import { matchesSearch, searchText } from "../domain/search";
 import { waLink } from "../domain/whatsapp";
-import { useReveal } from "../hooks/useReveal";
+import { Pagination } from "../components/ui/Pagination";
+import { Reveal, useScrollTo } from "../motion";
 import { useStore } from "../state/StoreProvider";
 import type { Audience, ScentFamily } from "../types/catalog";
 
 type AudienceFilter = Audience | "all";
 const AUDIENCE_ORDER: AudienceFilter[] = ["all", "women", "men", "unisex"];
 const SCENT_ORDER: ScentFamily[] = ["fresh", "sweet", "woody", "fruity"];
+export const PAGE_SIZE = 9;
 
 export function Catalog() {
   const { content, products, labels, settings } = useStore();
   const [audience, setAudience] = useState<AudienceFilter>("all");
   const [scent, setScent] = useState<ScentFamily | "">("");
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const scrollTo = useScrollTo();
 
   const indexed = useMemo(() => products.map((p) => ({ p, text: searchText(p, labels) })), [products, labels]);
   const visible = indexed
@@ -26,7 +30,18 @@ export function Catalog() {
       matchesSearch(text, query))
     .map(({ p }) => p);
 
-  useReveal([visible.length, audience, scent]);
+  // Any change to filters or search starts again from page 1.
+  useEffect(() => { setPage(1); }, [audience, scent, query]);
+
+  const pages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+  const current = Math.min(page, pages);
+  const first = (current - 1) * PAGE_SIZE;
+  const pageItems = visible.slice(first, first + PAGE_SIZE);
+
+  const goTo = (p: number) => {
+    setPage(Math.min(Math.max(1, p), pages));
+    scrollTo("#catalog-results");
+  };
 
   const count = (a: AudienceFilter) => (a === "all" ? products.length : products.filter((p) => p.tags.audience === a).length);
   const reset = () => { setQuery(""); setScent(""); setAudience("all"); };
@@ -79,12 +94,19 @@ export function Catalog() {
             )}
           </aside>
 
-          <div className="catalog-results">
-            <p className="results-count" aria-live="polite"><b>{visible.length}</b> عطر</p>
+          <div className="catalog-results" id="catalog-results">
+            <p className="results-count" aria-live="polite">
+              <b>{visible.length}</b> عطر
+              {pages > 1 && <span className="results-range"> · عرض {first + 1}–{first + pageItems.length}</span>}
+            </p>
             {visible.length > 0 ? (
-              <div className="product-grid">
-                {visible.map((p) => <ProductCard key={p.id} p={p} />)}
-              </div>
+              <>
+                {/* Re-keyed per page / filter so each new set of cards animates in */}
+                <Reveal key={`${current}|${audience}|${scent}`} className="product-grid" stagger={0.08} distance={44}>
+                  {pageItems.map((p) => <ProductCard key={p.id} p={p} />)}
+                </Reveal>
+                <Pagination page={current} pages={pages} onChange={goTo} />
+              </>
             ) : (
               <div className="no-results">
                 <p>{content.catalog.noResults}</p>

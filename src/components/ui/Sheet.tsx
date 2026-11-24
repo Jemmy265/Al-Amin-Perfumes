@@ -38,6 +38,7 @@ export function Sheet({
   return (
     <dialog
       ref={ref}
+      data-lenis-prevent
       className={`sheet sheet--${variant}${closing ? " is-closing" : ""} ${className}`}
       aria-labelledby={labelledBy}
       aria-label={label}
