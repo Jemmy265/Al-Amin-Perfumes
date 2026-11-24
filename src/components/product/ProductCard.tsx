@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { productSizes } from "../../domain/pricing";
 import { waLink, singleOrderMessage } from "../../domain/whatsapp";
 import { useStore } from "../../state/StoreProvider";
 import type { Product } from "../../types/catalog";
@@ -8,7 +9,7 @@ import { useAddToCart } from "./useAddToCart";
 
 export function ProductCard({ p }: { p: Product }) {
   const { settings } = useStore();
-  const [size, setSize] = useState(settings.sizes[0]);
+  const [size, setSize] = useState(() => productSizes(p)[0]);
   const [added, setAdded] = useState(false);
   const addToCart = useAddToCart();
   const meta = metaText(p);

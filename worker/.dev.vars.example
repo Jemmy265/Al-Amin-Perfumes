@@ -1,0 +1,6 @@
+# Local development only — copy to worker/.dev.vars (git-ignored).
+# Generate with: ADMIN_PASSWORD='your-local-password' node scripts/hash-password.mjs
+ADMIN_PASSWORD_HASH=pbkdf2-sha256$100000$...$...
+# http://localhost cannot use Secure cookies through the Vite proxy
+COOKIE_SECURE=false
+ALLOWED_ORIGINS=http://localhost:5173

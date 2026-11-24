@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fmt, priceInfo } from "../../domain/pricing";
+import { fmt, productSizes, startingPrice } from "../../domain/pricing";
 import { similarTo } from "../../domain/similar";
 import { perfumeUrl, shareMessage, singleOrderMessage, waLink } from "../../domain/whatsapp";
 import { usePerfumeRoute } from "../../hooks/usePerfumeRoute";
@@ -53,7 +53,7 @@ const BASE_TITLE = document.title;
 function PerfumeDetails({ p }: { p: Product }) {
   const { settings, labels, products } = useStore();
   const { showToast } = useUI();
-  const [size, setSize] = useState(settings.sizes[0]);
+  const [size, setSize] = useState(() => productSizes(p)[0]);
   const addToCart = useAddToCart();
   const sim = similarTo(p, products, settings.bestSellers);
   const lvl = LEVEL[p.tags.intensity] ?? 2;
@@ -120,7 +120,7 @@ function PerfumeDetails({ p }: { p: Product }) {
                 <ProductImage p={x} />
                 <span className="mini-name">{x.name}</span>
                 <span className="mini-en" dir="ltr">{x.nameEn}</span>
-                <span className="mini-price">يبدأ من {fmt(priceInfo(x, settings.sizes[0], settings).final)} {settings.currency}</span>
+                <span className="mini-price">يبدأ من {fmt(startingPrice(x, settings))} {settings.currency}</span>
               </a>
             ))}
           </div>

@@ -3,11 +3,12 @@ import type { StoreDataSource } from "./dataSource";
 import { staticDataSource } from "./staticDataSource";
 
 const mode = import.meta.env.VITE_DATA_SOURCE ?? "static";
-const apiBase = import.meta.env.VITE_API_BASE_URL as string | undefined;
+// Empty base = same origin (Cloudflare Pages forwards /api/* to the Worker).
+const apiBase = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "";
 
 /** API first when configured, bundled seed data as a fallback. */
 export const dataSource: StoreDataSource =
-  mode === "api" && apiBase
+  mode === "api"
     ? {
         async load() {
           try {

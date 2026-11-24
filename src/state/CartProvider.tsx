@@ -25,7 +25,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<cart.CartState>(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) return cart.sanitize({ ...cart.EMPTY_CART, ...JSON.parse(raw) }, byId, settings.sizes);
+      if (raw) return cart.sanitize({ ...cart.EMPTY_CART, ...JSON.parse(raw) }, byId);
     } catch { /* storage unavailable — cart still works for this session */ }
     return cart.EMPTY_CART;
   });

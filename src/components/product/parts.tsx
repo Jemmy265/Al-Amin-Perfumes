@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { fmt, priceInfo } from "../../domain/pricing";
+import { fmt, priceInfo, productSizes } from "../../domain/pricing";
 import { assetUrl } from "../../services/assets";
 import { useStore } from "../../state/StoreProvider";
 import type { Product, SizeMl } from "../../types/catalog";
@@ -32,7 +32,7 @@ export function SizeSelector({ p, value, onChange }: { p: Product; value: SizeMl
   const name = useId();
   return (
     <div className="sizes" role="radiogroup" aria-label="اختر الحجم">
-      {settings.sizes.map((s) => {
+      {productSizes(p).map((s) => {
         const { base, final, discounted } = priceInfo(p, s, settings);
         return (
           <label key={s} className="size">
@@ -86,6 +86,3 @@ export function ProductImage({ p, className = "", eager = false }: { p: Product;
   );
 }
 
-export function startingPrice(p: Product, settings: Parameters<typeof priceInfo>[2] & { sizes: SizeMl[] }) {
-  return priceInfo(p, settings.sizes[0], settings).final;
-}

@@ -46,7 +46,7 @@
 .note-ico { grid-row: 1 / span 2; width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--gold-deep); }
 
 /* Size selector */
-.sizes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: auto; padding-top: .85rem; }
+.sizes { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 6px; margin-top: auto; padding-top: .85rem; }
 .size { position: relative; }
 .size input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
 .size-pill {
