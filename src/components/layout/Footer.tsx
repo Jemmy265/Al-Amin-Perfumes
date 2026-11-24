@@ -64,7 +64,7 @@ export function Footer() {
             <span className="footer-credits-intro">تصميم وتطوير الموقع بواسطة</span>{" "}
             <span className="footer-credits-names">
               <a href="https://wa.me/201022317589" target="_blank" rel="noopener noreferrer" aria-label="يوسف محمود — تواصل عبر واتساب (يفتح في نافذة جديدة)">يوسف محمود</a>
-              {" و "}
+              {"، "}
               <a href="https://www.linkedin.com/in/mohamed-gamal-2ab673247/" target="_blank" rel="noopener noreferrer" aria-label="محمد جمال — حساب لينكدإن (يفتح في نافذة جديدة)">محمد جمال</a>
             </span>
           </p>

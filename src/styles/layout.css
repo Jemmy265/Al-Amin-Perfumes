@@ -88,11 +88,11 @@
    Sizes are close (one line, two weights) and scale down on narrow phones. */
 .footer-credits { display: inline-flex; align-items: baseline; justify-content: center; gap: clamp(.6rem, 2.6vw, 1rem); white-space: nowrap; }
 .footer-credits-intro { color: #a3afb9; font-size: clamp(.7rem, 3.6vw, .95rem); }
-.footer-credits-names { color: #b8a57f; font-size: clamp(.78rem, 4vw, 1.08rem); }
+.footer-credits-names { color: #b8a57f; font-size: clamp(.74rem, 3.75vw, 1rem); }
 .footer-credits a {
-  display: inline-block; padding-block: .3rem; /* comfortable tap height */
+  display: inline-block; padding-block: .45rem; /* comfortable tap height */
   color: #dcc395; font-weight: 600;
-  background: linear-gradient(currentColor, currentColor) no-repeat 100% calc(100% - .2rem) / 0 1px;
+  background: linear-gradient(currentColor, currentColor) no-repeat 100% calc(100% - .35rem) / 0 1px;
   transition: color .3s var(--ease), background-size .4s var(--ease);
 }
 .footer-credits a:hover, .footer-credits a:focus-visible { color: #f4e4bf; background-size: 100% 1px; }
