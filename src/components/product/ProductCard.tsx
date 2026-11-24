@@ -14,7 +14,7 @@ export function ProductCard({ p }: { p: Product }) {
   const meta = metaText(p);
 
   return (
-    <article className="product-card" data-reveal>
+    <article className="product-card">
       <a className="product-media" href={`#perfume/${p.id}`} aria-label={`تفاصيل ${p.name}`}>
         <ProductImage p={p} />
         <ProductChips p={p} />

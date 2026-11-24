@@ -119,8 +119,9 @@ bdi[dir="ltr"], [dir="ltr"] { unicode-bidi: isolate; }
 .chip--gold { background: var(--gold); color: var(--navy); }
 
 /* ---- Scroll reveal ---- */
-.js-reveal [data-reveal] { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
-.js-reveal [data-reveal].is-in { opacity: 1; transform: none; }
+/* React Bits SplitText pieces: keep Arabic words intact and inline */
+.reveal-text { max-width: 100%; }
+.reveal-text .split-word { white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }

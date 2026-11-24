@@ -7,6 +7,10 @@ import "./styles/layout.css";
 import "./styles/sections.css";
 import "./styles/product.css";
 import "./styles/sheets.css";
+import { prefersReducedMotion } from "./motion/gsap";
+
+// Elements that animate in start hidden only when motion is allowed.
+if (!prefersReducedMotion()) document.documentElement.classList.add("motion");
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

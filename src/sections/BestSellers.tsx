@@ -3,6 +3,7 @@ import { SectionHead } from "../components/ui/SectionHead";
 import { Icon } from "../components/ui/Icon";
 import { fmt, priceInfo } from "../domain/pricing";
 import { useStore } from "../state/StoreProvider";
+import { Reveal } from "../motion";
 
 export function BestSellers() {
   const { content, settings, byId } = useStore();
@@ -16,9 +17,9 @@ export function BestSellers() {
           id="best-title"
           aside={<a className="text-link" href="#products">عرض التشكيلة كاملة <Icon name="arrowLeft" /></a>}
         />
-        <div className="best-grid">
+        <Reveal className="best-grid" stagger={0.12} distance={50}>
           {items.map((p, i) => (
-            <a key={p.id} className="best-card" href={`#perfume/${p.id}`} data-reveal>
+            <a key={p.id} className="best-card" href={`#perfume/${p.id}`}>
               <span className="best-media">
                 <ProductImage p={p} />
                 <span className="best-rank">{String(i + 1).padStart(2, "0")}</span>
@@ -31,7 +32,7 @@ export function BestSellers() {
               </span>
             </a>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

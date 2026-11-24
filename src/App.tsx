@@ -6,7 +6,6 @@ import { WhatsAppFloat } from "./components/layout/WhatsAppFloat";
 import { PerfumeView } from "./components/product/PerfumeView";
 import { QuizModal } from "./components/quiz/QuizModal";
 import { Toast } from "./components/ui/Toast";
-import { useReveal } from "./hooks/useReveal";
 import { About } from "./sections/About";
 import { BestSellers } from "./sections/BestSellers";
 import { Catalog } from "./sections/Catalog";
@@ -18,9 +17,9 @@ import { Reviews } from "./sections/Reviews";
 import { CartProvider } from "./state/CartProvider";
 import { StoreProvider } from "./state/StoreProvider";
 import { UIProvider } from "./state/UIProvider";
+import { SmoothScroll } from "./motion";
 
 function Storefront() {
-  useReveal();
   return (
     <>
       <a href="#main" className="skip-link">تخطَّ إلى المحتوى</a>
@@ -51,7 +50,9 @@ export function App() {
     <StoreProvider fallback={<div className="boot" aria-busy="true" />}>
       <UIProvider>
         <CartProvider>
-          <Storefront />
+          <SmoothScroll>
+            <Storefront />
+          </SmoothScroll>
         </CartProvider>
       </UIProvider>
     </StoreProvider>

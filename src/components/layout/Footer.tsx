@@ -24,7 +24,7 @@ export function Footer() {
         <div className="footer-brand">
           <img src={assetUrl("assets/logo-light.png")} alt="" width={472} height={567} loading="lazy" />
           <div>
-            <p className="footer-name display">{f.brandName}</p>
+            <p className="footer-name">{f.brandName}</p>
             <p className="footer-slogan display">{content.hero.slogan}</p>
             <p>{f.tagline}</p>
           </div>

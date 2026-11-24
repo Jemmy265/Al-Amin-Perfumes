@@ -50,14 +50,14 @@
 .hero-visual { position: relative; height: 520px; display: grid; place-items: center; }
 .hero-arch-back {
   position: absolute; width: 400px; height: 470px; left: 50%; top: 50%;
-  transform: translate(-44%, -48%);
+  translate: -44% -48%; /* `translate`, not `transform`: GSAP animates transform */
   background: var(--navy); border-radius: 220px 220px 4px 4px;
 }
 .hero-arch {
   position: relative; width: 350px; height: 450px; padding: 8px;
   border: 1px solid var(--gold); border-radius: 190px 190px 4px 4px;
   background: var(--ivory-2);
-  transform: translateX(-6%);
+  translate: -6% 0;
 }
 .hero-arch img { width: 100%; height: 100%; object-fit: cover; object-position: center 45%; border-radius: 182px 182px 2px 2px; }
 .hero-arch::after { content: ""; position: absolute; inset: 8px; border-radius: 182px 182px 2px 2px; box-shadow: inset 0 0 0 1px rgba(223, 199, 151, .35); pointer-events: none; }
@@ -75,8 +75,9 @@
   font-family: var(--font-display); font-size: 1.15rem; color: var(--gold-deep); letter-spacing: .02em;
 }
 
-.hero-anim { animation: heroIn .9s var(--ease) both; animation-delay: var(--d, 0ms); }
-@keyframes heroIn { from { opacity: 0; transform: translateY(16px); } }
+/* Intro elements start hidden only when JS motion runs (see Hero.tsx) */
+.motion [data-intro], .motion .hero-seal, .motion .hero-tagline, .motion .benefit { visibility: hidden; }
+.hero-title-line, .hero-title em { display: block; }
 
 /* Benefits strip */
 .benefits {
@@ -236,7 +237,7 @@
 @media (max-width: 920px) {
   .hero-grid { grid-template-columns: 1fr; min-height: 0; gap: 0; }
   .hero-visual { order: -1; height: 420px; align-content: start; padding-top: 10px; }
-  .hero-tagline { writing-mode: horizontal-tb; left: 50%; bottom: 0; transform: translateX(-50%); white-space: nowrap; font-size: 1.05rem; }
+  .hero-tagline { writing-mode: horizontal-tb; left: 50%; bottom: 0; translate: -50% 0; white-space: nowrap; font-size: 1.05rem; }
   .hero-arch-back { width: 290px; height: 360px; }
   .hero-arch { width: 260px; height: 340px; }
   .hero-copy { text-align: center; padding-bottom: 2.5rem; }
@@ -283,4 +284,24 @@
   .product-grid { grid-template-columns: 1fr; }
   .reviews-track { grid-auto-columns: 86%; gap: 14px; }
   .about-visual { height: 320px; }
+}
+
+/* =========================== PAGINATION =========================== */
+.results-range { color: var(--muted-2); }
+.pagination { display: flex; align-items: center; justify-content: center; gap: .75rem; margin-top: 2.5rem; flex-wrap: wrap; }
+.page-list { display: flex; gap: .4rem; }
+.page-btn {
+  min-width: 44px; height: 44px; padding-inline: .5rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+  background: var(--paper); color: var(--navy); border: 1px solid var(--line-strong); border-radius: var(--radius);
+  font-size: var(--fs-sm); font-weight: 600; font-variant-numeric: tabular-nums;
+  transition: background-color .2s, border-color .2s, color .2s;
+}
+.page-btn:hover:not(:disabled):not(.is-current) { border-color: var(--gold-deep); }
+.page-btn.is-current { background: var(--navy); border-color: var(--navy); color: #fff; }
+.page-btn:disabled { opacity: .35; cursor: not-allowed; }
+.page-btn--step { padding-inline: 1rem; }
+@media (max-width: 640px) {
+  .page-btn--step span { display: none; }
+  .page-btn--step { padding-inline: .5rem; }
 }
