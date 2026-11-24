@@ -21,7 +21,7 @@ export function Hero() {
 
     // Intro (on load)
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.from(q(".hero-arch-back"), { yPercent: 18, autoAlpha: 0, duration: 1.2 }, 0)
+    tl.from(q(".hero-arch-back"), { y: 40, autoAlpha: 0, duration: 1.2 }, 0)
       .fromTo(q(".hero-arch"), { clipPath: "inset(100% 0% 0% 0% round 190px 190px 4px 4px)" },
         { clipPath: "inset(0% 0% 0% 0% round 190px 190px 4px 4px)", duration: 1.4, ease: "expo.inOut" }, 0.1)
       .from(q(".hero-arch img"), { scale: 1.25, duration: 1.8, ease: "expo.out" }, 0.25)
@@ -32,12 +32,18 @@ export function Hero() {
       .fromTo(q(".hero-desc, .hero-actions, .hero-stats"), { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.12 }, 0.9)
       .fromTo(q(".benefit"), { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.08 }, 1.2);
 
-    // Parallax while scrolling past the hero
-    const st = { trigger: root.current, start: "top top", end: "bottom top", scrub: true };
-    gsap.to(q(".hero-arch img"), { yPercent: 10, ease: "none", scrollTrigger: st });
-    gsap.to(q(".hero-arch-back"), { yPercent: -8, ease: "none", scrollTrigger: st });
-    gsap.to(q(".hero-ornament--a"), { rotate: 25, ease: "none", scrollTrigger: st });
-    gsap.to(q(".hero-ornament--b"), { rotate: -20, scale: 1.08, ease: "none", scrollTrigger: st });
+    // Parallax while scrolling past the hero — desktop/tablet only. On phones the
+    // photo and the navy panel stay in their designed positions (no drifting
+    // panel over the text), and scrolling stays cheaper.
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 921px)", () => {
+      const st = { trigger: root.current, start: "top top", end: "bottom top", scrub: true };
+      gsap.to(q(".hero-arch img"), { yPercent: 10, ease: "none", scrollTrigger: st });
+      gsap.to(q(".hero-arch-back"), { yPercent: -8, ease: "none", scrollTrigger: st });
+      gsap.to(q(".hero-ornament--a"), { rotate: 25, ease: "none", scrollTrigger: st });
+      gsap.to(q(".hero-ornament--b"), { rotate: -20, scale: 1.08, ease: "none", scrollTrigger: st });
+    });
+    return () => mm.revert();
   }, { scope: root });
 
   return (
@@ -69,12 +75,16 @@ export function Hero() {
         </div>
 
         <div className="hero-visual">
-          <div className="hero-arch-back" aria-hidden="true" />
-          <div className="hero-arch">
-            <img src={assetUrl(h.image)} alt="عطر من تشكيلة الأمين للعطور" width={675} height={900} fetchPriority="high" />
-          </div>
-          <div className="hero-seal" aria-hidden="true">
-            <img src={assetUrl("assets/logo-mark.png")} alt="" width={60} height={60} />
+          {/* The figure is sized by the photo; the navy panel and seal are positioned
+              relative to it, so nothing below can be overlapped (see sections.css). */}
+          <div className="hero-figure">
+            <div className="hero-arch-back" aria-hidden="true" />
+            <div className="hero-arch">
+              <img src={assetUrl(h.image)} alt="عطر من تشكيلة الأمين للعطور" width={675} height={900} fetchPriority="high" />
+            </div>
+            <div className="hero-seal" aria-hidden="true">
+              <img src={assetUrl("assets/logo-mark.png")} alt="" width={60} height={60} />
+            </div>
           </div>
           <p className="hero-tagline">{h.tagline}</p>
         </div>

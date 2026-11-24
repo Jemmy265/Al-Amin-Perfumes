@@ -1,28 +1,53 @@
-# Al-Amin Admin Dashboard — Setup, Development & Deployment
+# Al-Amin Perfumes — Architecture, Admin, Development & Deployment
+
+**Production:** https://alamin-perfumes.the-curious-atlas.workers.dev (admin: `/admin/`) · Worker `alamin-perfumes` · D1 `alamin-db` · R2 `alamin-images`
 
 The owner manages the store from a phone at **`/admin/`**: add/edit/delete perfumes, upload photos, sizes & prices, quiz tags, draft/publish, the display order of the catalog and of «الأكثر طلبًا», and the **site content** (homepage texts, offers bar, section order/visibility, reviews, FAQ, contact/footer, hero & About photos) plus **sales settings** (WhatsApp number, shipping fees, free-shipping threshold, size discount, phone, email, social links).
 
-## Architecture
+## Architecture — one Worker
 
 ```
-Browser ──► Cloudflare Pages (alamin-store)
-              ├─ /            storefront (React)        ─┐
-              ├─ /admin/      admin dashboard (React)    ├─ same origin
-              └─ /api/*, /images/*  → Pages Function ────┘
-                                        │ service binding "API"
-                                        ▼
-                         Worker alamin-api (Hono)
-                           ├─ D1  alamin-db       products, variants, tags, images (keys), site content, sessions
-                           └─ R2  alamin-images   product photos (products/<uuid>.webp|jpg|png)
+Browser ──► Cloudflare Worker "alamin-perfumes" (wrangler.jsonc)
+   │
+   ├─ Static Assets (dist/) — served by Cloudflare WITHOUT running Worker code
+   │    /                 storefront (React)
+   │    /admin/           admin dashboard (React)
+   │    /static/*         fingerprinted JS/CSS
+   │    /assets/*         logo, icons, the 23 original product photos
+   │
+   └─ Worker code (Hono) — only for run_worker_first paths
+        /api/*            REST API ──► D1  alamin-db
+        /images/*         uploaded photos ──► R2  alamin-images
 ```
 
-- **One origin.** Pages forwards `/api` and `/images` to the Worker (`functions/`), so the admin cookie is first-party (`HttpOnly; Secure; SameSite=Strict`) and no CORS is needed. The Worker has `workers_dev: false` — it is not reachable directly.
+- **One application, one origin, one deployment.** Storefront, admin and API share the domain, so the admin cookie is first-party (`HttpOnly; Secure; SameSite=Strict`) and no CORS is needed.
+- **Which requests run the Worker (count toward the 100k/day free requests):** `GET /api/catalog` once per storefront visit; `GET /images/<uploaded>` once per browser per uploaded photo (then cached for a year); admin API calls. **Everything else** — HTML, JS, CSS, fonts' CSS, logo, the original photos — is a static asset: free, unlimited, never invokes the Worker.
 - **Shared code, no duplicated business rules.**
   - `src/types` — domain types used by storefront, admin and Worker.
   - `src/shared/product.ts` — product validation (Zod) used by **both** the admin form and the API, plus the admin → storefront mapping.
-  - `src/shared/content.ts` — site content & settings validation, section ids/labels, used by the content editor and the API.
-  - `src/domain/quiz.ts` — the original quiz questions & scoring; the admin tag editor and the API taxonomy read from it.
-- **Storefront data.** With `VITE_DATA_SOURCE=api` the storefront reads `GET /api/products` and `GET /api/site` (falls back to the bundled catalog if the API is down). Without it (e.g. GitHub Pages) it uses the bundled seed data.
+  - `src/shared/content.ts` — site content & settings validation, used by the content editor and the API.
+  - `src/domain/quiz.ts` — the original quiz questions & scoring.
+- **Storefront data.** Built with `VITE_DATA_SOURCE=api` (`npm run build:cf`), the storefront makes **one** request, `GET /api/catalog`, for products + settings + content (retries once; falls back to the bundled catalog only if the API is unreachable).
+
+## Caching & invalidation
+
+| What | Served by | Cache-Control | Notes |
+|---|---|---|---|
+| `/static/*` (hashed JS/CSS) | Static Assets | `public, max-age=31536000, immutable` | new deploy = new file names, never stale |
+| `/assets/*` (original photos, logo) | Static Assets | `public, max-age=86400, stale-while-revalidate=604800` | not fingerprinted |
+| HTML (`/`, `/admin/`) | Static Assets | `public, max-age=0, must-revalidate` + ETag | deploys visible immediately; unchanged → 304 |
+| `GET /api/catalog` | Worker | `public, max-age=60, stale-while-revalidate=60` + ETag | 1 D1 row per request; unchanged → 304 |
+| `GET /images/<key>` (uploads) | Worker + R2 | `public, max-age=31536000, immutable` + ETag | keys are random UUIDs, never reused |
+| `/api/admin/*`, `/api/auth/*` | Worker | `private, no-store` / `no-store` | never cached anywhere |
+
+**Catalog snapshot.** Building the storefront payload reads ~200 rows, so it is built once and stored as one JSON row (`site_kv` key `catalog`). `GET /api/catalog` returns that text as-is (1 row read, no JSON work).
+
+**Invalidation.** A middleware on `/api/admin/*` rebuilds the snapshot after **every successful write** (create, edit, delete, reorder, featured order, tags, content, settings). The snapshot's `updated_at` is the ETag, so:
+- the owner's browser is refreshed immediately (the admin re-fetches `/api/catalog` with `cache: "reload"` after each save);
+- customers see the change on their next revalidation — at most ~2 minutes (60 s max-age + 60 s stale-while-revalidate), usually on their next visit.
+
+There is no shared/edge cache of API responses: on `*.workers.dev` the Workers Cache API is unavailable, and a stale edge copy is not needed at this traffic level. With a custom domain, edge caching could be added later (see limitations).
+
 
 ## Data model (D1) — `worker/migrations`
 
@@ -42,7 +67,7 @@ Browser ──► Cloudflare Pages (alamin-store)
 
 ## API
 
-Public (read-only): `GET /api/products` (published, in display order) · `GET /api/site` · `GET /images/<key>` · `GET /api/health`
+Public (read-only): **`GET /api/catalog`** (products + settings + content + labels — what the storefront uses) · `GET /api/products` · `GET /api/site` (older split views of the same snapshot) · `GET /images/<key>` · `GET /api/health`
 
 Auth: `POST /api/auth/login` `{username,password}` · `POST /api/auth/logout` · `GET /api/auth/me`
 
@@ -78,73 +103,88 @@ Errors are JSON `{error, fields?}` with Arabic messages (`422` validation, `401`
 
 ```bash
 npm install
-cp worker/.dev.vars.example worker/.dev.vars
-ADMIN_PASSWORD='choose-a-local-password' node scripts/hash-password.mjs   # paste into worker/.dev.vars
-npm run db:migrate:local          # D1 schema + real catalog (local SQLite)
-npm run images:seed:local         # original photos → local R2
-echo "VITE_DATA_SOURCE=api" > .env.local   # storefront reads the local API too
+cp .dev.vars.example .dev.vars
+ADMIN_PASSWORD='choose-a-local-password' node scripts/hash-password.mjs   # paste into .dev.vars
+npm run db:migrate:local          # D1 schema + real catalog (local SQLite in .wrangler/)
+echo "VITE_DATA_SOURCE=api" > .env.local
 
-npm run dev:api                   # Worker on :8787
-npm run dev                       # Vite on :5173 (proxies /api and /images to :8787)
+npm run dev:api                   # builds dist/ and runs the Worker (assets + API) on :8787
+npm run dev                       # Vite with hot reload on :5173 (proxies /api and /images to :8787)
 ```
 
-Open http://localhost:5173/admin/ (user `admin`) and http://localhost:5173/.
-`npm run db:reset:local` restores the seed (stop `dev:api` first).
+http://localhost:8787 is a production-identical run (same Worker, same static assets);
+http://localhost:5173 is for UI work with hot reload. `npm run db:reset:local` restores the seed (stop `dev:api` first).
 
 Checks: `npm run typecheck` · `npm test` (includes parity tests proving the quiz behaves exactly like the original site).
+
 
 ## Environment & configuration
 
 | Name | Where | Value |
 |---|---|---|
-| `ADMIN_USERNAME` | `worker/wrangler.jsonc` → `vars` | owner login name (default `admin`) |
-| `ADMIN_PASSWORD_HASH` | Worker **secret** | output of `scripts/hash-password.mjs` |
-| `COOKIE_SECURE` | `worker/.dev.vars` only | `false` for local http |
-| `ALLOWED_ORIGINS` | `worker/.dev.vars` only | `http://localhost:5173` |
-| `VITE_DATA_SOURCE` | Pages **build** env var | `api` |
-| `VITE_API_BASE_URL` | optional | leave empty (same origin) |
+| `ADMIN_USERNAME` | `wrangler.jsonc` → `vars` | owner login name (`admin`) |
+| `ADMIN_PASSWORD_HASH` | Worker **secret** (production) / `.dev.vars` (local) | output of `scripts/hash-password.mjs` |
+| `COOKIE_SECURE` | `.dev.vars` only | `false` for local http |
+| `ALLOWED_ORIGINS` | `.dev.vars` only | `http://localhost:5173` |
+| `VITE_DATA_SOURCE` | build time (`npm run build:cf` sets it) | `api` |
 
-## Deploying to Cloudflare (needs the owner's Cloudflare account — nothing here has been deployed)
+Bindings (wrangler.jsonc): `DB` (D1 alamin-db), `IMAGES` (R2 alamin-images), `ASSETS` (static assets).
 
-1. `npx wrangler login`
-2. Create resources and paste the D1 id into `worker/wrangler.jsonc`:
-   ```bash
-   npx wrangler d1 create alamin-db
-   npx wrangler r2 bucket create alamin-images
-   ```
-3. Database & photos:
-   ```bash
-   npm run db:migrate:remote
-   npm run images:seed:remote
-   ```
-4. Owner password (min. 12 characters):
-   ```bash
-   node scripts/hash-password.mjs      # prints the hash
-   cd worker && npx wrangler secret put ADMIN_PASSWORD_HASH   # paste it
-   ```
-5. Deploy the API: `npm run deploy:api`
-6. Pages project `alamin-store` (Dashboard → Workers & Pages → Create → Pages → connect this GitHub repo):
-   - Build command `npm run build`, output `dist`, env var `VITE_DATA_SOURCE=api`.
-   - The service binding `API → alamin-api` comes from the root `wrangler.jsonc` (or add it under Settings → Bindings).
-7. Open `https://<project>.pages.dev/admin/`, log in, and check the checklist below.
 
-### Production checklist
+## Deploying
 
-- [ ] D1 id filled in `worker/wrangler.jsonc`; both migrations applied remotely
-- [ ] 23 photos uploaded to R2; storefront shows images from `/images/...`
-- [ ] `ADMIN_PASSWORD_HASH` secret set (strong password, not reused); `ADMIN_USERNAME` changed if desired
-- [ ] `worker/.dev.vars` is **not** committed (it is git-ignored)
-- [ ] Pages build env `VITE_DATA_SOURCE=api`; binding `API` present
-- [ ] `/api/admin/products` without login → `401`
-- [ ] Login works on the owner's phone; logout works
-- [ ] Add a test perfume as **draft** → not visible on the store → delete it
-- [ ] Reorder two perfumes → order visible on the storefront
-- [ ] Custom domain (optional) attached to the Pages project
-- [ ] Old GitHub Pages site retired or left on the static catalog
+Production is live. For every future release:
+
+```bash
+npx wrangler login            # once per machine
+npm run deploy                # typecheck + tests + build (API mode) + wrangler deploy
+```
+
+Database schema changes: add `worker/migrations/000N_*.sql`, then `npm run db:migrate:remote` **before** `npm run deploy`.
+
+Change the owner password:
+```bash
+node scripts/hash-password.mjs | npx wrangler secret put ADMIN_PASSWORD_HASH
+```
+(prompts for the new password; existing sessions stay valid until logout/expiry — to force everyone out run
+`npx wrangler d1 execute alamin-db --remote --command "DELETE FROM admin_sessions"`).
+
+Roll back a bad release: `npx wrangler rollback` (code only; the database is not rolled back).
+
+First-time setup (already done for production — kept for reference):
+`npx wrangler d1 create alamin-db` → put the id in `wrangler.jsonc` → `npx wrangler r2 bucket create alamin-images` →
+`npm run db:migrate:remote` → `npm run deploy` → set `ADMIN_PASSWORD_HASH`.
+
+### Production checklist (verified on the live deployment)
+
+- [x] D1 migrations applied remotely; 23 products, variants, tags and best-seller order present
+- [x] Original photos served as static assets; uploads stored in R2
+- [x] `ADMIN_PASSWORD_HASH` secret set; no secrets in `dist/` or Git
+- [x] `/api/admin/*` without login → 401; foreign Origin → 403
+- [x] Login, add (with photo), edit, draft/publish, reorder, tags, delete — reflected on the storefront
+- [x] Cache headers and ETag/304 behaviour as in the table above
+- [ ] Optional: custom domain
+
+
+## Free plan & limits
+
+Everything runs on the Workers Free plan (no paid features enabled):
+
+| Resource | Free allowance | This app |
+|---|---|---|
+| Worker requests | 100,000 / day | ≈ 1 per storefront visit + uploaded-photo first views + admin use |
+| Worker CPU | 10 ms / request | catalog read returns stored text; heaviest is login (PBKDF2) |
+| Static asset requests | unlimited, free | all pages, JS/CSS, original photos |
+| D1 | 5M rows read / day, 100k written, 5 GB | 1 row per catalog request; ~200 rows per admin save |
+| R2 | 10 GB, 1M writes, 10M reads / month, no egress fees | only photos uploaded from the dashboard |
+
+Potential costs only if traffic grows well beyond ~100k visits/day (Workers Paid is $5/month) or R2 exceeds its free tier.
 
 ## Known limitations / next steps
 
-- Content text supports `**bold**`, `{{quiz|text}}` (button that opens the quiz) and, in the offers bar, `{freeMin}` / `{discount}` placeholders filled from the settings.
-- The page `<title>`, meta description and social preview image in `index.html` are static (not edited from the dashboard).
-- A photo uploaded but never saved (form abandoned) stays in R2. Cheap to keep; a periodic cleanup can delete `products/` keys not present in `product_images`.
-- GitHub Pages (static) also publishes `/admin/`, but it cannot work there (no API) and shows «تعذّر الاتصال». Use the Cloudflare Pages URL.
+- **Login CPU.** PBKDF2 with 100,000 iterations is above the free plan's 10 ms CPU guideline per request. The free plan tolerates occasional bursts, and login happens rarely, but if logins start failing with "exceeded CPU" the options are the Workers Paid plan or lowering the iteration count (weaker hashing).
+- **No edge cache for the API on workers.dev.** Adding a custom domain would allow caching `/api/catalog` at the edge (Cache API) to cut Worker requests further.
+- A photo uploaded but never saved (form abandoned) stays in R2. Cheap to keep; a cleanup could delete `products/` keys not present in `product_images`.
+- Content text supports `**bold**`, `{{quiz|text}}` and, in the offers bar, `{freeMin}` / `{discount}`.
+- The page `<title>`, meta description and social preview image in `index.html` are static.
+- The GitHub Pages workflow (`.github/workflows/deploy.yml`) still targets GitHub Pages; Cloudflare is the production host.

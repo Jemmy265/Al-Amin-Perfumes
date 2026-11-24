@@ -78,6 +78,9 @@
 /* Intro elements start hidden only when JS motion runs (see Hero.tsx) */
 .motion [data-intro], .motion .hero-seal, .motion .hero-tagline, .motion .benefit { visibility: hidden; }
 .hero-title-line, .hero-title em { display: block; }
+/* Wrapper for photo + navy panel + seal: transparent to layout on desktop. */
+.hero-figure { display: contents; }
+.hero-arch { overflow: hidden; }
 
 /* Benefits strip */
 .benefits {
@@ -236,10 +239,6 @@
 }
 @media (max-width: 920px) {
   .hero-grid { grid-template-columns: 1fr; min-height: 0; gap: 0; }
-  .hero-visual { order: -1; height: 420px; align-content: start; padding-top: 10px; }
-  .hero-tagline { writing-mode: horizontal-tb; left: 50%; bottom: 0; translate: -50% 0; white-space: nowrap; font-size: 1.05rem; }
-  .hero-arch-back { width: 290px; height: 360px; }
-  .hero-arch { width: 260px; height: 340px; }
   .hero-copy { text-align: center; padding-bottom: 2.5rem; }
   .hero-lockup, .hero-actions, .hero-stats { justify-content: center; }
   .hero-slogan { justify-content: center; }
@@ -267,12 +266,6 @@
 }
 @media (max-width: 640px) {
   .section-head { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .hero-visual { height: 350px; }
-  .hero-arch-back { width: 240px; height: 300px; }
-  .hero-arch { width: 214px; height: 284px; }
-  .hero-seal { width: 66px; height: 66px; inset-inline-start: 2%; top: 6%; }
-  .hero-seal img { width: 42px; height: 42px; }
-  .hero-tagline { font-size: 1.2rem; bottom: -4px; }
   .hero-desc { font-size: var(--fs-md); }
   .hero-actions .btn { flex: 1 1 100%; }
   .hero-stats li { padding-inline: 1.1rem; }
@@ -304,4 +297,64 @@
 @media (max-width: 640px) {
   .page-btn--step span { display: none; }
   .page-btn--step { padding-inline: .5rem; }
+}
+
+/* =========================== HERO — PHONES & SMALL TABLETS ===========================
+   Normal document flow instead of a fixed-height box: the figure is sized by the
+   photo (width + aspect ratio); the navy panel and the seal are positioned
+   relative to that figure, inside the space it reserves, so the text below can
+   never be covered. The tagline sits in the flow under the figure. */
+@media (max-width: 920px) {
+  .hero { padding-top: clamp(1.25rem, 5vw, 2rem); }
+  .hero-visual {
+    order: -1; height: auto; display: flex; flex-direction: column; align-items: center;
+    gap: clamp(.9rem, 3.5vw, 1.25rem); padding-bottom: clamp(1.5rem, 6vw, 2.25rem);
+  }
+  .hero-figure {
+    display: block; position: relative;
+    width: clamp(232px, 74vw, 330px);
+    /* Space for the panel peeking out on the right and below the photo. */
+    padding: 0 0 clamp(16px, 5vw, 24px) 0;
+  }
+  .hero-arch {
+    width: 86%; height: auto; aspect-ratio: 26 / 34;
+    translate: none; padding: 6px;
+    margin-left: 0; margin-right: auto; /* photo on the left, panel peeks out on the right (as on desktop) */
+    border-radius: 999px 999px 4px 4px;
+  }
+  .hero-arch img, .hero-arch::after { border-radius: 999px 999px 2px 2px; }
+  .hero-arch::after { inset: 6px; }
+  /* Navy panel: offset right and down from the photo, like on desktop. */
+  .hero-arch-back {
+    left: auto; right: 0; top: 12%; bottom: 0;
+    width: 80%; height: auto; translate: none;
+    border-radius: 999px 999px 4px 4px;
+  }
+  .hero-seal {
+    width: clamp(58px, 18vw, 76px); height: clamp(58px, 18vw, 76px);
+    top: 2%; inset-inline-start: -2%;
+    box-shadow: 0 0 0 4px var(--ivory), 0 0 0 5px rgba(196, 164, 106, .35);
+  }
+  .hero-seal img { width: 62%; height: 62%; }
+  .hero-tagline {
+    position: static; writing-mode: horizontal-tb; translate: none;
+    text-align: center; font-size: clamp(1.05rem, 4.4vw, 1.3rem); line-height: 1.6;
+  }
+
+  .hero-copy { padding-block: 0 clamp(2rem, 8vw, 2.75rem); }
+  .hero-slogan { font-size: clamp(1.25rem, 5.4vw, 1.8rem); line-height: 1.7; margin-bottom: .35rem; }
+  /* Fluid on phones; capped at the site-wide size so tablets look as before. */
+  .hero-title { font-size: clamp(2.05rem, 9.4vw, var(--fs-h1)); line-height: 1.45; }
+  .hero-title em { margin-top: .1em; }
+  .hero-desc { margin-top: 1rem; line-height: 1.95; }
+  .hero-actions { margin-top: 1.6rem; }
+  .hero-stats { margin-top: 2rem; }
+}
+
+/* =========================== FLOATING WHATSAPP (phones) ===========================
+   Hidden while the hero buttons or the contact section are on screen (both have
+   their own WhatsApp / call to action), so it never sits on top of them. */
+@media (max-width: 640px) {
+  .wa-float { transition: opacity .25s, transform .25s, visibility .25s; }
+  .wa-float.is-tucked { opacity: 0; visibility: hidden; transform: translateY(16px) scale(.9); pointer-events: none; }
 }

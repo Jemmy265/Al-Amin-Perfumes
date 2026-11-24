@@ -1,7 +1,7 @@
 /* Generates worker/migrations/0002_seed.sql from the storefront's real data
    (src/data/seed). Run: node scripts/gen-seed-sql.ts
-   Images are referenced as R2 keys products/<file>; upload them with
-   scripts/upload-seed-images.mjs. */
+   The original photos stay static assets (assets/products/<file>), served by
+   Cloudflare without invoking the Worker; only new uploads go to R2. */
 import { writeFileSync } from "node:fs";
 import { SEED_PRODUCTS } from "../src/data/seed/products.ts";
 import { LABELS, SEED_CONTENT, SEED_SETTINGS } from "../src/data/seed/content.ts";
@@ -27,7 +27,7 @@ products.forEach((p, i) => {
   p.tags.scents.forEach((t, k) => lines.push(`INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES (${q(p.id)}, 'scent', ${q(t)}, ${k});`));
   p.tags.occasions.forEach((t, k) => lines.push(`INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES (${q(p.id)}, 'occasion', ${q(t)}, ${k});`));
   const file = p.image.split("/").pop()!;
-  lines.push(`INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES (${q(p.id)}, ${q(`products/${file}`)}, ${q(`${p.name} — ${p.nameEn}`)}, 0);`);
+  lines.push(`INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES (${q(p.id)}, ${q(`assets/products/${file}`)}, ${q(`${p.name} — ${p.nameEn}`)}, 0);`);
 });
 
 for (const [key, value] of Object.entries({ settings: SEED_SETTINGS, content: SEED_CONTENT, labels: LABELS }))

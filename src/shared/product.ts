@@ -11,8 +11,8 @@ export const INTENSITIES = ["light", "medium", "strong"] as const satisfies read
 export const STATUSES = ["published", "draft"] as const;
 export type ProductStatus = (typeof STATUSES)[number];
 
-/** R2 object keys created by the upload endpoint. */
-export const IMAGE_KEY_RE = /^products\/[a-z0-9][a-z0-9._-]{0,120}\.(jpe?g|png|webp)$/;
+/** Product photo keys: uploads in R2 (products/…) or the original bundled photos (assets/products/…). */
+export const IMAGE_KEY_RE = /^(products|assets\/products)\/[a-z0-9][a-z0-9._-]{0,120}\.(jpe?g|png|webp)$/;
 export const PRODUCT_ID_RE = /^[a-z0-9][a-z0-9-]{1,79}$/;
 
 const text = (max: number, label: string) =>
