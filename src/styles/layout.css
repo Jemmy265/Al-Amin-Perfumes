@@ -76,6 +76,15 @@
 .footer-bottom { border-top: 1px solid rgba(255, 255, 255, .08); padding-block: 1.1rem; font-size: var(--fs-xs); color: #8796a2; }
 .footer-bottom .container { display: flex; justify-content: space-between; gap: 1rem; }
 .footer-bottom span { letter-spacing: .25em; }
+/* Developer credits — a quiet line under the copyright bar. */
+.footer-credits { border-top: 1px solid rgba(255, 255, 255, .05); padding-block: .85rem calc(.85rem + env(safe-area-inset-bottom)); }
+.footer-credits p { text-align: center; font-size: var(--fs-xs); line-height: 1.9; color: #7f8d99; }
+.footer-credits a {
+  color: var(--on-navy-muted); font-weight: 500; padding-bottom: 2px;
+  background: linear-gradient(var(--gold), var(--gold)) no-repeat 100% 100% / 0 1px;
+  transition: color .3s var(--ease), background-size .4s var(--ease);
+}
+.footer-credits a:hover, .footer-credits a:focus-visible { color: var(--gold-light); background-size: 100% 1px; }
 
 /* ---- Floating WhatsApp ---- */
 .wa-float {

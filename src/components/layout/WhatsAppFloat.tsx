@@ -4,8 +4,8 @@ import { useStore } from "../../state/StoreProvider";
 import { Icon } from "../ui/Icon";
 
 /** Floating WhatsApp button. On phones it tucks away while the hero buttons or
-    the contact section are visible (they have their own call to action), so it
-    never covers them — see .wa-float.is-tucked in sections.css. */
+    the contact section are visible (they have their own call to action), and at
+    the footer credits, so it never covers them — see .wa-float.is-tucked in sections.css. */
 export function WhatsAppFloat() {
   const { settings } = useStore();
   const [tucked, setTucked] = useState(true);
@@ -19,7 +19,7 @@ export function WhatsAppFloat() {
   }, []);
 
   useEffect(() => {
-    const targets = [document.querySelector(".hero-actions"), document.getElementById("contact")].filter(Boolean) as Element[];
+    const targets = [document.querySelector(".hero-actions"), document.getElementById("contact"), document.querySelector(".footer-credits")].filter(Boolean) as Element[];
     if (!phone || !targets.length || !("IntersectionObserver" in window)) { setTucked(false); return; }
     const visible = new Set<Element>();
     const io = new IntersectionObserver((entries) => {
