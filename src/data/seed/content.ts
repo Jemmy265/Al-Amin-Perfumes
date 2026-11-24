@@ -5,6 +5,7 @@
    settings so prices/offers stay in one place. */
 import type { Labels, SiteContent, StoreSettings } from "../../types/content";
 import { SEED_REVIEWS } from "./reviews";
+import { DEFAULT_SECTIONS } from "../../shared/content";
 
 export const SEED_SETTINGS: StoreSettings = {
   whatsappNumber: "201006747034",
@@ -43,6 +44,7 @@ export const LABELS: Labels = {
 };
 
 export const SEED_CONTENT: SiteContent = {
+  sections: DEFAULT_SECTIONS,
   announcements: [
     "توصيل **مجاني** لأي أوردر فوق **{freeMin} ج.م**",
     "خصم **{discount}%** على أي إزازة **110 مل**",

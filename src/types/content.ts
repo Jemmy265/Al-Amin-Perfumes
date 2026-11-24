@@ -37,9 +37,15 @@ export type RichText = string;
 export interface SectionHead { kicker: string; title: string; text?: string }
 export interface Review { text: string; name: string; source: "facebook" | "whatsapp" | "message" }
 export interface FaqItem { q: string; a: RichText }
+/** Homepage sections whose visibility and order the owner controls (the hero is always first). */
+export type SectionId = "best" | "quizCta" | "catalog" | "reviews" | "about" | "faq" | "contact";
+export interface SectionSetting { id: SectionId; visible: boolean }
+
 export interface Benefit { icon: "star" | "drop" | "truck" | "chat"; title: string; text: string }
 
 export interface SiteContent {
+  /** Order + visibility of homepage sections. Missing in older data → default order, all visible. */
+  sections?: SectionSetting[];
   announcements: RichText[];
   hero: {
     slogan: string;

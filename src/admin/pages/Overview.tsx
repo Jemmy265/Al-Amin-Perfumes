@@ -53,6 +53,7 @@ export function Overview() {
           <div className="a-shortcuts">
             <a href={href({ name: "order" })} onClick={go({ name: "order" })}><Icon name="sort" /><span><b>ترتيب العطور</b><small>غيّر ترتيب ظهورها في المتجر</small></span><Icon name="arrowLeft" /></a>
             <a href={href({ name: "tags" })} onClick={go({ name: "tags" })}><Icon name="tag" /><span><b>وسوم اختبار العطر</b><small>حدد العطور المناسبة لكل إجابة</small></span><Icon name="arrowLeft" /></a>
+            <a href={href({ name: "content" })} onClick={go({ name: "content" })}><Icon name="doc" /><span><b>محتوى الموقع</b><small>النصوص والعروض والأسئلة وأرقام التواصل</small></span><Icon name="arrowLeft" /></a>
             <a href={href({ name: "products" })} onClick={go({ name: "products" })}><Icon name="grid" /><span><b>كل العطور</b><small>تعديل الأسعار والصور والأحجام</small></span><Icon name="arrowLeft" /></a>
           </div>
         </section>

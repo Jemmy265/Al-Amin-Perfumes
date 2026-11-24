@@ -153,6 +153,13 @@ export async function updateTags(db: D1Database, id: string, t: Pick<ProductData
   await db.batch(s);
 }
 
+export async function putSiteKv(db: D1Database, key: "content" | "settings", value: unknown) {
+  await db.prepare(
+    `INSERT INTO site_kv (key, value) VALUES (?1, ?2)
+     ON CONFLICT (key) DO UPDATE SET value = ?2, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')`,
+  ).bind(key, JSON.stringify(value)).run();
+}
+
 export async function getSiteKv(db: D1Database): Promise<Record<string, unknown>> {
   const r = await db.prepare("SELECT key, value FROM site_kv").all<{ key: string; value: string }>();
   return Object.fromEntries(r.results.map((x) => [x.key, JSON.parse(x.value)]));

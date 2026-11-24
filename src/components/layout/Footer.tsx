@@ -2,6 +2,8 @@ import { assetUrl } from "../../services/assets";
 import { useStore } from "../../state/StoreProvider";
 import { useUI } from "../../state/UIProvider";
 import { Icon } from "../ui/Icon";
+import { normalizeSections } from "../../shared/content";
+import type { SectionId } from "../../types/content";
 
 export function SocialLinks({ className = "social" }: { className?: string }) {
   const { settings } = useStore();
@@ -18,6 +20,8 @@ export function Footer() {
   const { content, settings } = useStore();
   const { openQuiz } = useUI();
   const f = content.footer;
+  const visible = new Set(normalizeSections(content.sections).filter((s) => s.visible).map((s) => s.id));
+  const show = (id: SectionId) => visible.has(id);
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
@@ -31,15 +35,15 @@ export function Footer() {
         </div>
         <nav className="footer-col" aria-label="روابط سريعة">
           <b>روابط سريعة</b>
-          <a href="#products">التشكيلة</a>
+          {show("catalog") && <a href="#products">التشكيلة</a>}
           <button type="button" className="link-plain" onClick={openQuiz}>اكتشف عطرك</button>
-          <a href="#reviews">آراء العملاء</a>
-          <a href="#about">من نحن</a>
+          {show("reviews") && <a href="#reviews">آراء العملاء</a>}
+          {show("about") && <a href="#about">من نحن</a>}
         </nav>
         <div className="footer-col">
           <b>خدمة العملاء</b>
-          <a href="#faq">أسئلة شائعة</a>
-          <a href="#contact">تواصل معنا</a>
+          {show("faq") && <a href="#faq">أسئلة شائعة</a>}
+          {show("contact") && <a href="#contact">تواصل معنا</a>}
           <a href={`tel:${settings.phone}`} dir="ltr" className="ltr-start">{settings.phoneDisplay}</a>
           <span>{content.contact.deliveryNote}</span>
         </div>

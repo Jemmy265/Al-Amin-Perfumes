@@ -11,6 +11,8 @@ import {
   AUDIENCES, fieldErrors, INTENSITIES, loginSchema, OCCASIONS, PRODUCT_ID_RE, productInputSchema,
   reorderSchema, SCENTS, slugify, tagsInputSchema, toStorefrontProduct,
 } from "../../src/shared/product";
+import { contentSchema, normalizeSections, SERVER_SETTINGS_KEYS, settingsSchema, siteImageKeys } from "../../src/shared/content";
+import type { SiteContent } from "../../src/types/content";
 import { endSession, lockedFor, recordFailure, requireAdmin, sameOrigin, startSession, verifyPassword, hasSession } from "./auth";
 import * as db from "./db";
 import type { AppEnv } from "./env";
@@ -58,12 +60,13 @@ app.get("/api/site", async (c) => {
     .sort((a, b) => a.featuredRank! - b.featuredRank!)
     .map((p) => p.id);
   const settings = { ...(kv.settings as object), bestSellers: featured };
-  return c.json({ settings, content: kv.content, labels: kv.labels ?? LABELS });
+  const content = { ...(kv.content as SiteContent), sections: normalizeSections((kv.content as SiteContent).sections) };
+  return c.json({ settings, content, labels: kv.labels ?? LABELS });
 });
 
 app.get("/images/*", async (c) => {
   const key = decodeURIComponent(c.req.path.replace(/^\/images\//, ""));
-  if (!key.startsWith("products/") || key.includes("..")) return c.notFound();
+  if (!/^(products|site)\//.test(key) || key.includes("..")) return c.notFound();
   const obj = await c.env.IMAGES.get(key);
   if (!obj) return c.notFound();
   const h = new Headers();
@@ -110,7 +113,36 @@ admin.get("/tags", (c) => c.json({
   groups: { audience: AUDIENCES, scent: SCENTS, occasion: OCCASIONS, intensity: INTENSITIES },
 }));
 
-admin.get("/content", async (c) => c.json(await db.getSiteKv(c.env.DB)));
+admin.get("/content", async (c) => {
+  const kv = await db.getSiteKv(c.env.DB);
+  const content = kv.content as SiteContent;
+  return c.json({ ...kv, content: { ...content, sections: normalizeSections(content.sections) } });
+});
+
+/** Replace the homepage content document (validated as a whole). */
+admin.put("/content", async (c) => {
+  const r = await body(c, contentSchema);
+  if (r.res) return r.res;
+  for (const key of siteImageKeys(r.data))
+    if (!(await c.env.IMAGES.head(key))) return c.json({ error: "صورة مش موجودة — ارفعها تاني" }, 422);
+  const before = (await db.getSiteKv(c.env.DB)).content as SiteContent | undefined;
+  await db.putSiteKv(c.env.DB, "content", r.data);
+  // Delete uploads that this save replaced.
+  const kept = new Set(siteImageKeys(r.data));
+  if (before) for (const key of siteImageKeys(before)) if (!kept.has(key)) await c.env.IMAGES.delete(key);
+  return c.json({ ok: true, content: r.data });
+});
+
+/** Update store settings. Fields the editor doesn't own (best sellers, sizes…) are preserved. */
+admin.put("/settings", async (c) => {
+  const r = await body(c, settingsSchema);
+  if (r.res) return r.res;
+  const before = ((await db.getSiteKv(c.env.DB)).settings ?? {}) as Record<string, unknown>;
+  const kept = Object.fromEntries(SERVER_SETTINGS_KEYS.filter((k) => k in before).map((k) => [k, before[k]]));
+  const settings = { ...r.data, ...kept };
+  await db.putSiteKv(c.env.DB, "settings", settings);
+  return c.json({ ok: true, settings });
+});
 
 /** Full new catalog order. Must list every product exactly once. */
 admin.patch("/products/reorder", async (c) => {
@@ -199,7 +231,8 @@ admin.post("/uploads", async (c) => {
   const bytes = new Uint8Array(await file.arrayBuffer());
   const type = sniffImage(bytes);
   if (!type) return c.json({ error: "نوع الملف غير مدعوم — استخدم صورة JPG أو PNG أو WebP" }, 415);
-  const key = `products/${crypto.randomUUID()}.${type.ext}`;
+  const folder = c.req.query("kind") === "site" ? "site" : "products";
+  const key = `${folder}/${crypto.randomUUID()}.${type.ext}`;
   await c.env.IMAGES.put(key, bytes, { httpMetadata: { contentType: type.mime } });
   return c.json({ key, url: db.imageUrl(key) }, 201);
 });

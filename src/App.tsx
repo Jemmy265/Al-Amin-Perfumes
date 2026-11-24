@@ -15,9 +15,25 @@ import { Hero } from "./sections/Hero";
 import { QuizCta } from "./sections/QuizCta";
 import { Reviews } from "./sections/Reviews";
 import { CartProvider } from "./state/CartProvider";
-import { StoreProvider } from "./state/StoreProvider";
+import { StoreProvider, useStore } from "./state/StoreProvider";
+import type { ReactNode } from "react";
+import { normalizeSections } from "./shared/content";
+import type { SectionId } from "./types/content";
 import { UIProvider } from "./state/UIProvider";
 import { SmoothScroll } from "./motion";
+
+const SECTION_COMPONENTS: Record<SectionId, () => ReactNode> = {
+  best: BestSellers, quizCta: QuizCta, catalog: Catalog, reviews: Reviews, about: About, faq: Faq, contact: Contact,
+};
+
+/** Homepage sections in the order (and visibility) set from the admin. */
+function OrderedSections() {
+  const { content } = useStore();
+  return <>{normalizeSections(content.sections).filter((s) => s.visible).map((s) => {
+    const C = SECTION_COMPONENTS[s.id];
+    return <C key={s.id} />;
+  })}</>;
+}
 
 function Storefront() {
   return (
@@ -27,13 +43,7 @@ function Storefront() {
       <Header />
       <main id="main">
         <Hero />
-        <BestSellers />
-        <QuizCta />
-        <Catalog />
-        <Reviews />
-        <About />
-        <Faq />
-        <Contact />
+        <OrderedSections />
       </main>
       <Footer />
       <WhatsAppFloat />
