@@ -2,6 +2,8 @@
    sends them automatically). Every failure becomes an ApiError with an
    Arabic message the UI can show as-is. */
 import type { AdminProduct, ProductInput } from "../../shared/product";
+import type { EditableSettings } from "../../shared/content";
+import type { SiteContent, StoreSettings } from "../../types/content";
 
 export class ApiError extends Error {
   constructor(message: string, readonly status: number, readonly fields: Record<string, string> = {}) {
@@ -48,17 +50,19 @@ export const api = {
   updateTags: (id: string, t: TagsPayload) => request<AdminProduct>("PATCH", `/admin/products/${encodeURIComponent(id)}/tags`, t),
   reorder: (ids: string[]) => request<{ ok: true }>("PATCH", "/admin/products/reorder", { ids }),
   reorderFeatured: (ids: string[]) => request<{ ok: true }>("PATCH", "/admin/products/featured-order", { ids }),
-  content: () => request<Record<string, unknown>>("GET", "/admin/content"),
+  content: () => request<{ content: SiteContent; settings: StoreSettings }>("GET", "/admin/content"),
+  saveContent: (content: SiteContent) => request<{ ok: true; content: SiteContent }>("PUT", "/admin/content", content),
+  saveSettings: (settings: EditableSettings) => request<{ ok: true; settings: StoreSettings }>("PUT", "/admin/settings", settings),
 };
 
 /** Upload with progress (XHR — fetch has no upload progress). */
-export function uploadImage(blob: Blob, onProgress: (pct: number) => void): { promise: Promise<{ key: string; url: string }>; abort: () => void } {
+export function uploadImage(blob: Blob, onProgress: (pct: number) => void, kind: "products" | "site" = "products"): { promise: Promise<{ key: string; url: string }>; abort: () => void } {
   const xhr = new XMLHttpRequest();
   const promise = new Promise<{ key: string; url: string }>((resolve, reject) => {
     const form = new FormData();
     const ext = blob.type === "image/webp" ? "webp" : blob.type === "image/png" ? "png" : "jpg";
     form.append("file", blob, `photo.${ext}`);
-    xhr.open("POST", "/api/admin/uploads");
+    xhr.open("POST", kind === "site" ? "/api/admin/uploads?kind=site" : "/api/admin/uploads");
     xhr.withCredentials = true;
     xhr.upload.onprogress = (e) => e.lengthComputable && onProgress(Math.round((e.loaded / e.total) * 100));
     xhr.onload = () => {

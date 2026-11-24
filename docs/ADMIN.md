@@ -1,6 +1,6 @@
 # Al-Amin Admin Dashboard — Setup, Development & Deployment
 
-The owner manages the catalog from a phone at **`/admin/`**: add/edit/delete perfumes, upload photos, sizes & prices, quiz tags, draft/publish, and the display order of the catalog and of «الأكثر طلبًا».
+The owner manages the store from a phone at **`/admin/`**: add/edit/delete perfumes, upload photos, sizes & prices, quiz tags, draft/publish, the display order of the catalog and of «الأكثر طلبًا», and the **site content** (homepage texts, offers bar, section order/visibility, reviews, FAQ, contact/footer, hero & About photos) plus **sales settings** (WhatsApp number, shipping fees, free-shipping threshold, size discount, phone, email, social links).
 
 ## Architecture
 
@@ -20,6 +20,7 @@ Browser ──► Cloudflare Pages (alamin-store)
 - **Shared code, no duplicated business rules.**
   - `src/types` — domain types used by storefront, admin and Worker.
   - `src/shared/product.ts` — product validation (Zod) used by **both** the admin form and the API, plus the admin → storefront mapping.
+  - `src/shared/content.ts` — site content & settings validation, section ids/labels, used by the content editor and the API.
   - `src/domain/quiz.ts` — the original quiz questions & scoring; the admin tag editor and the API taxonomy read from it.
 - **Storefront data.** With `VITE_DATA_SOURCE=api` the storefront reads `GET /api/products` and `GET /api/site` (falls back to the bundled catalog if the API is down). Without it (e.g. GitHub Pages) it uses the bundled seed data.
 
@@ -31,7 +32,7 @@ Browser ──► Cloudflare Pages (alamin-store)
 | `product_variants` | `(product_id, size_ml)` → `price` (EGP, before the 110 ml discount) |
 | `product_images` | R2 `object_key` + alt text + order (binaries live in R2 only) |
 | `product_tags` | Quiz tags: `scent` (ordered — position 0 is the primary family, weighted higher by the quiz) and `occasion` |
-| `site_kv` | JSON documents `settings`, `content`, `labels` (homepage copy & store settings — ready for content editing) |
+| `site_kv` | JSON documents `settings`, `content`, `labels` — edited from «محتوى الموقع». `content.sections` holds homepage section order & visibility |
 | `admin_sessions` | SHA-256 of session tokens, expiry |
 | `login_attempts` | Failed-login counter per IP |
 
@@ -56,8 +57,10 @@ Admin (session required on every route, checked by the Worker):
 | PATCH | `/api/admin/products/featured-order` | `{ids}` — order of «الأكثر طلبًا» |
 | PATCH | `/api/admin/products/:id/tags` | `{category, scents, occasions, intensity}` |
 | GET | `/api/admin/tags` | quiz taxonomy (from the storefront quiz) |
-| POST | `/api/admin/uploads` | multipart `file` → R2; returns `{key, url}` |
+| POST | `/api/admin/uploads` | multipart `file` → R2 (`?kind=site` for hero/About photos); returns `{key, url}` |
 | GET | `/api/admin/content` | settings / content / labels |
+| PUT | `/api/admin/content` | whole content document (validated); deletes replaced `site/` photos from R2 |
+| PUT | `/api/admin/settings` | editable settings; `bestSellers`, `sizes`, `currency`, `siteUrl` are kept server-side |
 
 Errors are JSON `{error, fields?}` with Arabic messages (`422` validation, `401` no session, `403` bad origin, `409` stale order, `413/415` upload size/type, `429` too many logins).
 
@@ -141,6 +144,7 @@ Checks: `npm run typecheck` · `npm test` (includes parity tests proving the qui
 
 ## Known limitations / next steps
 
-- **Homepage content editing** is read-only for now; the data already lives in `site_kv` and is served by `/api/site`, so an editor (`PUT /api/admin/content`) can be added without schema changes.
+- Content text supports `**bold**`, `{{quiz|text}}` (button that opens the quiz) and, in the offers bar, `{freeMin}` / `{discount}` placeholders filled from the settings.
+- The page `<title>`, meta description and social preview image in `index.html` are static (not edited from the dashboard).
 - A photo uploaded but never saved (form abandoned) stays in R2. Cheap to keep; a periodic cleanup can delete `products/` keys not present in `product_images`.
 - GitHub Pages (static) also publishes `/admin/`, but it cannot work there (no API) and shows «تعذّر الاتصال». Use the Cloudflare Pages URL.

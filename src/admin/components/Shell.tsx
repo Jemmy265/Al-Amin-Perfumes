@@ -12,12 +12,12 @@ const NAV: { route: Route; label: string; icon: string; short: string }[] = [
   { route: { name: "products" }, label: "العطور", short: "العطور", icon: "grid" },
   { route: { name: "order" }, label: "ترتيب العرض", short: "الترتيب", icon: "sort" },
   { route: { name: "tags" }, label: "وسوم اختبار العطر", short: "الاختبار", icon: "tag" },
-  { route: { name: "content" }, label: "محتوى الصفحة الرئيسية", short: "المحتوى", icon: "doc" },
+  { route: { name: "content" }, label: "محتوى الموقع", short: "المحتوى", icon: "doc" },
 ];
 
 const TITLES: Record<Route["name"], string> = {
   overview: "نظرة عامة", products: "العطور", new: "إضافة عطر", edit: "تعديل عطر",
-  order: "ترتيب العرض", tags: "وسوم اختبار العطر", content: "محتوى الصفحة الرئيسية",
+  order: "ترتيب العرض", tags: "وسوم اختبار العطر", content: "محتوى الموقع",
 };
 
 const active = (route: Route, item: Route) =>

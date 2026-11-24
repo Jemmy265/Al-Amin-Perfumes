@@ -2,20 +2,25 @@ import { useEffect, useRef, useState } from "react";
 import { assetUrl } from "../../services/assets";
 import { useCart } from "../../state/CartProvider";
 import { useUI } from "../../state/UIProvider";
+import { useStore } from "../../state/StoreProvider";
+import { normalizeSections } from "../../shared/content";
 import { Icon } from "../ui/Icon";
 
 const NAV = [
   { href: "#hero", label: "الرئيسية" },
-  { href: "#products", label: "التشكيلة" },
+  { href: "#products", label: "التشكيلة", section: "catalog" },
   { quiz: true, label: "اكتشف عطرك" },
-  { href: "#reviews", label: "آراء العملاء" },
-  { href: "#faq", label: "أسئلة شائعة" },
-  { href: "#contact", label: "تواصل معنا" },
+  { href: "#reviews", label: "آراء العملاء", section: "reviews" },
+  { href: "#faq", label: "أسئلة شائعة", section: "faq" },
+  { href: "#contact", label: "تواصل معنا", section: "contact" },
 ] as const;
 
 export function Header() {
   const { openCart, openQuiz } = useUI();
   const { totals, addedTick } = useCart();
+  const { content } = useStore();
+  const hidden = new Set(normalizeSections(content.sections).filter((s) => !s.visible).map((s) => s.id));
+  const nav = NAV.filter((n) => !("section" in n) || !hidden.has(n.section));
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const badge = useRef<HTMLSpanElement>(null);
@@ -42,7 +47,7 @@ export function Header() {
 
         <nav className={`main-nav${open ? " is-open" : ""}`} id="main-nav" aria-label="القائمة الرئيسية">
           <ul>
-            {NAV.map((n) => (
+            {nav.map((n) => (
               <li key={n.label}>
                 {"quiz" in n
                   ? <button type="button" className="nav-link nav-link--quiz" onClick={() => { setOpen(false); openQuiz(); }}>{n.label}</button>

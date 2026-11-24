@@ -414,3 +414,62 @@ img { display: block; max-width: 100%; }
   .a-grid-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .a-toolbar { grid-template-columns: minmax(0, 1fr) auto; }
 }
+
+/* ---------- Content editor ---------- */
+.a-content-editor { display: grid; grid-template-columns: minmax(0, 1fr); gap: .6rem; }
+.a-content-editor .a-page-intro { margin-bottom: .4rem; }
+.a-cpanel { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); scroll-margin-top: 76px; min-width: 0; }
+.a-cpanel.is-open { border-color: var(--line-strong); }
+.a-cpanel.has-error { border-color: var(--danger); }
+.a-cpanel-head {
+  display: flex; align-items: center; gap: .6rem; width: 100%; min-height: 64px; padding: .6rem 1rem;
+  background: none; border: 0; text-align: start;
+}
+.a-cpanel-head > span { flex: 1; display: flex; flex-direction: column; line-height: 1.4; min-width: 0; }
+.a-cpanel-head b { color: var(--navy); font-size: 1.05rem; }
+.a-cpanel-head small { color: var(--muted); font-size: .85rem; }
+.a-cpanel-head > .icon:last-child { color: var(--gold-deep); transition: transform .2s; }
+.a-cpanel.is-open .a-cpanel-head > .icon:last-child { transform: rotate(180deg); }
+.a-cpanel-head > .icon:not(:last-child) { color: var(--danger); }
+.a-cpanel-body { padding: .2rem 1rem 1rem; border-top: 1px solid var(--line); }
+.a-cpanel-body > .a-field:first-child, .a-cpanel-body > :first-child { margin-top: .9rem; }
+.a-field select { width: 100%; }
+.a-input-display { font-family: var(--font-display); font-size: 1.25rem !important; color: var(--navy); }
+.a-subtitle { margin: 1.1rem 0 .6rem; padding-top: .9rem; border-top: 1px dashed var(--line-strong); font-weight: 700; color: var(--gold-deep); }
+.a-subcard { padding: .8rem; margin-bottom: .6rem; background: #fbfaf7; border: 1px solid var(--line); border-radius: var(--radius); min-width: 0; }
+.a-subcard .a-field:last-child { margin-bottom: 0; }
+.a-subcard-head { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
+.a-subcard-title { flex: 1; font-weight: 600; color: var(--navy); font-size: .95rem; }
+.a-arrows--row { flex-direction: row !important; }
+.a-arrows--row button { width: 44px; height: 44px; }
+.a-arrows .a-del { color: var(--danger); }
+.a-list-editor { display: grid; gap: .1rem; }
+.a-list-editor > .a-btn { margin: .2rem 0 .6rem; }
+.a-rich-hint { margin: .9rem 0; padding: .7rem .8rem; background: #f4efe3; border-radius: var(--radius); font-size: .9rem; color: var(--navy); display: grid; gap: .25rem; }
+.a-rich-hint code { background: #fff; padding: 1px 6px; border-radius: 3px; font-size: .88em; border: 1px solid var(--line); }
+.a-sections-list { display: grid; gap: .45rem; margin-top: .6rem; }
+.a-sections-list li { display: flex; align-items: center; gap: .6rem; padding: .35rem .5rem; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+.a-sections-list li.is-hidden { background: #f3f1ec; }
+.a-sections-list li.is-hidden b { color: var(--muted); text-decoration: line-through; }
+.a-pos--static { display: grid; place-items: center; cursor: default; }
+.a-toggle--inline { flex: 1; min-height: 52px; min-width: 0; }
+.a-sections-list .a-arrows { flex-direction: row; }
+.a-sections-list .a-arrows button { width: 44px; height: 44px; }
+.a-about-images { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+.a-image--compact .a-image-frame { max-width: 220px; }
+.a-image--compact .a-image-actions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.a-image--compact .a-image-actions .a-btn { font-size: .92rem; padding-inline: .6rem; }
+@media (min-width: 1000px) {
+  .a-content-editor { max-width: 860px; }
+  .a-about-images { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .a-about-images .a-image { display: block; }
+  .a-about-images .a-image-actions { grid-template-columns: minmax(0, 1fr); margin-top: .6rem; }
+  .a-image--compact { grid-template-columns: 200px minmax(0, 1fr); }
+}
+.a-sections-list { grid-template-columns: minmax(0, 1fr); }
+.a-sections-list li { min-width: 0; }
+@media (max-width: 380px) {
+  .a-sections-list .a-pos--static { display: none; }
+  .a-sections-list li { gap: .4rem; padding-inline: .4rem; }
+  .a-subcard-head .a-arrows--row button, .a-sections-list .a-arrows button { width: 42px; }
+}

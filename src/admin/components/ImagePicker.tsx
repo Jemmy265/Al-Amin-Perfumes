@@ -10,8 +10,9 @@ type State =
   | { s: "working"; preview: string; pct: number }
   | { s: "failed"; preview: string; error: string; blob?: Blob };
 
-export function ImagePicker({ url, onUploaded, onRemove, error }: {
-  url: string | null; onUploaded: (key: string, url: string) => void; onRemove: () => void; error?: string;
+export function ImagePicker({ url, onUploaded, onRemove, error, kind = "products", compact = false }: {
+  url: string | null; onUploaded: (key: string, url: string) => void; onRemove?: () => void; error?: string;
+  kind?: "products" | "site"; compact?: boolean;
 }) {
   const [st, setSt] = useState<State>({ s: "idle" });
   const gallery = useRef<HTMLInputElement>(null);
@@ -24,7 +25,7 @@ export function ImagePicker({ url, onUploaded, onRemove, error }: {
 
   const send = async (blob: Blob, preview: string) => {
     setSt({ s: "working", preview, pct: 0 });
-    const up = uploadImage(blob, (pct) => setSt({ s: "working", preview, pct }));
+    const up = uploadImage(blob, (pct) => setSt({ s: "working", preview, pct }), kind);
     abort.current = up.abort;
     try {
       const r = await up.promise;
@@ -48,7 +49,7 @@ export function ImagePicker({ url, onUploaded, onRemove, error }: {
 
   const shown = st.s === "idle" ? url : st.preview;
   return (
-    <div className={`a-image${error ? " has-error" : ""}`}>
+    <div className={`a-image${error ? " has-error" : ""}${compact ? " a-image--compact" : ""}`}>
       <div className="a-image-frame">
         {shown ? <img src={shown} alt="صورة العطر" /> : (
           <button type="button" className="a-image-empty" onClick={() => gallery.current?.click()}>
@@ -77,7 +78,7 @@ export function ImagePicker({ url, onUploaded, onRemove, error }: {
         <button type="button" className="a-btn a-btn--outline" onClick={() => camera.current?.click()} disabled={st.s === "working"}>
           <Icon name="camera" />صوّر بالكاميرا
         </button>
-        {url && st.s === "idle" && (
+        {url && onRemove && st.s === "idle" && (
           <button type="button" className="a-btn a-btn--ghost a-btn--danger-text" onClick={onRemove}><Icon name="trash" />إزالة الصورة</button>
         )}
       </div>
