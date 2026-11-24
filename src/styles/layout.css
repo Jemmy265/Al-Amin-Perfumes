@@ -73,21 +73,26 @@
   transition: border-color .2s, color .2s;
 }
 .footer-social a:hover, .social a:hover { border-color: var(--gold); color: var(--gold-light); }
-/* Footer bottom: row 1 = developer credits · brand, row 2 = copyright. */
+/* Footer bottom: row 1 = copyright · brand, row 2 = developer credits (centred). */
 .footer-bottom { border-top: 1px solid rgba(255, 255, 255, .08); font-size: var(--fs-xs); color: #8796a2; }
 .footer-bottom-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem 2rem; padding-block: 1.15rem; }
 .footer-brand-en { letter-spacing: .25em; white-space: nowrap; }
-.footer-credits { font-size: var(--fs-sm); line-height: 1.6; }
-.footer-credits-intro { display: block; color: #8796a2; white-space: nowrap; font-size: var(--fs-xs); }
-.footer-credits-names { display: block; white-space: nowrap; color: #b8a57f; }
+.footer-copyright { color: #8796a2; }
+.footer-credits-row {
+  border-top: 1px solid rgba(196, 164, 106, .14);
+  padding-block: 1.6rem calc(1.7rem + env(safe-area-inset-bottom));
+  text-align: center;
+}
+.footer-credits { line-height: 1.6; }
+.footer-credits-intro { display: block; margin-bottom: .2rem; color: #a3afb9; font-size: var(--fs-sm); white-space: nowrap; }
+.footer-credits-names { display: block; white-space: nowrap; color: #b8a57f; font-size: 1.15rem; }
 .footer-credits a {
   display: inline-block; padding-block: .3rem; /* comfortable tap height */
-  color: #d6bd8c; font-weight: 600;
-  background: linear-gradient(currentColor, currentColor) no-repeat 100% calc(100% - .25rem) / 0 1px;
+  color: #dcc395; font-weight: 600;
+  background: linear-gradient(currentColor, currentColor) no-repeat 100% calc(100% - .2rem) / 0 1px;
   transition: color .3s var(--ease), background-size .4s var(--ease);
 }
-.footer-credits a:hover, .footer-credits a:focus-visible { color: #f1dfb6; background-size: 100% 1px; }
-.footer-copyright { border-top: 1px solid rgba(255, 255, 255, .05); padding-block: .9rem calc(.9rem + env(safe-area-inset-bottom)); text-align: center; color: #7f8d99; }
+.footer-credits a:hover, .footer-credits a:focus-visible { color: #f4e4bf; background-size: 100% 1px; }
 
 /* ---- Floating WhatsApp ---- */
 .wa-float {
@@ -143,7 +148,8 @@
   .announcement-inner::-webkit-scrollbar { display: none; }
   .announcement { font-size: 11.5px; }
   .announcement-item { padding-inline: .9rem; }
-  .footer-bottom-row { flex-direction: column; gap: .35rem; text-align: center; padding-block: 1.1rem .8rem; }
-  .footer-brand-en { order: -1; } /* brand first, then credits, copyright last */
+  .footer-bottom-row { flex-direction: column; gap: .4rem; text-align: center; padding-block: 1.1rem; }
+  .footer-brand-en { order: -1; } /* brand, then copyright; credits row below */
+  .footer-credits-row { padding-block: 1.3rem calc(1.4rem + env(safe-area-inset-bottom)); }
   .wa-float { width: 52px; height: 52px; inset-inline-start: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); }
 }
