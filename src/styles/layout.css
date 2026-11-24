@@ -84,10 +84,11 @@
   text-align: center;
 }
 .footer-credits { line-height: 1.6; }
-/* One line: phrase + names. Sizes scale down on narrow phones so it still fits. */
-.footer-credits { white-space: nowrap; }
-.footer-credits-intro { color: #a3afb9; font-size: clamp(.72rem, 3.3vw, var(--fs-sm)); }
-.footer-credits-names { color: #b8a57f; font-size: clamp(.84rem, 4.15vw, 1.15rem); }
+/* One line: phrase + names, on a shared baseline with a clear gap between them.
+   Sizes are close (one line, two weights) and scale down on narrow phones. */
+.footer-credits { display: inline-flex; align-items: baseline; justify-content: center; gap: clamp(.6rem, 2.6vw, 1rem); white-space: nowrap; }
+.footer-credits-intro { color: #a3afb9; font-size: clamp(.7rem, 3.6vw, .95rem); }
+.footer-credits-names { color: #b8a57f; font-size: clamp(.78rem, 4vw, 1.08rem); }
 .footer-credits a {
   display: inline-block; padding-block: .3rem; /* comfortable tap height */
   color: #dcc395; font-weight: 600;
