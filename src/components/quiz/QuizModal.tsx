@@ -64,7 +64,7 @@ export function QuizModal() {
         {!done ? (
           <div key={step} className="quiz-step">
             <p className="kicker">سؤال {step + 1} من {QUIZ.length}</p>
-            <h3 className="quiz-question display">{q.q}</h3>
+            <h3 className="quiz-question">{q.q}</h3>
             <div className={`quiz-options quiz-options--${q.options.length}`} role="radiogroup" aria-label={q.q}>
               {q.options.map((o) => (
                 <button
@@ -84,7 +84,7 @@ export function QuizModal() {
         ) : (
           <div className="quiz-step quiz-results">
             <p className="kicker">النتيجة</p>
-            <h3 className="quiz-question display">أنسب {results.length} عطور ليك</h3>
+            <h3 className="quiz-question">أنسب {results.length} عطور ليك</h3>
             <ol className="quiz-result-list">
               {results.map((p, i) => (
                 <li key={p.id} className="quiz-result">

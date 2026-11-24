@@ -113,7 +113,7 @@ function PerfumeDetails({ p }: { p: Product }) {
 
       {sim.length > 0 && (
         <section className="pv-similar">
-          <h3 className="display">عطور ممكن تعجبك كمان</h3>
+          <h3>عطور ممكن تعجبك كمان</h3>
           <div className="mini-grid">
             {sim.map((x) => (
               <a key={x.id} className="mini-card" href={`#perfume/${x.id}`}>
