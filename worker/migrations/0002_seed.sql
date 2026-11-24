@@ -7,7 +7,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('vanilla-powde
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('vanilla-powder', 'scent', 'sweet', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('vanilla-powder', 'occasion', 'daily', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('vanilla-powder', 'occasion', 'evening', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('vanilla-powder', 'products/vanilla-powder.jpg', 'فانيلا باودر — Vanilla Powder', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('vanilla-powder', 'assets/products/vanilla-powder.jpg', 'فانيلا باودر — Vanilla Powder', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('roses-vanille', 'روزز ڤانيل', 'Roses Vanille', 'Mancera', '', 1, 'women', 'medium', 'published', 'شرقي - فانيليا', 2011, 'Pierre Montale', 'الليمون الإيطالي', 'الورد التركي', 'الفانيليا، المسك الأبيض و خشب الأرز', '', 2, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('roses-vanille', 35, 300);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('roses-vanille', 55, 450);
@@ -16,7 +16,7 @@ INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('roses-v
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('roses-vanille', 'scent', 'fruity', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('roses-vanille', 'occasion', 'daily', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('roses-vanille', 'occasion', 'evening', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('roses-vanille', 'products/roses-vanille.jpg', 'روزز ڤانيل — Roses Vanille', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('roses-vanille', 'assets/products/roses-vanille.jpg', 'روزز ڤانيل — Roses Vanille', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('shuhrah-pour-homme', 'شهرة بور أوم', 'Shuhrah Pour Homme', 'Rasasi', '', 1, 'men', 'strong', 'published', 'خشبي - أروماتك', NULL, '', 'أوراق الطماطم، الورد و الفريزيا', 'الورد، خشب الصندل، خشب الأرز و الياسمين', 'الجلود، العود، المسك، طحلب البلوط (طحلب السنديان) و العنبر', '', 3, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('shuhrah-pour-homme', 35, 300);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('shuhrah-pour-homme', 55, 450);
@@ -24,7 +24,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('shuhrah-pour-
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('shuhrah-pour-homme', 'scent', 'woody', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('shuhrah-pour-homme', 'occasion', 'evening', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('shuhrah-pour-homme', 'occasion', 'occasion', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('shuhrah-pour-homme', 'products/shuhrah-pour-homme.jpg', 'شهرة بور أوم — Shuhrah Pour Homme', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('shuhrah-pour-homme', 'assets/products/shuhrah-pour-homme.jpg', 'شهرة بور أوم — Shuhrah Pour Homme', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('lapidus-pour-homme', 'لابيدوس بور أوم', 'Lapidus Pour Homme', 'Ted Lapidus', '', 1, 'men', 'strong', 'published', 'شرقي', 1987, 'Martin Gras', 'الأناناس، الخزامي، الشيح، توت العرعر، الريحان، الليمون و البرغموت', 'العسل، البخور، أشجار الصنوبر، الورد، خشب الورد البرازيلي، الياسمين، الكاراوية، جذور السوسن، زنابق الوادي و البيتيتغرين', 'التبغ، الباتشولي، طحلب البلوط (طحلب السنديان)، المسك، العنبر، خشب الصندل، حبوب التونكا و خشب الأرز', '', 4, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('lapidus-pour-homme', 35, 300);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('lapidus-pour-homme', 55, 450);
@@ -33,7 +33,7 @@ INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('lapidus
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('lapidus-pour-homme', 'scent', 'sweet', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('lapidus-pour-homme', 'occasion', 'evening', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('lapidus-pour-homme', 'occasion', 'occasion', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('lapidus-pour-homme', 'products/lapidus-pour-homme.jpg', 'لابيدوس بور أوم — Lapidus Pour Homme', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('lapidus-pour-homme', 'assets/products/lapidus-pour-homme.jpg', 'لابيدوس بور أوم — Lapidus Pour Homme', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('ultra-male', 'ألترا ميل', 'Ultra Male', 'Jean Paul Gaultier', 'ديزاينر', 1, 'men', 'strong', 'published', 'شرقي - فوچير', 2015, 'Francis Kurkdjian', 'الكمثري، الخزامي، النعناع، البرغموت و الليمون', 'القرفة، المريمية و الكاراوية', 'قشور الفانيليا السوداء، العنبر، الباتشولي و خشب الأرز', '', 5, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('ultra-male', 35, 300);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('ultra-male', 55, 450);
@@ -41,7 +41,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('ultra-male', 
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('ultra-male', 'scent', 'sweet', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('ultra-male', 'occasion', 'evening', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('ultra-male', 'occasion', 'occasion', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('ultra-male', 'products/ultra-male.jpg', 'ألترا ميل — Ultra Male', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('ultra-male', 'assets/products/ultra-male.jpg', 'ألترا ميل — Ultra Male', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('oud-bouquet', 'عود بوكيه', 'Oud Bouquet', 'Lancôme', '', 1, 'unisex', 'strong', 'published', 'شرقي - خشبي', 2016, 'Fabrice Pellegrin', '', '', '', 'حلوي اللوز، العود، الفانيليا، الورد، أخشاب الغاياك و بلسم كوباهو', 6, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('oud-bouquet', 35, 300);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('oud-bouquet', 55, 450);
@@ -50,7 +50,7 @@ INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('oud-bou
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('oud-bouquet', 'scent', 'sweet', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('oud-bouquet', 'occasion', 'evening', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('oud-bouquet', 'occasion', 'occasion', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('oud-bouquet', 'products/oud-bouquet.jpg', 'عود بوكيه — Oud Bouquet', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('oud-bouquet', 'assets/products/oud-bouquet.jpg', 'عود بوكيه — Oud Bouquet', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('bianco-latte', 'بيانكو لاتيه', 'Bianco Latte', 'Giardini Di Toscana', 'نيش', 1, 'unisex', 'medium', 'published', 'شرقي - فانيليا', 2014, 'Silvia Martinelli', 'الكاراميل', 'الكومارين و العسل', 'الفانيليا و المسك الأبيض', '', 7, 4);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('bianco-latte', 35, 300);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('bianco-latte', 55, 450);
@@ -58,7 +58,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('bianco-latte'
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('bianco-latte', 'scent', 'sweet', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('bianco-latte', 'occasion', 'daily', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('bianco-latte', 'occasion', 'evening', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('bianco-latte', 'products/bianco-latte.jpg', 'بيانكو لاتيه — Bianco Latte', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('bianco-latte', 'assets/products/bianco-latte.jpg', 'بيانكو لاتيه — Bianco Latte', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('black-orchid', 'بلاك أوركيد', 'Black Orchid', 'Tom Ford', 'ديزاينر', 1, 'unisex', 'strong', 'published', 'شرقي - زهري', 2006, 'David Apel و Pierre Negrin', 'الكمأة، الغاردينيا، الكشمش الأسود، الإيلنغ، الياسمين، البرغموت، الماندرين (اليوسفي) و الليمون', 'الأوركيد، التوابل، الغاردينيا، نوتات الفواكه، الإيلنغ، الياسمين و اللوتس', 'الشيكولاتة المكسيكية، الباتشولي، الفانيليا، البخور، العنبر، خشب الصندل، نجيل الهند و المسك الأبيض', '', 8, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('black-orchid', 35, 300);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('black-orchid', 55, 450);
@@ -68,14 +68,14 @@ INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('black-o
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('black-orchid', 'scent', 'woody', 2);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('black-orchid', 'occasion', 'evening', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('black-orchid', 'occasion', 'occasion', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('black-orchid', 'products/black-orchid.jpg', 'بلاك أوركيد — Black Orchid', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('black-orchid', 'assets/products/black-orchid.jpg', 'بلاك أوركيد — Black Orchid', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('silver-mountain-water', 'سيلفر ماونتن ووتر', 'Silver Mountain Water', 'Creed', 'نيش', 1, 'unisex', 'light', 'published', 'أروماتك', 1995, 'Olivier Creed و Pierre Bourdon', 'البرغموت و الماندرين (اليوسفي)', 'الشاي الأخضر و الكشمش الأسود', 'المسك، البيتيتغرين، خشب الصندل و الغلابانوم', '', 9, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('silver-mountain-water', 35, 250);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('silver-mountain-water', 55, 375);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('silver-mountain-water', 110, 500);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('silver-mountain-water', 'scent', 'fresh', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('silver-mountain-water', 'occasion', 'daily', 0);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('silver-mountain-water', 'products/silver-mountain-water.jpg', 'سيلفر ماونتن ووتر — Silver Mountain Water', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('silver-mountain-water', 'assets/products/silver-mountain-water.jpg', 'سيلفر ماونتن ووتر — Silver Mountain Water', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('megamare', 'ميجامير', 'Megamare', 'Orto Parisi', '', 0, 'unisex', 'strong', 'published', 'أروماتك - مائي', 2019, 'Alessandro Gualtieri', 'البرغموت و الليمون', 'الطحالب البحرية، جزئ الكالون و جزئ هديون', 'المسك، الأمبروكسان و خشب الأرز', '', 10, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('megamare', 35, 400);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('megamare', 55, 550);
@@ -83,7 +83,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('megamare', 11
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('megamare', 'scent', 'fresh', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('megamare', 'occasion', 'daily', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('megamare', 'occasion', 'evening', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('megamare', 'products/megamare.jpg', 'ميجامير — Megamare', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('megamare', 'assets/products/megamare.jpg', 'ميجامير — Megamare', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('pacific-chill', 'باسيفيك شيل', 'Pacific Chill', 'Louis Vuitton', '', 0, 'unisex', 'light', 'published', 'أروماتك - فواكه', 2023, 'Jacques Cavallier Belletrud', 'الأترج، البرتقال، الليمون، النعناع، الكشمش الأسود و الكزبرة', 'المشمش، الريحان، بذور الجزر و ورد ماي', 'ثمار التين، التمر/البلح و الأمبريت', '', 11, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('pacific-chill', 35, 350);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('pacific-chill', 55, 500);
@@ -91,7 +91,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('pacific-chill
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('pacific-chill', 'scent', 'fresh', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('pacific-chill', 'scent', 'fruity', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('pacific-chill', 'occasion', 'daily', 0);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('pacific-chill', 'products/pacific-chill.jpg', 'باسيفيك شيل — Pacific Chill', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('pacific-chill', 'assets/products/pacific-chill.jpg', 'باسيفيك شيل — Pacific Chill', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('erba-pura', 'اربابورا', 'Erba Pura', 'Xerjoff', '', 0, 'unisex', 'strong', 'published', '', 2019, 'Christian Carbonnel و Laura Santander', 'البرتقال الصقلي، برغموت كالابريا و الليمون الصقلي', 'الفواكه', 'المسك الأبيض، فانيليا مدغشقر و العنبر', '', 12, 2);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('erba-pura', 35, 350);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('erba-pura', 55, 500);
@@ -100,7 +100,7 @@ INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('erba-pu
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('erba-pura', 'scent', 'sweet', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('erba-pura', 'occasion', 'daily', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('erba-pura', 'occasion', 'evening', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('erba-pura', 'products/erba-pura.jpg', 'اربابورا — Erba Pura', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('erba-pura', 'assets/products/erba-pura.jpg', 'اربابورا — Erba Pura', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('althair', 'الثائر', 'Althaïr', 'Parfums de Marly', '', 0, 'men', 'medium', 'published', 'شرقي - فانيليا', 2023, 'Hamid Merati-Kashani و Ilias Ermenidis', 'القرفة، زهر البرتقال، الهيل و البرغموت', 'فانيليا بوربون و الإليمي', 'حلوي اللوز، المسك، الأمبروكسان، حبوب التونكا، أخشاب الغاياك و اللوز المحلى', '', 13, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('althair', 35, 350);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('althair', 55, 500);
@@ -108,14 +108,14 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('althair', 110
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('althair', 'scent', 'sweet', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('althair', 'occasion', 'evening', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('althair', 'occasion', 'occasion', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('althair', 'products/althair.jpg', 'الثائر — Althaïr', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('althair', 'assets/products/althair.jpg', 'الثائر — Althaïr', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('nautica-voyage', 'نوتيكا ڤوياچ', 'Nautica Voyage', 'Nautica', '', 0, 'men', 'light', 'published', 'عشبي - مائي', 2006, 'Maurice Roucel', 'الأوراق الخضراء و التفاح', 'اللوتس و الميموزا', 'المسك، خشب الأرز، طحلب البلوط (طحلب السنديان) و العنبر', '', 14, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('nautica-voyage', 35, 240);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('nautica-voyage', 55, 375);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('nautica-voyage', 110, 550);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('nautica-voyage', 'scent', 'fresh', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('nautica-voyage', 'occasion', 'daily', 0);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('nautica-voyage', 'products/nautica-voyage.jpg', 'نوتيكا ڤوياچ — Nautica Voyage', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('nautica-voyage', 'assets/products/nautica-voyage.jpg', 'نوتيكا ڤوياچ — Nautica Voyage', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('madawi', 'مضاوي', 'Madawi', 'Arabian Oud', '', 0, 'unisex', 'medium', 'published', '', 2017, 'Claire Liégent و Dominique Ropion', 'الخوخ و زهر التفاح', 'زهر الأناناس', 'المسك، الورد البري و الباتشولي', '', 15, 1);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('madawi', 35, 290);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('madawi', 55, 450);
@@ -123,7 +123,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('madawi', 110,
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('madawi', 'scent', 'fruity', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('madawi', 'occasion', 'daily', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('madawi', 'occasion', 'evening', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('madawi', 'products/madawi.jpg', 'مضاوي — Madawi', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('madawi', 'assets/products/madawi.jpg', 'مضاوي — Madawi', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('imperial-valley', 'امبريال ڤالي', 'Imperial Valley', 'Gissah', '', 0, 'unisex', 'strong', 'published', 'شرقي - خشبي', 2021, '', 'البرغموت الصقلي، الفلفل الوردي و الدافانا', 'العود، العنبر الأبيض و إكليل الجبل', 'الجلود، المسك و نجيل الهند من هايتي', '', 16, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('imperial-valley', 35, 290);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('imperial-valley', 55, 450);
@@ -131,7 +131,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('imperial-vall
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('imperial-valley', 'scent', 'woody', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('imperial-valley', 'occasion', 'evening', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('imperial-valley', 'occasion', 'occasion', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('imperial-valley', 'products/imperial-valley.jpg', 'امبريال ڤالي — Imperial Valley', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('imperial-valley', 'assets/products/imperial-valley.jpg', 'امبريال ڤالي — Imperial Valley', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('bleu-de-chanel', 'بلو دي شانيل', 'Bleu de Chanel', 'Chanel', 'ديزاينر', 0, 'men', 'medium', 'published', 'خشبي - أروماتك', 2010, 'Jacques Polge', 'الجريب فروت، الليمون، النعناع و الفلفل الوردي', 'الزنجبيل، جوزه الطيب، الياسمين و أيزو إي سوبر', 'البخور، خشب الأرز، نجيل الهند، خشب الصندل، الباتشولي، اللابدانوم و المسك الأبيض', '', 17, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('bleu-de-chanel', 35, 280);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('bleu-de-chanel', 55, 420);
@@ -140,7 +140,7 @@ INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('bleu-de
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('bleu-de-chanel', 'scent', 'woody', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('bleu-de-chanel', 'occasion', 'daily', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('bleu-de-chanel', 'occasion', 'evening', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('bleu-de-chanel', 'products/bleu-de-chanel.jpg', 'بلو دي شانيل — Bleu de Chanel', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('bleu-de-chanel', 'assets/products/bleu-de-chanel.jpg', 'بلو دي شانيل — Bleu de Chanel', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('allure-homme-sport', 'ألور أوم سبورت', 'Allure Homme Sport', 'Chanel', 'ديزاينر', 0, 'men', 'medium', 'published', 'خشبي - حار', 2004, 'Jacques Polge', 'البرتقال، نسيم البحر، الألدهيدات و الماندرين الأحمر', 'الفلفل، النيرولي و خشب الأرز', 'الفانيليا، حبوب التونكا، المسك الأبيض، العنبر، نجيل الهند و راتنج الإليمي', '', 18, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('allure-homme-sport', 35, 280);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('allure-homme-sport', 55, 420);
@@ -148,7 +148,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('allure-homme-
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('allure-homme-sport', 'scent', 'fresh', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('allure-homme-sport', 'scent', 'sweet', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('allure-homme-sport', 'occasion', 'daily', 0);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('allure-homme-sport', 'products/allure-homme-sport.jpg', 'ألور أوم سبورت — Allure Homme Sport', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('allure-homme-sport', 'assets/products/allure-homme-sport.jpg', 'ألور أوم سبورت — Allure Homme Sport', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('black-xs', 'بلاك ليكسيز', 'Black XS L’Exces for Him', 'Rabanne', '', 0, 'men', 'medium', 'published', 'خشبي - أروماتك', 2012, 'Fabrice Pellegrin', 'الليمون و الخزامي', 'السيبرول (الناجراموثا) و نسيم البحر', 'العنبر و الباتشولي', '', 19, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('black-xs', 35, 250);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('black-xs', 55, 390);
@@ -156,7 +156,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('black-xs', 11
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('black-xs', 'scent', 'woody', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('black-xs', 'scent', 'fresh', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('black-xs', 'occasion', 'evening', 0);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('black-xs', 'products/black-xs.jpg', 'بلاك ليكسيز — Black XS L’Exces for Him', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('black-xs', 'assets/products/black-xs.jpg', 'بلاك ليكسيز — Black XS L’Exces for Him', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('kayali-marshmallow', 'كيالي مارشميلو', 'Yum Boujee Marshmallow | 81', 'Kayali Fragrances', 'نيش', 1, 'women', 'medium', 'published', 'زهري - فواكه - جورماند', 2024, 'Gabriela Chelariu', 'الفريزيا، الليمون الإيطالي، زهر النكتارين و التفاح', 'المارشميللو، الفراوله، جوز الهند و زهر البرتقال', 'الكريمة المخفوقة، السكر، الفانيليا، المسك، توت العليق و الأمبروكسان', '', 20, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('kayali-marshmallow', 35, 250);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('kayali-marshmallow', 55, 390);
@@ -165,7 +165,7 @@ INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('kayali-
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('kayali-marshmallow', 'scent', 'fruity', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('kayali-marshmallow', 'occasion', 'daily', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('kayali-marshmallow', 'occasion', 'evening', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('kayali-marshmallow', 'products/kayali-marshmallow.jpg', 'كيالي مارشميلو — Yum Boujee Marshmallow | 81', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('kayali-marshmallow', 'assets/products/kayali-marshmallow.jpg', 'كيالي مارشميلو — Yum Boujee Marshmallow | 81', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('yara-candy', 'يارا كاندي', 'Yara Candy', 'Lattafa Perfumes', '', 1, 'women', 'medium', 'published', 'زهري - فواكه - جورماند', 2024, '', 'الكشمش الأسود و الماندرين الأخضر', 'حلوى الفراولة الفوارة و الغاردينيا', 'الفانيليا، المسك، العنبر و خشب الصندل', '', 21, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('yara-candy', 35, 250);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('yara-candy', 55, 390);
@@ -173,7 +173,7 @@ INSERT INTO product_variants (product_id, size_ml, price) VALUES ('yara-candy', 
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('yara-candy', 'scent', 'sweet', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('yara-candy', 'scent', 'fruity', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('yara-candy', 'occasion', 'daily', 0);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('yara-candy', 'products/yara-candy.jpg', 'يارا كاندي — Yara Candy', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('yara-candy', 'assets/products/yara-candy.jpg', 'يارا كاندي — Yara Candy', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('burberry-her', 'بيربري هير', 'Burberry Her', 'Burberry', '', 0, 'women', 'medium', 'published', 'زهري - فواكه - جورماند', 2018, 'Francis Kurkdjian', 'الفراوله، توت العليق، التوت الأسود، الكرز الحامض، الكشمش الأسود، الماندرين (اليوسفي) و الليمون', 'البنفسج و الياسمين', 'المسك، الفانيليا، أخشاب الكشمير، الأخشاب، العنبر، طحلب البلوط (طحلب السنديان) و الباتشولي', '', 22, 3);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('burberry-her', 35, 250);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('burberry-her', 55, 390);
@@ -182,14 +182,14 @@ INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('burberr
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('burberry-her', 'scent', 'sweet', 1);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('burberry-her', 'occasion', 'daily', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('burberry-her', 'occasion', 'evening', 1);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('burberry-her', 'products/burberry-her.jpg', 'بيربري هير — Burberry Her', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('burberry-her', 'assets/products/burberry-her.jpg', 'بيربري هير — Burberry Her', 0);
 INSERT INTO products (id, name, name_en, house, label, is_new, category, intensity, status, family, year, perfumer, notes_top, notes_heart, notes_base, notes_all, sort_order, featured_rank) VALUES ('yara', 'يارا', 'Yara', 'Lattafa Perfumes', '', 0, 'women', 'medium', 'published', 'شرقي - فانيليا', 2020, '', 'الأوركيد، الهيلوتروب و تانجرين (اليوسفي)', 'اتفاق غورماند و الفواكه الإستوائيه', 'الفانيليا، المسك و خشب الصندل', '', 23, NULL);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('yara', 35, 250);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('yara', 55, 390);
 INSERT INTO product_variants (product_id, size_ml, price) VALUES ('yara', 110, 550);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('yara', 'scent', 'sweet', 0);
 INSERT INTO product_tags (product_id, tag_group, tag, position) VALUES ('yara', 'occasion', 'daily', 0);
-INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('yara', 'products/yara.jpg', 'يارا — Yara', 0);
+INSERT INTO product_images (product_id, object_key, alt_text, sort_order) VALUES ('yara', 'assets/products/yara.jpg', 'يارا — Yara', 0);
 INSERT INTO site_kv (key, value) VALUES ('settings', '{"whatsappNumber":"201006747034","generalWhatsappMessage":"مرحبًا، أرغب في الاستفسار عن منتجاتكم من الأمين للعطور.","siteUrl":"https://jemmy265.github.io/Al-Amin-Perfumes/","currency":"ج.م","sizes":[35,55,110],"shippingZones":[{"id":"cairo","label":"القاهرة والجيزة","fee":95},{"id":"delta","label":"باقي المحافظات","fee":110},{"id":"upper","label":"الصعيد","fee":120}],"freeShippingMin":1500,"sizeDiscount":{"size":110,"percent":20},"bestSellers":["madawi","erba-pura","burberry-her","bianco-latte"],"phone":"+201006747034","phoneDisplay":"+20 100 674 7034","email":"abdelazizamin99@gmail.com","social":{"instagram":"https://www.instagram.com/alaminperfume","facebook":"https://www.facebook.com/share/1HqVRArYdn/","tiktok":"https://www.tiktok.com/@alaminperfumes"}}');
 INSERT INTO site_kv (key, value) VALUES ('content', '{"sections":[{"id":"best","visible":true},{"id":"quizCta","visible":true},{"id":"catalog","visible":true},{"id":"reviews","visible":true},{"id":"about","visible":true},{"id":"faq","visible":true},{"id":"contact","visible":true}],"announcements":["توصيل **مجاني** لأي أوردر فوق **{freeMin} ج.م**","خصم **{discount}%** على أي إزازة **110 مل**","توصيل لجميع محافظات مصر"],"hero":{"slogan":"عندما تدمن العطور","tagline":"حيث يلتقي العبق بالأصالة","titleLine1":"عطور فاخرة تُخلق لتدوم","titleLine2":"وتروي حكايتك أينما ذهبت","description":"عطور مستوحاة من أشهر العطور العالمية وعطور النيش والعطور العربية، بثلاثة أحجام تناسب ذوقك وميزانيتك.","primaryCta":"تصفّح التشكيلة","secondaryCta":"اكتشف عطرك","image":"assets/products/imperial-valley.jpg","stats":[{"value":"+20","label":"عطر مختار"},{"value":"3","label":"أحجام"},{"value":"27","label":"محافظة"}]},"benefitsTitle":"لماذا الأمين للعطور","benefits":[{"icon":"star","title":"تشكيلة مختارة بعناية","text":"عالمية ونيش وعربية في مكان واحد."},{"icon":"drop","title":"ثلاثة أحجام","text":"35 و55 و110 مل لكل ميزانية."},{"icon":"truck","title":"توصيل لكل مصر","text":"من يومين لـ 5 أيام حسب المحافظة."},{"icon":"chat","title":"طلب سهل عبر واتساب","text":"اختار، ضيف للسلة، وابعت."}],"bestSellers":{"kicker":"الأكثر طلبًا","title":"العطور اللي الكل بيسأل عليها"},"quizCta":{"kicker":"محتار تختار إيه؟","title":"اكتشف عطرك في 4 أسئلة","text":"جاوب على 4 أسئلة سريعة، وهنرشحلك أنسب 3 عطور ليك.","button":"ابدأ الاختبار"},"catalog":{"kicker":"تشكيلتنا","title":"عطور مختارة لكل الأذواق","text":"اختار الحجم، وضيف للسلة، وابعت طلبك كله مرة واحدة على واتساب.","searchPlaceholder":"ابحث عن عطر، ماركة أو مكوّن…","noResults":"مش لاقيين عطر مطابق لبحثك."},"reviews":{"kicker":"آراء عملائنا","title":"كلامهم أحسن من كلامنا","text":"رسايل وتوصيات حقيقية وصلتنا من عملائنا على فيسبوك وواتساب."},"reviewItems":[{"text":"صدقا.. جربت من عنده إربا بورا وبلاك لكسيز ومضاوي وكام حاجة كمان فوق الوصف.. كل اللي شمهم سألني عليهم. ومن كام يوم كنت مع صحبي عايش في إيطاليا شم عليا إربا بورا انبهر بيه. ولا ننسى ذوق وأمانة صاحب البراند ده كوم لوحده 🤍","name":"أحمد","source":"facebook"},{"text":"بصراحة شهادة حق للراجل دة.. بجد جودة حلوة اوى وفوحان وثبات، انا جربت حجات اغلى وهو تفوق عليها. فعلا قيمة مقابل سعر، وان شاء الله نجدد تانى ❤️","name":"محمد","source":"facebook"},{"text":"برش العطر في الأوضة بيشموه في الصالة، مبقيتش أعرف أرش في صمت 😭 .. اللي كنت راشه قبل ٢٤ ساعة كان لسة ريحته باينة والشباب بتسألني عليه 😂","name":"","source":"whatsapp"},{"text":"عندهم مشكلة واحدة بجد: العطر بتاعهم بيخلص. أول مرة أحس فلوس العطر حلال بجد والله 💙","name":"خالد","source":"facebook"},{"text":"والله ياغالي حاجه قمه الجمال والروعه والهدوء زي مايكون متفصل زي منا كنت عايز.. لا فخامه وحاجه توب، للامانه حلال فلوسها ❤️","name":"","source":"whatsapp"},{"text":"بصراحة مشوفتش جمال زي كده أقسم بالله، جودة عالية جدا ومعاملة زي الفل","name":"طارق","source":"facebook"},{"text":"ايوا وصل الحمد لله و بجد كلهم تحفه اوي وان شاء الله مش آخر تعامل ❤️","name":"","source":"whatsapp"},{"text":"بسم الله ما شاء الله، كوالتى وجوده محترمه جدا ومعاملة محترمة","name":"أمير","source":"facebook"},{"text":"السلام عليكم، كالعادة الحمدلله العطور جميلة وكواليتي محترم تسلم ايدك","name":"","source":"message"},{"text":"بس فوحان رهيب والله تسلم ايدك 🤩❤️","name":"","source":"whatsapp"},{"text":"وصل اه الحمد لله، وتسلم ايدك عليه بصراحه وان شاء الله مش اخر تعامل","name":"","source":"whatsapp"}],"about":{"kicker":"من نحن","title":"شغف بالعطر، وذوق في الاختيار","text":"في الأمين للعطور، نؤمن أن العطر توقيع شخصي لا يُنسى. نجمع لكم تشكيلة مختارة من العطور المستوحاة من أشهر العطور العالمية وعطور النيش والعطور العربية، ونوفّرها بثلاثة أحجام لتجدوا ما يناسب ذوقكم وميزانيتكم، مع طلب سهل ومباشر عبر واتساب وتوصيل لجميع محافظات مصر.","cta":"اكتشف التشكيلة","images":["assets/products/imperial-valley.jpg","assets/products/kayali-marshmallow.jpg","assets/products/megamare.jpg"]},"faq":{"kicker":"أسئلة شائعة","title":"كل اللي محتاج تعرفه"},"faqItems":[{"q":"الطلب بيوصل في قد إيه؟","a":"التوصيل بياخد من **يومين لـ 5 أيام** حسب المحافظة، ونوصّل لجميع محافظات مصر."},{"q":"الشحن بكام؟","a":"القاهرة والجيزة **95 ج.م** · باقي المحافظات **110 ج.م** · الصعيد **120 ج.م**.\nوالتوصيل **مجاني** لأي أوردر فوق **1,500 ج.م**."},{"q":"إيه طرق الدفع المتاحة؟","a":"متاح الدفع بكل الطرق. ابعتلنا على واتساب ونتفق على الطريقة اللي تناسبك."},{"q":"العطور أصلية ولا مستوحاة؟","a":"العطور **مستوحاة** من أشهر العطور العالمية وعطور النيش والعطور العربية. اسم الماركة اللي مكتوب على كل عطر هو العطر الأصلي اللي اتعمل على طريقته."},{"q":"إيه الأحجام المتاحة؟ وشكل الإزازة إيه؟","a":"كل عطر متاح بـ 3 أحجام: **35 و55 و110 مل**، والإزازة بنفس الشكل اللي في صور الموقع."},{"q":"في عروض أو خصومات؟","a":"أيوه! خصم **20%** على أي إزازة **110 مل** (الخصم محسوب تلقائيًا في الأسعار)، وتوصيل **مجاني** لأي أوردر فوق **1,500 ج.م**."},{"q":"أطلب إزاي؟","a":"اختار الحجم ودوس «أضف للسلة» لكل عطر عايزه، وبعدين افتح السلة 🛍️ واختار محافظتك ودوس «ابعت الطلب على واتساب». هيوصلنا الطلب كامل بالأسعار، ونرد عليك نأكد معاك."},{"q":"محتار ومش عارف أختار؟","a":"جرّب {{quiz|«اكتشف عطرك»}}: 4 أسئلة بس وهنرشحلك أنسب 3 عطور. أو كلّمنا على واتساب ونساعدك تختار."}],"contact":{"kicker":"تواصل معنا","title":"عندك سؤال؟ راسلنا دلوقتي","text":"فريقنا جاهز يرد على استفساراتك ويساعدك تختار العطر الأنسب ليك.","whatsappCta":"راسلنا على واتساب","deliveryNote":"توصيل لجميع محافظات مصر"},"footer":{"brandName":"الأمين للعطور","tagline":"عطور فاخرة، تُختار بعناية لتدوم.","copyright":"الأمين للعطور. جميع الحقوق محفوظة. · العطور مستوحاة، وأسماء الماركات ملك أصحابها."}}');
 INSERT INTO site_kv (key, value) VALUES ('labels', '{"audience":{"women":"نسائي","men":"رجالي","unisex":"للجنسين"},"scents":{"fresh":{"label":"فريش ومائي","emoji":"🌊"},"sweet":{"label":"حلو وفانيليا","emoji":"🍦"},"woody":{"label":"خشبي وعود","emoji":"🌲"},"fruity":{"label":"فواكه وورد","emoji":"🌸"}},"occasions":{"daily":"يومي وشغل","evening":"خروجات وسهرات","occasion":"مناسبات"},"intensity":{"light":"هادي","medium":"متوسط","strong":"قوي وفوّاح"}}');

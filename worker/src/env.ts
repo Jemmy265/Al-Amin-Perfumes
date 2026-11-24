@@ -1,6 +1,8 @@
 export interface Env {
   DB: D1Database;
   IMAGES: R2Bucket;
+  /** Workers Static Assets (the built storefront + admin). */
+  ASSETS: Fetcher;
   /** Owner login name (plain var). */
   ADMIN_USERNAME: string;
   /** Secret: pbkdf2-sha256$<iterations>$<salt b64>$<hash b64> — see scripts/hash-password.mjs */

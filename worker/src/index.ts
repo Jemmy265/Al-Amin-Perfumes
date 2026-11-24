@@ -1,5 +1,8 @@
 /* Al-Amin Perfumes API — Hono on Cloudflare Workers (D1 + R2).
-   Public, read-only:  GET /api/products, GET /api/site, GET /images/<key>
+   Only /api/* and /images/* reach this code; every other path is a static
+   asset served by Cloudflare without invoking the Worker (see wrangler.jsonc).
+   Public, read-only:  GET /api/catalog (one request = everything the storefront
+                       needs), GET /api/products, GET /api/site, GET /images/<key>
    Auth:               POST /api/auth/login, POST /api/auth/logout, GET /api/auth/me
    Admin (session):    /api/admin/* — products CRUD, ordering, tags, uploads, content */
 import { Hono, type Context } from "hono";
@@ -9,10 +12,11 @@ import { QUIZ } from "../../src/domain/quiz";
 import { LABELS } from "../../src/data/seed/content";
 import {
   AUDIENCES, fieldErrors, INTENSITIES, loginSchema, OCCASIONS, PRODUCT_ID_RE, productInputSchema,
-  reorderSchema, SCENTS, slugify, tagsInputSchema, toStorefrontProduct,
+  reorderSchema, SCENTS, slugify, tagsInputSchema,
 } from "../../src/shared/product";
 import { contentSchema, normalizeSections, SERVER_SETTINGS_KEYS, settingsSchema, siteImageKeys } from "../../src/shared/content";
 import type { SiteContent } from "../../src/types/content";
+import { readCatalog, refreshCatalog } from "./catalog";
 import { endSession, lockedFor, recordFailure, requireAdmin, sameOrigin, startSession, verifyPassword, hasSession } from "./auth";
 import * as db from "./db";
 import type { AppEnv } from "./env";
@@ -48,31 +52,44 @@ async function body<T extends z.ZodType>(c: Context<AppEnv>, schema: T) {
 
 app.get("/api/health", (c) => c.json({ ok: true }));
 
+/** Public catalog cache policy: browsers reuse it for 60 s, then may show it
+    once more (≤ 60 s) while refreshing in the background → a customer sees an
+    admin change within ~2 minutes at most. Revalidating an unchanged catalog
+    costs a 1-row read and returns 304. The admin refreshes its own copy at once. */
+const CATALOG_CACHE = "public, max-age=60, stale-while-revalidate=60";
+
+app.get("/api/catalog", async (c) => {
+  const snap = await readCatalog(c.env.DB);
+  const headers = { "Cache-Control": CATALOG_CACHE, ETag: snap.etag, "Content-Type": "application/json; charset=utf-8" };
+  if (c.req.header("If-None-Match") === snap.etag) return new Response(null, { status: 304, headers });
+  return new Response(snap.body, { headers });
+});
+
+// Older split endpoints, kept for compatibility — same snapshot, same caching.
 app.get("/api/products", async (c) => {
-  const list = await db.listProducts(c.env.DB, { publishedOnly: true });
-  return c.json(list.map(toStorefrontProduct));
+  const snap = await readCatalog(c.env.DB);
+  c.header("Cache-Control", CATALOG_CACHE);
+  return c.json(JSON.parse(snap.body).products);
 });
-
 app.get("/api/site", async (c) => {
-  const kv = await db.getSiteKv(c.env.DB);
-  const featured = (await db.listProducts(c.env.DB, { publishedOnly: true }))
-    .filter((p) => p.featuredRank !== null)
-    .sort((a, b) => a.featuredRank! - b.featuredRank!)
-    .map((p) => p.id);
-  const settings = { ...(kv.settings as object), bestSellers: featured };
-  const content = { ...(kv.content as SiteContent), sections: normalizeSections((kv.content as SiteContent).sections) };
-  return c.json({ settings, content, labels: kv.labels ?? LABELS });
+  const { settings, content, labels } = JSON.parse((await readCatalog(c.env.DB)).body);
+  c.header("Cache-Control", CATALOG_CACHE);
+  return c.json({ settings, content, labels });
 });
 
+/** Uploaded photos from R2. Keys are random and never reused, so they are cached
+    "forever" by browsers; repeat visits do not hit the Worker at all. */
 app.get("/images/*", async (c) => {
   const key = decodeURIComponent(c.req.path.replace(/^\/images\//, ""));
-  if (!/^(products|site)\//.test(key) || key.includes("..")) return c.notFound();
-  const obj = await c.env.IMAGES.get(key);
+  if (!db.isR2Key(key) || key.includes("..")) return c.notFound();
+  const obj = await c.env.IMAGES.get(key, { onlyIf: c.req.raw.headers });
   if (!obj) return c.notFound();
   const h = new Headers();
   obj.writeHttpMetadata(h);
   h.set("ETag", obj.httpEtag);
-  h.set("Cache-Control", "public, max-age=31536000, immutable"); // keys are never reused
+  h.set("Cache-Control", "public, max-age=31536000, immutable");
+  h.set("X-Content-Type-Options", "nosniff");
+  if (!("body" in obj)) return new Response(null, { status: 304, headers: h }); // If-None-Match matched
   return new Response(obj.body, { headers: h });
 });
 
@@ -104,6 +121,14 @@ app.get("/api/auth/me", async (c) => c.json({ authenticated: await hasSession(c)
 
 const admin = new Hono<AppEnv>();
 admin.use("*", requireAdmin);
+// Private data: never stored by browsers or any shared cache.
+admin.use("*", async (c, next) => { await next(); c.res.headers.set("Cache-Control", "private, no-store"); });
+// Cache invalidation: every successful write rebuilds the public catalog snapshot,
+// which changes its ETag — customers get the new data on their next revalidation.
+admin.use("*", async (c, next) => {
+  await next();
+  if (c.req.method !== "GET" && c.res.status < 400 && !c.req.path.endsWith("/uploads")) await refreshCatalog(c.env.DB);
+});
 
 admin.get("/products", async (c) => c.json(await db.listProducts(c.env.DB)));
 
@@ -124,7 +149,7 @@ admin.put("/content", async (c) => {
   const r = await body(c, contentSchema);
   if (r.res) return r.res;
   for (const key of siteImageKeys(r.data))
-    if (!(await c.env.IMAGES.head(key))) return c.json({ error: "صورة مش موجودة — ارفعها تاني" }, 422);
+    if (!(await imageExists(c, key))) return c.json({ error: "صورة مش موجودة — ارفعها تاني" }, 422);
   const before = (await db.getSiteKv(c.env.DB)).content as SiteContent | undefined;
   await db.putSiteKv(c.env.DB, "content", r.data);
   // Delete uploads that this save replaced.
@@ -168,7 +193,7 @@ admin.patch("/products/featured-order", async (c) => {
 admin.post("/products", async (c) => {
   const r = await body(c, productInputSchema);
   if (r.res) return r.res;
-  if (r.data.imageKey && !(await c.env.IMAGES.head(r.data.imageKey)))
+  if (r.data.imageKey && !(await imageExists(c, r.data.imageKey)))
     return c.json({ error: "الصورة مش موجودة — ارفعها تاني", fields: { imageKey: "ارفع الصورة تاني" } }, 422);
   const id = await uniqueId(c.env.DB, slugify(r.data.nameEn) || slugify(r.data.name));
   await db.createProduct(c.env.DB, id, r.data);
@@ -194,10 +219,10 @@ admin.patch("/products/:id", async (c) => {
     const fields = fieldErrors(r.error);
     return c.json({ error: Object.values(fields)[0], fields }, 422);
   }
-  if (r.data.imageKey && r.data.imageKey !== current.imageKey && !(await c.env.IMAGES.head(r.data.imageKey)))
+  if (r.data.imageKey && r.data.imageKey !== current.imageKey && !(await imageExists(c, r.data.imageKey)))
     return c.json({ error: "الصورة مش موجودة — ارفعها تاني", fields: { imageKey: "ارفع الصورة تاني" } }, 422);
   await db.updateProduct(c.env.DB, id, r.data, current);
-  if (current.imageKey && current.imageKey !== r.data.imageKey) await c.env.IMAGES.delete(current.imageKey);
+  if (current.imageKey && db.isR2Key(current.imageKey) && current.imageKey !== r.data.imageKey) await c.env.IMAGES.delete(current.imageKey);
   return c.json(await db.getProduct(c.env.DB, id));
 });
 
@@ -214,7 +239,7 @@ admin.delete("/products/:id", async (c) => {
   const p = await db.getProduct(c.env.DB, c.req.param("id"));
   if (!p) return c.json({ error: "العطر غير موجود" }, 404);
   await db.deleteProduct(c.env.DB, p.id);
-  if (p.imageKey) await c.env.IMAGES.delete(p.imageKey);
+  if (p.imageKey && db.isR2Key(p.imageKey)) await c.env.IMAGES.delete(p.imageKey);
   return c.json({ ok: true });
 });
 
@@ -240,6 +265,13 @@ admin.post("/uploads", async (c) => {
 app.route("/api/admin", admin);
 
 /* ------------------------------ Helpers ----------------------------- */
+
+/** Uploaded photo in R2, or one of the original photos bundled as static assets. */
+async function imageExists(c: Context<AppEnv>, key: string): Promise<boolean> {
+  if (db.isR2Key(key)) return !!(await c.env.IMAGES.head(key));
+  if (key.startsWith("assets/")) return (await c.env.ASSETS.fetch(new URL(`/${key}`, c.req.url), { method: "HEAD" })).ok;
+  return false;
+}
 
 function sameSet(a: string[], b: string[]) {
   if (a.length !== b.length) return false;

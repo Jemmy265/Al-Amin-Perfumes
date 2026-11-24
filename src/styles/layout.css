@@ -73,9 +73,29 @@
   transition: border-color .2s, color .2s;
 }
 .footer-social a:hover, .social a:hover { border-color: var(--gold); color: var(--gold-light); }
-.footer-bottom { border-top: 1px solid rgba(255, 255, 255, .08); padding-block: 1.1rem; font-size: var(--fs-xs); color: #8796a2; }
-.footer-bottom .container { display: flex; justify-content: space-between; gap: 1rem; }
-.footer-bottom span { letter-spacing: .25em; }
+/* Footer bottom: row 1 = copyright · brand, row 2 = developer credits (centred). */
+.footer-bottom { border-top: 1px solid rgba(255, 255, 255, .08); font-size: var(--fs-xs); color: #8796a2; }
+.footer-bottom-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem 2rem; padding-block: 1.15rem; }
+.footer-brand-en { letter-spacing: .25em; white-space: nowrap; }
+.footer-copyright { color: #8796a2; }
+.footer-credits-row {
+  border-top: 1px solid rgba(196, 164, 106, .14);
+  padding-block: 1.6rem calc(1.7rem + env(safe-area-inset-bottom));
+  text-align: center;
+}
+.footer-credits { line-height: 1.6; }
+/* One line: phrase + names, on a shared baseline with a clear gap between them.
+   Sizes are close (one line, two weights) and scale down on narrow phones. */
+.footer-credits { display: inline-flex; align-items: baseline; justify-content: center; gap: clamp(.6rem, 2.6vw, 1rem); white-space: nowrap; }
+.footer-credits-intro { color: #a3afb9; font-size: clamp(.7rem, 3.6vw, .95rem); }
+.footer-credits-names { color: #b8a57f; font-size: clamp(.74rem, 3.75vw, 1rem); }
+.footer-credits a {
+  display: inline-block; padding-block: .45rem; /* comfortable tap height */
+  color: #dcc395; font-weight: 600;
+  background: linear-gradient(currentColor, currentColor) no-repeat 100% calc(100% - .35rem) / 0 1px;
+  transition: color .3s var(--ease), background-size .4s var(--ease);
+}
+.footer-credits a:hover, .footer-credits a:focus-visible { color: #f4e4bf; background-size: 100% 1px; }
 
 /* ---- Floating WhatsApp ---- */
 .wa-float {
@@ -131,6 +151,8 @@
   .announcement-inner::-webkit-scrollbar { display: none; }
   .announcement { font-size: 11.5px; }
   .announcement-item { padding-inline: .9rem; }
-  .footer-bottom .container { flex-direction: column; gap: .4rem; }
+  .footer-bottom-row { flex-direction: column; gap: .4rem; text-align: center; padding-block: 1.1rem; }
+  .footer-brand-en { order: -1; } /* brand, then copyright; credits row below */
+  .footer-credits-row { padding-block: 1.3rem calc(1.4rem + env(safe-area-inset-bottom)); }
   .wa-float { width: 52px; height: 52px; inset-inline-start: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); }
 }

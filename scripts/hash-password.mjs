@@ -1,6 +1,6 @@
 /* Creates the ADMIN_PASSWORD_HASH secret value.
    Usage:  node scripts/hash-password.mjs            (prompts, input hidden)
-   Then:   npx wrangler secret put ADMIN_PASSWORD_HASH -c worker/wrangler.jsonc
+   Then:   npx wrangler secret put ADMIN_PASSWORD_HASH
    100,000 PBKDF2 iterations = the maximum Cloudflare Workers allows. */
 import { webcrypto as crypto } from "node:crypto";
 import { createInterface } from "node:readline";

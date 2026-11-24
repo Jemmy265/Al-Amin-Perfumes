@@ -28,6 +28,9 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   }
   let data: { error?: string; fields?: Record<string, string> } & Record<string, unknown> = {};
   try { data = await res.json(); } catch { /* empty body */ }
+  // A successful change: refresh this browser's cached public catalog right away,
+  // so the owner sees the update on the storefront immediately.
+  if (res.ok && method !== "GET" && path.startsWith("/admin/")) void fetch("/api/catalog", { cache: "reload" }).catch(() => {});
   if (!res.ok) {
     if (res.status === 401 && !path.startsWith("/auth/")) window.dispatchEvent(new Event(SESSION_EXPIRED));
     throw new ApiError(data.error ?? `حصلت مشكلة (${res.status}). حاول تاني.`, res.status, data.fields ?? {});

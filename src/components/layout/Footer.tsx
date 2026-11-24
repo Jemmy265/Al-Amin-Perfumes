@@ -53,9 +53,21 @@ export function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <div className="container">
-          <p>© {new Date().getFullYear()} {f.copyright}</p>
-          <span dir="ltr">ALAMIN PERFUMES</span>
+        {/* Row 1 — copyright (right, RTL start) · brand (left) */}
+        <div className="container footer-bottom-row">
+          <p className="footer-copyright">© {new Date().getFullYear()} {f.copyright}</p>
+          <span className="footer-brand-en" dir="ltr">ALAMIN PERFUMES</span>
+        </div>
+        {/* Row 2 — developer credits, centred */}
+        <div className="container footer-credits-row">
+          <p className="footer-credits">
+            <span className="footer-credits-intro">تصميم وتطوير الموقع بواسطة</span>{" "}
+            <span className="footer-credits-names">
+              <a href="https://wa.me/201022317589" target="_blank" rel="noopener noreferrer" aria-label="يوسف محمود — تواصل عبر واتساب (يفتح في نافذة جديدة)">يوسف محمود</a>
+              {"، "}
+              <a href="https://www.linkedin.com/in/mohamed-gamal-2ab673247/" target="_blank" rel="noopener noreferrer" aria-label="محمد جمال — حساب لينكدإن (يفتح في نافذة جديدة)">محمد جمال</a>
+            </span>
+          </p>
         </div>
       </div>
     </footer>

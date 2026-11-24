@@ -1,7 +1,8 @@
-/* Prepares a phone photo for upload: fixes rotation, scales to max 1600px and
-   re-encodes (WebP where the browser can, otherwise JPEG). A 6–12 MB camera
-   photo becomes ~200–400 KB, so uploads succeed even on slow mobile data. */
-const MAX_SIDE = 1600;
+/* Prepares a phone photo for upload: fixes rotation, scales to max 1200px and
+   re-encodes (WebP where the browser can, otherwise JPEG). 1200px covers the
+   largest display size (product page ≈ 560 CSS px) on 2× screens; a 6–12 MB
+   camera photo becomes ~100–250 KB, fast to upload and to load. */
+const MAX_SIDE = 1200;
 
 export async function prepareImage(file: File): Promise<Blob> {
   if (file.type && !file.type.startsWith("image/")) throw new Error("الملف ده مش صورة — اختر صورة من الجاليري أو صوّر بالكاميرا.");

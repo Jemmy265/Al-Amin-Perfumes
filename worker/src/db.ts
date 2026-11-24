@@ -10,7 +10,10 @@ interface ProductRow {
   sort_order: number; featured_rank: number | null; created_at: string; updated_at: string;
 }
 
-export const imageUrl = (key: string) => `/images/${key}`;
+/** Original photos ship as static assets (assets/…, served without the Worker);
+    uploads live in R2 (products/…, site/…) and are served by the Worker at /images/…. */
+export const imageUrl = (key: string) => (key.startsWith("assets/") ? `/${key}` : `/images/${key}`);
+export const isR2Key = (key: string | null | undefined): boolean => !!key && /^(products|site)\//.test(key);
 
 /** Loads products (optionally only published) with variants, tags and primary image, in display order. */
 export async function listProducts(db: D1Database, opts: { publishedOnly?: boolean; id?: string } = {}): Promise<AdminProduct[]> {
@@ -161,6 +164,7 @@ export async function putSiteKv(db: D1Database, key: "content" | "settings", val
 }
 
 export async function getSiteKv(db: D1Database): Promise<Record<string, unknown>> {
-  const r = await db.prepare("SELECT key, value FROM site_kv").all<{ key: string; value: string }>();
+  // The catalog snapshot also lives in site_kv; never load it here.
+  const r = await db.prepare("SELECT key, value FROM site_kv WHERE key IN ('settings', 'content', 'labels')").all<{ key: string; value: string }>();
   return Object.fromEntries(r.results.map((x) => [x.key, JSON.parse(x.value)]));
 }
