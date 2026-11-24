@@ -351,10 +351,8 @@
   .hero-stats { margin-top: 2rem; }
 }
 
-/* =========================== FLOATING WHATSAPP (phones) ===========================
-   Hidden while the hero buttons or the contact section are on screen (both have
-   their own WhatsApp / call to action), so it never sits on top of them. */
-@media (max-width: 640px) {
-  .wa-float { transition: opacity .25s, transform .25s, visibility .25s; }
-  .wa-float.is-tucked { opacity: 0; visibility: hidden; transform: translateY(16px) scale(.9); pointer-events: none; }
-}
+/* =========================== FLOATING WHATSAPP ===========================
+   Tucked away while the footer credits are on screen (all sizes) and, on phones,
+   next to the hero buttons and the contact section, so it never covers them. */
+.wa-float { transition: opacity .25s, transform .25s, visibility .25s; }
+.wa-float.is-tucked { opacity: 0; visibility: hidden; transform: translateY(16px) scale(.9); pointer-events: none; }

@@ -56,10 +56,10 @@ export function Footer() {
         {/* Row 1 — developer credits (right, RTL start) · brand (left) */}
         <div className="container footer-bottom-row">
           <p className="footer-credits">
-            <span className="footer-credits-intro">صُنع بكل عناية وإبداع بواسطة</span>{" "}
+            <span className="footer-credits-intro">تصميم وتطوير الموقع بواسطة</span>{" "}
             <span className="footer-credits-names">
               <a href="https://wa.me/201022317589" target="_blank" rel="noopener noreferrer" aria-label="يوسف محمود — تواصل عبر واتساب (يفتح في نافذة جديدة)">يوسف محمود</a>
-              {" و"}
+              {" و "}
               <a href="https://www.linkedin.com/in/mohamed-gamal-2ab673247/" target="_blank" rel="noopener noreferrer" aria-label="محمد جمال — حساب لينكدإن (يفتح في نافذة جديدة)">محمد جمال</a>
             </span>
           </p>

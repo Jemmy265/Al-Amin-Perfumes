@@ -19,8 +19,9 @@ export function WhatsAppFloat() {
   }, []);
 
   useEffect(() => {
-    const targets = [document.querySelector(".hero-actions"), document.getElementById("contact"), document.querySelector(".footer-credits")].filter(Boolean) as Element[];
-    if (!phone || !targets.length || !("IntersectionObserver" in window)) { setTucked(false); return; }
+    // Phones: also tuck next to the hero buttons and the contact section. All sizes: tuck at the footer credits.
+    const targets = [...(phone ? [document.querySelector(".hero-actions"), document.getElementById("contact")] : []), document.querySelector(".footer-credits")].filter(Boolean) as Element[];
+    if (!targets.length || !("IntersectionObserver" in window)) { setTucked(false); return; }
     const visible = new Set<Element>();
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) { if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); }
