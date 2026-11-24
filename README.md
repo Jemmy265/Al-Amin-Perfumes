@@ -1,45 +1,62 @@
-# موقع الأمين للعطور
+# موقع الأمين للعطور — «عندما تدمن العطور»
 
-موقع عربي (RTL) لمتجر عطور: سلة مشتريات تبعت الطلب كامل على واتساب، و"اكتشف عطرك"، وصفحة لكل عطر، وبحث وفلترة.
+متجر عربي (RTL) للعطور: سلة مشتريات تبعت الطلب كامل على واتساب، و«اكتشف عطرك»، وصفحة لكل عطر، وبحث وفلترة.
 
-## هيكل الملفات
+النسخة دي إعادة تصميم بـ **React + TypeScript + Vite** بهوية كحلي / عاجي / ذهبي شامبين، وخط **Aref Ruqaa** للعناوين و**IBM Plex Sans Arabic** للنصوص. نفس المنتجات والصور والنصوص والأسعار ومنطق الاختبار بتاع الموقع الأصلي.
 
-```
-├── index.html        الصفحة (كل الأقسام + الأسئلة الشائعة)
-├── css/style.css     الألوان والتنسيق (الألوان في أول الملف تحت :root)
-├── js/data.js        ← كل البيانات اللي بتتعدل: المنتجات، الأسعار، الشحن، العروض، الأكثر طلبًا، الآراء
-├── js/script.js      منطق الموقع (مش محتاج يتعدل)
-└── assets/           اللوجو، صورة المعاينة og-image.jpg، وصور العطور في products/
-```
+## أشهر التعديلات
 
-## أشهر التعديلات (كلها في js/data.js)
+كل البيانات في `src/data/seed/` (ولما الـ API يتعمل، هتتعدل من لوحة التحكم):
 
-- **إضافة عطر:** ارفع صورته في `assets/products/` باسم إنجليزي بدون مسافات، وانسخ أي منتج في `PRODUCTS` وعدّل بياناته.
+| عايز تعدّل | الملف |
+|---|---|
+| المنتجات، الأسعار، الصور، الوصف | `src/data/seed/products.ts` |
+| الواتساب، الشحن، التوصيل المجاني، الخصم، الأكثر طلبًا، السوشيال | `src/data/seed/content.ts` ← `SEED_SETTINGS` |
+| نصوص الصفحة، الشعار، الأسئلة الشائعة | `src/data/seed/content.ts` ← `SEED_CONTENT` |
+| آراء العملاء | `src/data/seed/reviews.ts` |
+
+- **إضافة عطر:** ارفع صورته في `public/assets/products/` باسم إنجليزي بدون مسافات، وانسخ أي منتج في `products.ts` وعدّل بياناته و`sortOrder`.
+- **تاجات «اكتشف عطرك»** في `tags` لكل عطر:
   - `audience`: `women` / `men` / `unisex`
-  - `scent`: نوع الريحة: `fresh` / `sweet` / `woody` / `fruity` (ممكن أكتر من نوع)
-  - `use`: `daily` / `evening` / `occasion`
-  - `strength`: `light` / `medium` / `strong`
-- **الأكثر طلبًا:** `BEST_SELLERS = ["madawi", "erba-pura", ...]` (بالترتيب، وبالـ id بتاع العطر).
-- **الشحن:** `SHIPPING_ZONES`.
-- **التوصيل المجاني:** `FREE_SHIPPING_MIN = 1500`.
-- **خصم الـ110 مل:** `SIZE_DISCOUNT = { size: 110, percent: 20 }`. لإلغاء الخصم خلّي `percent: 0`.
-- **رقم الواتساب:** `WHATSAPP_NUMBER`.
-- **آراء العملاء:** `REVIEWS`.
-
-الأسئلة الشائعة نص عادي في `index.html` داخل قسم `id="faq"`.
+  - `scents`: `fresh` / `sweet` / `woody` / `fruity` (ممكن أكتر من نوع — **الأول هو الأساسي** وبياخد وزن أعلى في الترشيح)
+  - `occasions`: `daily` / `evening` / `occasion`
+  - `intensity`: `light` / `medium` / `strong`
+- في النصوص: `**كلام**` = خط عريض، و`{{quiz|نص}}` = زرار بيفتح «اكتشف عطرك».
 
 ## لينك لكل عطر
 
-كل عطر ليه لينك مباشر ينفع يتحط في بوست أو يتبعت لزبون:
-`https://jemmy265.github.io/Al-Amin-Perfumes/#perfume/<id>`
-مثال: `.../#perfume/madawi`
+نفس اللينكات القديمة شغالة: `https://jemmy265.github.io/Al-Amin-Perfumes/#perfume/<id>`
 
-## النشر
-
-الموقع على GitHub Pages ومش محتاج build. أي ملف يترفع على الريبو بيظهر على الموقع خلال دقيقة أو اتنين.
-
-## تجربة محلية
+## التشغيل والنشر
 
 ```bash
-python -m http.server 8000
+npm install
+npm run dev        # تجربة محلية
+npm test           # اختبارات (منها مطابقة «اكتشف عطرك» مع الموقع الأصلي)
+npm run build      # الناتج في dist/
 ```
+
+**Cloudflare Pages:** Build command `npm run build` · Output directory `dist`.
+
+> ⚠️ الموقع دلوقتي محتاج build. GitHub Pages اللي بيعرض الريبو مباشرة **مش هيشتغل** على النسخة دي غير لو اتعمل GitHub Action تنشر `dist/` (أو بعد النقل لـ Cloudflare Pages).
+
+## هيكل الكود
+
+```
+src/
+├── types/            أنواع البيانات (Product, ProductTags, SiteContent) — نفس شكل جداول D1 المستقبلية
+├── data/seed/        البيانات الحالية (منقولة 1:1 من الموقع القديم)
+├── services/         طبقة البيانات: static اليوم، Hono API بكرة (VITE_DATA_SOURCE=api)
+├── domain/           منطق خالص بدون UI: الأسعار، السلة، الاختبار، البحث، رسائل واتساب
+├── state/            React providers: Store, Cart (localStorage), UI (سلة/اختبار/توست)
+├── components/       مكونات الواجهة (layout, product, cart, quiz, ui)
+├── sections/         أقسام الصفحة الرئيسية
+└── styles/           tokens.css (الألوان والخطوط) + باقي التنسيقات
+```
+
+### الربط مع الـ Backend لاحقًا (Hono + D1 + R2)
+
+- اعمل `.env` من `.env.example` وحط `VITE_DATA_SOURCE=api` و`VITE_API_BASE_URL`.
+- الواجهة متوقعة `GET /api/products` و`GET /api/site` (التفاصيل في `src/services/apiDataSource.ts`). لو الـ API وقع، الموقع بيرجع للبيانات المضمّنة.
+- مسار الصورة ممكن يكون لينك كامل من R2 — `assetUrl()` بتتعامل مع الحالتين.
+- لوحة التحكم هتكتب لنفس الـ API؛ الحقول اللي هتتعدل هي نفسها اللي في `src/types/`.

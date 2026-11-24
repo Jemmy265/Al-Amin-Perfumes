@@ -1,0 +1,684 @@
+{
+ "quiz": {
+  "men|daily|fresh|light": [
+   "nautica-voyage",
+   "silver-mountain-water",
+   "pacific-chill"
+  ],
+  "men|daily|fresh|medium": [
+   "bleu-de-chanel",
+   "allure-homme-sport",
+   "nautica-voyage"
+  ],
+  "men|daily|fresh|strong": [
+   "megamare",
+   "bleu-de-chanel",
+   "allure-homme-sport"
+  ],
+  "men|daily|sweet|light": [
+   "bianco-latte",
+   "vanilla-powder",
+   "allure-homme-sport"
+  ],
+  "men|daily|sweet|medium": [
+   "bianco-latte",
+   "vanilla-powder",
+   "allure-homme-sport"
+  ],
+  "men|daily|sweet|strong": [
+   "bianco-latte",
+   "erba-pura",
+   "vanilla-powder"
+  ],
+  "men|daily|woody|light": [
+   "bleu-de-chanel",
+   "black-xs",
+   "shuhrah-pour-homme"
+  ],
+  "men|daily|woody|medium": [
+   "bleu-de-chanel",
+   "black-xs",
+   "shuhrah-pour-homme"
+  ],
+  "men|daily|woody|strong": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "bleu-de-chanel"
+  ],
+  "men|daily|fruity|light": [
+   "madawi",
+   "pacific-chill",
+   "erba-pura"
+  ],
+  "men|daily|fruity|medium": [
+   "madawi",
+   "erba-pura",
+   "pacific-chill"
+  ],
+  "men|daily|fruity|strong": [
+   "erba-pura",
+   "madawi",
+   "black-orchid"
+  ],
+  "men|evening|fresh|light": [
+   "bleu-de-chanel",
+   "nautica-voyage",
+   "black-xs"
+  ],
+  "men|evening|fresh|medium": [
+   "bleu-de-chanel",
+   "black-xs",
+   "megamare"
+  ],
+  "men|evening|fresh|strong": [
+   "megamare",
+   "bleu-de-chanel",
+   "black-xs"
+  ],
+  "men|evening|sweet|light": [
+   "althair",
+   "bianco-latte",
+   "vanilla-powder"
+  ],
+  "men|evening|sweet|medium": [
+   "althair",
+   "bianco-latte",
+   "vanilla-powder"
+  ],
+  "men|evening|sweet|strong": [
+   "ultra-male",
+   "lapidus-pour-homme",
+   "black-orchid"
+  ],
+  "men|evening|woody|light": [
+   "black-xs",
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme"
+  ],
+  "men|evening|woody|medium": [
+   "black-xs",
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme"
+  ],
+  "men|evening|woody|strong": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet"
+  ],
+  "men|evening|fruity|light": [
+   "madawi",
+   "erba-pura",
+   "black-orchid"
+  ],
+  "men|evening|fruity|medium": [
+   "madawi",
+   "erba-pura",
+   "black-orchid"
+  ],
+  "men|evening|fruity|strong": [
+   "erba-pura",
+   "madawi",
+   "black-orchid"
+  ],
+  "men|occasion|fresh|light": [
+   "nautica-voyage",
+   "silver-mountain-water",
+   "pacific-chill"
+  ],
+  "men|occasion|fresh|medium": [
+   "bleu-de-chanel",
+   "allure-homme-sport",
+   "nautica-voyage"
+  ],
+  "men|occasion|fresh|strong": [
+   "megamare",
+   "bleu-de-chanel",
+   "allure-homme-sport"
+  ],
+  "men|occasion|sweet|light": [
+   "althair",
+   "ultra-male",
+   "lapidus-pour-homme"
+  ],
+  "men|occasion|sweet|medium": [
+   "althair",
+   "ultra-male",
+   "lapidus-pour-homme"
+  ],
+  "men|occasion|sweet|strong": [
+   "ultra-male",
+   "lapidus-pour-homme",
+   "black-orchid"
+  ],
+  "men|occasion|woody|light": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet"
+  ],
+  "men|occasion|woody|medium": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet"
+  ],
+  "men|occasion|woody|strong": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet"
+  ],
+  "men|occasion|fruity|light": [
+   "madawi",
+   "black-orchid",
+   "pacific-chill"
+  ],
+  "men|occasion|fruity|medium": [
+   "madawi",
+   "black-orchid",
+   "erba-pura"
+  ],
+  "men|occasion|fruity|strong": [
+   "black-orchid",
+   "erba-pura",
+   "madawi"
+  ],
+  "women|daily|fresh|light": [
+   "silver-mountain-water",
+   "pacific-chill",
+   "megamare"
+  ],
+  "women|daily|fresh|medium": [
+   "silver-mountain-water",
+   "megamare",
+   "pacific-chill"
+  ],
+  "women|daily|fresh|strong": [
+   "megamare",
+   "silver-mountain-water",
+   "pacific-chill"
+  ],
+  "women|daily|sweet|light": [
+   "roses-vanille",
+   "kayali-marshmallow",
+   "yara-candy"
+  ],
+  "women|daily|sweet|medium": [
+   "roses-vanille",
+   "kayali-marshmallow",
+   "yara-candy"
+  ],
+  "women|daily|sweet|strong": [
+   "roses-vanille",
+   "kayali-marshmallow",
+   "yara-candy"
+  ],
+  "women|daily|woody|light": [
+   "oud-bouquet",
+   "imperial-valley",
+   "burberry-her"
+  ],
+  "women|daily|woody|medium": [
+   "oud-bouquet",
+   "imperial-valley",
+   "burberry-her"
+  ],
+  "women|daily|woody|strong": [
+   "oud-bouquet",
+   "imperial-valley",
+   "black-orchid"
+  ],
+  "women|daily|fruity|light": [
+   "burberry-her",
+   "madawi",
+   "roses-vanille"
+  ],
+  "women|daily|fruity|medium": [
+   "burberry-her",
+   "madawi",
+   "roses-vanille"
+  ],
+  "women|daily|fruity|strong": [
+   "erba-pura",
+   "burberry-her",
+   "madawi"
+  ],
+  "women|evening|fresh|light": [
+   "silver-mountain-water",
+   "megamare",
+   "pacific-chill"
+  ],
+  "women|evening|fresh|medium": [
+   "megamare",
+   "silver-mountain-water",
+   "pacific-chill"
+  ],
+  "women|evening|fresh|strong": [
+   "megamare",
+   "silver-mountain-water",
+   "pacific-chill"
+  ],
+  "women|evening|sweet|light": [
+   "roses-vanille",
+   "kayali-marshmallow",
+   "bianco-latte"
+  ],
+  "women|evening|sweet|medium": [
+   "roses-vanille",
+   "kayali-marshmallow",
+   "bianco-latte"
+  ],
+  "women|evening|sweet|strong": [
+   "roses-vanille",
+   "black-orchid",
+   "kayali-marshmallow"
+  ],
+  "women|evening|woody|light": [
+   "oud-bouquet",
+   "imperial-valley",
+   "black-orchid"
+  ],
+  "women|evening|woody|medium": [
+   "oud-bouquet",
+   "imperial-valley",
+   "black-orchid"
+  ],
+  "women|evening|woody|strong": [
+   "oud-bouquet",
+   "imperial-valley",
+   "black-orchid"
+  ],
+  "women|evening|fruity|light": [
+   "burberry-her",
+   "madawi",
+   "roses-vanille"
+  ],
+  "women|evening|fruity|medium": [
+   "burberry-her",
+   "madawi",
+   "roses-vanille"
+  ],
+  "women|evening|fruity|strong": [
+   "erba-pura",
+   "burberry-her",
+   "madawi"
+  ],
+  "women|occasion|fresh|light": [
+   "silver-mountain-water",
+   "pacific-chill",
+   "megamare"
+  ],
+  "women|occasion|fresh|medium": [
+   "silver-mountain-water",
+   "megamare",
+   "pacific-chill"
+  ],
+  "women|occasion|fresh|strong": [
+   "megamare",
+   "silver-mountain-water",
+   "pacific-chill"
+  ],
+  "women|occasion|sweet|light": [
+   "roses-vanille",
+   "black-orchid",
+   "kayali-marshmallow"
+  ],
+  "women|occasion|sweet|medium": [
+   "roses-vanille",
+   "black-orchid",
+   "kayali-marshmallow"
+  ],
+  "women|occasion|sweet|strong": [
+   "black-orchid",
+   "oud-bouquet",
+   "roses-vanille"
+  ],
+  "women|occasion|woody|light": [
+   "oud-bouquet",
+   "imperial-valley",
+   "black-orchid"
+  ],
+  "women|occasion|woody|medium": [
+   "oud-bouquet",
+   "imperial-valley",
+   "black-orchid"
+  ],
+  "women|occasion|woody|strong": [
+   "oud-bouquet",
+   "imperial-valley",
+   "black-orchid"
+  ],
+  "women|occasion|fruity|light": [
+   "burberry-her",
+   "madawi",
+   "roses-vanille"
+  ],
+  "women|occasion|fruity|medium": [
+   "burberry-her",
+   "madawi",
+   "roses-vanille"
+  ],
+  "women|occasion|fruity|strong": [
+   "black-orchid",
+   "erba-pura",
+   "burberry-her"
+  ],
+  "any|daily|fresh|light": [
+   "silver-mountain-water",
+   "pacific-chill",
+   "nautica-voyage"
+  ],
+  "any|daily|fresh|medium": [
+   "bleu-de-chanel",
+   "allure-homme-sport",
+   "silver-mountain-water"
+  ],
+  "any|daily|fresh|strong": [
+   "megamare",
+   "bleu-de-chanel",
+   "allure-homme-sport"
+  ],
+  "any|daily|sweet|light": [
+   "bianco-latte",
+   "vanilla-powder",
+   "roses-vanille"
+  ],
+  "any|daily|sweet|medium": [
+   "bianco-latte",
+   "vanilla-powder",
+   "roses-vanille"
+  ],
+  "any|daily|sweet|strong": [
+   "bianco-latte",
+   "erba-pura",
+   "vanilla-powder"
+  ],
+  "any|daily|woody|light": [
+   "bleu-de-chanel",
+   "black-xs",
+   "shuhrah-pour-homme"
+  ],
+  "any|daily|woody|medium": [
+   "bleu-de-chanel",
+   "black-xs",
+   "shuhrah-pour-homme"
+  ],
+  "any|daily|woody|strong": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet"
+  ],
+  "any|daily|fruity|light": [
+   "madawi",
+   "burberry-her",
+   "pacific-chill"
+  ],
+  "any|daily|fruity|medium": [
+   "madawi",
+   "burberry-her",
+   "erba-pura"
+  ],
+  "any|daily|fruity|strong": [
+   "erba-pura",
+   "madawi",
+   "burberry-her"
+  ],
+  "any|evening|fresh|light": [
+   "bleu-de-chanel",
+   "silver-mountain-water",
+   "megamare"
+  ],
+  "any|evening|fresh|medium": [
+   "bleu-de-chanel",
+   "megamare",
+   "black-xs"
+  ],
+  "any|evening|fresh|strong": [
+   "megamare",
+   "bleu-de-chanel",
+   "black-xs"
+  ],
+  "any|evening|sweet|light": [
+   "bianco-latte",
+   "vanilla-powder",
+   "roses-vanille"
+  ],
+  "any|evening|sweet|medium": [
+   "bianco-latte",
+   "vanilla-powder",
+   "roses-vanille"
+  ],
+  "any|evening|sweet|strong": [
+   "ultra-male",
+   "black-orchid",
+   "bianco-latte"
+  ],
+  "any|evening|woody|light": [
+   "black-xs",
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme"
+  ],
+  "any|evening|woody|medium": [
+   "black-xs",
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme"
+  ],
+  "any|evening|woody|strong": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet"
+  ],
+  "any|evening|fruity|light": [
+   "madawi",
+   "burberry-her",
+   "erba-pura"
+  ],
+  "any|evening|fruity|medium": [
+   "madawi",
+   "burberry-her",
+   "erba-pura"
+  ],
+  "any|evening|fruity|strong": [
+   "erba-pura",
+   "madawi",
+   "burberry-her"
+  ],
+  "any|occasion|fresh|light": [
+   "silver-mountain-water",
+   "pacific-chill",
+   "nautica-voyage"
+  ],
+  "any|occasion|fresh|medium": [
+   "bleu-de-chanel",
+   "allure-homme-sport",
+   "silver-mountain-water"
+  ],
+  "any|occasion|fresh|strong": [
+   "megamare",
+   "bleu-de-chanel",
+   "allure-homme-sport"
+  ],
+  "any|occasion|sweet|light": [
+   "althair",
+   "ultra-male",
+   "black-orchid"
+  ],
+  "any|occasion|sweet|medium": [
+   "althair",
+   "ultra-male",
+   "black-orchid"
+  ],
+  "any|occasion|sweet|strong": [
+   "ultra-male",
+   "black-orchid",
+   "lapidus-pour-homme"
+  ],
+  "any|occasion|woody|light": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet"
+  ],
+  "any|occasion|woody|medium": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet"
+  ],
+  "any|occasion|woody|strong": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet"
+  ],
+  "any|occasion|fruity|light": [
+   "madawi",
+   "burberry-her",
+   "black-orchid"
+  ],
+  "any|occasion|fruity|medium": [
+   "madawi",
+   "burberry-her",
+   "black-orchid"
+  ],
+  "any|occasion|fruity|strong": [
+   "black-orchid",
+   "erba-pura",
+   "madawi"
+  ]
+ },
+ "similar": {
+  "vanilla-powder": [
+   "bianco-latte",
+   "burberry-her",
+   "roses-vanille",
+   "althair"
+  ],
+  "roses-vanille": [
+   "burberry-her",
+   "kayali-marshmallow",
+   "yara-candy",
+   "erba-pura"
+  ],
+  "shuhrah-pour-homme": [
+   "lapidus-pour-homme",
+   "oud-bouquet",
+   "black-orchid",
+   "imperial-valley"
+  ],
+  "lapidus-pour-homme": [
+   "oud-bouquet",
+   "black-orchid",
+   "erba-pura",
+   "shuhrah-pour-homme"
+  ],
+  "ultra-male": [
+   "erba-pura",
+   "lapidus-pour-homme",
+   "oud-bouquet",
+   "black-orchid"
+  ],
+  "oud-bouquet": [
+   "lapidus-pour-homme",
+   "black-orchid",
+   "erba-pura",
+   "shuhrah-pour-homme"
+  ],
+  "bianco-latte": [
+   "burberry-her",
+   "vanilla-powder",
+   "roses-vanille",
+   "althair"
+  ],
+  "black-orchid": [
+   "erba-pura",
+   "lapidus-pour-homme",
+   "oud-bouquet",
+   "burberry-her"
+  ],
+  "silver-mountain-water": [
+   "pacific-chill",
+   "nautica-voyage",
+   "megamare",
+   "bleu-de-chanel"
+  ],
+  "megamare": [
+   "silver-mountain-water",
+   "pacific-chill",
+   "nautica-voyage",
+   "bleu-de-chanel"
+  ],
+  "pacific-chill": [
+   "silver-mountain-water",
+   "nautica-voyage",
+   "erba-pura",
+   "madawi"
+  ],
+  "erba-pura": [
+   "black-orchid",
+   "burberry-her",
+   "roses-vanille",
+   "kayali-marshmallow"
+  ],
+  "althair": [
+   "bianco-latte",
+   "vanilla-powder",
+   "allure-homme-sport",
+   "erba-pura"
+  ],
+  "nautica-voyage": [
+   "silver-mountain-water",
+   "pacific-chill",
+   "megamare",
+   "bleu-de-chanel"
+  ],
+  "madawi": [
+   "burberry-her",
+   "roses-vanille",
+   "kayali-marshmallow",
+   "yara-candy"
+  ],
+  "imperial-valley": [
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme",
+   "oud-bouquet",
+   "black-orchid"
+  ],
+  "bleu-de-chanel": [
+   "black-xs",
+   "allure-homme-sport",
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme"
+  ],
+  "allure-homme-sport": [
+   "bianco-latte",
+   "vanilla-powder",
+   "althair",
+   "bleu-de-chanel"
+  ],
+  "black-xs": [
+   "bleu-de-chanel",
+   "allure-homme-sport",
+   "shuhrah-pour-homme",
+   "lapidus-pour-homme"
+  ],
+  "kayali-marshmallow": [
+   "burberry-her",
+   "roses-vanille",
+   "yara-candy",
+   "erba-pura"
+  ],
+  "yara-candy": [
+   "burberry-her",
+   "roses-vanille",
+   "kayali-marshmallow",
+   "erba-pura"
+  ],
+  "burberry-her": [
+   "roses-vanille",
+   "kayali-marshmallow",
+   "yara-candy",
+   "erba-pura"
+  ],
+  "yara": [
+   "bianco-latte",
+   "burberry-her",
+   "vanilla-powder",
+   "roses-vanille"
+  ]
+ }
+}
