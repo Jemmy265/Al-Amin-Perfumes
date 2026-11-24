@@ -84,8 +84,10 @@
   text-align: center;
 }
 .footer-credits { line-height: 1.6; }
-.footer-credits-intro { display: block; margin-bottom: .2rem; color: #a3afb9; font-size: var(--fs-sm); white-space: nowrap; }
-.footer-credits-names { display: block; white-space: nowrap; color: #b8a57f; font-size: 1.15rem; }
+/* One line: phrase + names. Sizes scale down on narrow phones so it still fits. */
+.footer-credits { white-space: nowrap; }
+.footer-credits-intro { color: #a3afb9; font-size: clamp(.72rem, 3.3vw, var(--fs-sm)); }
+.footer-credits-names { color: #b8a57f; font-size: clamp(.84rem, 4.15vw, 1.15rem); }
 .footer-credits a {
   display: inline-block; padding-block: .3rem; /* comfortable tap height */
   color: #dcc395; font-weight: 600;
