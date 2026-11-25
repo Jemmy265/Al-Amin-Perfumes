@@ -1,5 +1,6 @@
 // Al-Amin Perfumes — ONE Cloudflare Worker serving the whole application:
-//   /            storefront          ─┐  Workers Static Assets: served directly,
+//   /            storefront (via Worker only to blank WhatsApp link previews)
+//   /*           other static files  ─┐  Workers Static Assets: served directly,
 //   /admin/      admin dashboard      │  no Worker invocation, free & unlimited
 //   /assets/*    original photos     ─┘
 //   /api/*       Hono API (D1)       ─┐  Worker code (run_worker_first)
@@ -18,7 +19,7 @@
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "none",
-    "run_worker_first": ["/api/*", "/images/*"]
+    "run_worker_first": ["/api/*", "/images/*", "/"]
   },
   "observability": { "enabled": true, "head_sampling_rate": 0.1 },
   "d1_databases": [

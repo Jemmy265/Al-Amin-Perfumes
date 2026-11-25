@@ -19,7 +19,7 @@ import type { SiteContent } from "../../src/types/content";
 import { readCatalog, refreshCatalog } from "./catalog";
 import { endSession, lockedFor, recordFailure, requireAdmin, sameOrigin, startSession, verifyPassword, hasSession } from "./auth";
 import * as db from "./db";
-import type { AppEnv } from "./env";
+import type { AppEnv, Env } from "./env";
 
 const app = new Hono<AppEnv>();
 
@@ -296,4 +296,21 @@ function sniffImage(b: Uint8Array): { ext: string; mime: string } | null {
   return null;
 }
 
-export default app;
+/* -------------------------- Link previews --------------------------- */
+
+/** WhatsApp fetches a shared link with a "WhatsApp/<version>" User-Agent to build
+    its preview card. Without Open Graph tags it would still fall back to the
+    page <title> and description, so it gets an empty response instead and the
+    link shows as a plain URL. Browsers and search engines get the normal page. */
+const LINK_PREVIEW_BOT = /^WhatsApp\//i;
+
+export default {
+  fetch(req: Request, env: Env, ctx: ExecutionContext) {
+    const { pathname } = new URL(req.url);
+    if (pathname.startsWith("/api/") || pathname.startsWith("/images/")) return app.fetch(req, env, ctx);
+    // Only "/" is routed here for page requests (run_worker_first in wrangler.jsonc).
+    if (LINK_PREVIEW_BOT.test(req.headers.get("User-Agent") ?? ""))
+      return new Response(null, { status: 204, headers: { "Cache-Control": "no-store", Vary: "User-Agent" } });
+    return env.ASSETS.fetch(req);
+  },
+} satisfies ExportedHandler<Env>;
