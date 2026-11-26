@@ -32,7 +32,7 @@
 
 ## لينك لكل عطر
 
-نفس اللينكات القديمة شغالة: `https://jemmy265.github.io/Al-Amin-Perfumes/#perfume/<id>`
+كل عطر له لينك مباشر: `https://alamin.win/#perfume/<id>`
 
 ## التشغيل والنشر
 

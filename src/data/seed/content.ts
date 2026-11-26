@@ -10,7 +10,7 @@ import { DEFAULT_SECTIONS } from "../../shared/content";
 export const SEED_SETTINGS: StoreSettings = {
   whatsappNumber: "201006747034",
   generalWhatsappMessage: "مرحبًا، أرغب في الاستفسار عن منتجاتكم من الأمين للعطور.",
-  siteUrl: "https://jemmy265.github.io/Al-Amin-Perfumes/",
+  siteUrl: "https://alamin.win/",
   currency: "ج.م",
   sizes: [35, 55, 110],
   shippingZones: [
