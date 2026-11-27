@@ -12,7 +12,7 @@ export function ProductChips({ p }: { p: Product }) {
   return (
     <span className="chips">
       <span className="chip chip--solid">{labels.audience[p.tags.audience]}</span>
-      {off && <span className="chip chip--gold">{off.rule?.name ? <>{off.rule.name} <bdi dir="ltr">{percentBadge(off.percent)}</bdi></> : <bdi dir="ltr">{percentBadge(off.percent)}</bdi>}</span>}
+      {off && <span className="chip chip--gold chip--discount">{off.rule?.name ? <>{off.rule.name} <bdi dir="ltr">{percentBadge(off.percent)}</bdi></> : <bdi dir="ltr">{percentBadge(off.percent)}</bdi>}</span>}
       {best && <span className="chip chip--gold">الأكثر طلبًا</span>}
       {p.isNew && <span className="chip">جديد</span>}
       {p.label && <span className="chip">{p.label}</span>}
