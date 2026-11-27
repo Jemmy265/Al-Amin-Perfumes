@@ -1,10 +1,10 @@
-/* Tiny hash router: #/products, #/products/new, #/products/<id>, #/order, #/tags, #/content.
+/* Tiny hash router: #/products, #/products/new, #/products/<id>, #/order, #/tags, #/content, #/pricing.
    Pages can register a "leave guard" (unsaved changes) that every navigation respects. */
 import { useEffect, useState } from "react";
 
 export type Route =
   | { name: "overview" } | { name: "products" } | { name: "new" } | { name: "edit"; id: string }
-  | { name: "order" } | { name: "tags" } | { name: "content" };
+  | { name: "order" } | { name: "tags" } | { name: "content" } | { name: "pricing" };
 
 export function parse(hash: string): Route {
   const parts = hash.replace(/^#\/?/, "").split("/").filter(Boolean).map(decodeURIComponent);
@@ -14,6 +14,7 @@ export function parse(hash: string): Route {
   if (parts[0] === "order") return { name: "order" };
   if (parts[0] === "tags") return { name: "tags" };
   if (parts[0] === "content") return { name: "content" };
+  if (parts[0] === "pricing") return { name: "pricing" };
   return { name: "overview" };
 }
 

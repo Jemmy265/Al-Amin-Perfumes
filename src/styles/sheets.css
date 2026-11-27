@@ -159,3 +159,8 @@
   .quiz-result-actions .btn { flex: 1; }
   .field-row { grid-template-columns: 1fr; gap: 0; }
 }
+.cart-item-off {
+  align-self: flex-start; margin-top: .25rem; font-size: 10.5px; font-weight: 700; line-height: 1; padding: 3px 6px;
+  background: var(--gold); color: var(--navy); border-radius: 2px;
+}
+.cart-summary dt small { font-size: var(--fs-xs); }

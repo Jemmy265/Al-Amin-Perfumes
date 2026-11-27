@@ -111,3 +111,10 @@
   .pv-media { position: relative; aspect-ratio: 1 / 1; }
   .mini-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* Selected size price (product page) and crossed-out "يبدأ من" prices */
+.selected-price { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem .6rem; margin-top: .75rem; }
+.selected-price b { font-size: var(--fs-md); color: var(--navy); }
+.selected-price b small { font-size: var(--fs-xs); font-weight: 500; }
+.selected-price s { font-size: var(--fs-sm); color: var(--muted-2); }
+.price-was { color: var(--muted-2); font-weight: 400; }

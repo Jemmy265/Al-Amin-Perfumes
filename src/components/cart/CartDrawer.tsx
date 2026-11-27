@@ -1,4 +1,4 @@
-import { fmt, priceInfo } from "../../domain/pricing";
+import { fmt, percentBadge, priceInfo } from "../../domain/pricing";
 import { waLink } from "../../domain/whatsapp";
 import { useCart } from "../../state/CartProvider";
 import { useStore } from "../../state/StoreProvider";
@@ -12,7 +12,6 @@ export function CartDrawer() {
   const { settings, byId } = useStore();
   const { state, totals: t, message, setQty, clear, setField } = useCart();
   const C = settings.currency;
-  const pct = Math.min(100, (t.subtotal / settings.freeShippingMin) * 100);
 
   return (
     <Sheet open={cartOpen} onClose={closeCart} variant="drawer" labelledBy="cart-title">
@@ -30,20 +29,23 @@ export function CartDrawer() {
           </div>
         ) : (
           <>
-            <div className="free-ship">
-              <p>
-                {t.free
-                  ? <>مبروك! طلبك عليه <b>توصيل مجاني</b></>
-                  : <>فاضلك <b>{fmt(settings.freeShippingMin - t.subtotal)} {C}</b> وتاخد <b>توصيل مجاني</b></>}
-              </p>
-              <div className="free-ship-bar"><span style={{ width: `${pct}%` }} /></div>
-            </div>
+            {t.freeProgress !== null && (
+              <div className="free-ship">
+                <p>
+                  {t.free
+                    ? <>مبروك! طلبك عليه <b>شحن مجاني</b></>
+                    : <>باقي لك <b>{fmt(t.freeRemaining ?? 0)} {C}</b> وتاخد <b>شحن مجاني</b></>}
+                </p>
+                <div className="free-ship-bar"><span style={{ width: `${t.freeProgress}%` }} /></div>
+              </div>
+            )}
 
             <ul className="cart-items">
               {state.items.map((it) => {
                 const p = byId(it.id);
                 if (!p) return null;
-                const { base, final, discounted } = priceInfo(p, it.size, settings);
+                const info = priceInfo(p, it.size, settings);
+                const { base, final, discounted } = info;
                 return (
                   <li key={`${it.id}|${it.size}`} className="cart-item">
                     <ProductImage p={p} />
@@ -52,6 +54,9 @@ export function CartDrawer() {
                       <span className="cart-item-sub">
                         {it.size} مل · {fmt(final)} {C}{discounted && <> <s>{fmt(base)}</s></>}
                       </span>
+                      {discounted && (
+                        <span className="cart-item-off"><bdi dir="ltr">{percentBadge(info.percent)}</bdi>{info.rule?.name ? ` ${info.rule.name}` : ""}</span>
+                      )}
                       <div className="qty">
                         <button type="button" onClick={() => setQty(p.id, it.size, it.qty + 1)} aria-label="زيادة"><Icon name="plus" /></button>
                         <span aria-live="polite">{it.qty}</span>
@@ -93,11 +98,12 @@ export function CartDrawer() {
           </div>
 
           <dl className="cart-summary">
+            {t.savings > 0 && <div><dt>قبل الخصم</dt><dd>{fmt(t.original)} {C}</dd></div>}
+            {t.savings > 0 && <div><dt>الخصم <small>({t.applied.join("، ")})</small></dt><dd className="savings">- {fmt(t.savings)} {C}</dd></div>}
             <div><dt>المجموع</dt><dd>{fmt(t.subtotal)} {C}</dd></div>
-            {t.savings > 0 && <div><dt>وفّرت</dt><dd className="savings">- {fmt(t.savings)} {C}</dd></div>}
             <div>
               <dt>الشحن</dt>
-              <dd>{t.free ? <span className="free">مجاني</span> : t.zone ? `${fmt(t.shipping ?? 0)} ${C}` : <span className="muted">اختار المحافظة</span>}</dd>
+              <dd>{t.free ? <span className="free">شحن مجاني</span> : t.zone ? `${fmt(t.shipping ?? 0)} ${C}` : <span className="muted">اختار المحافظة</span>}</dd>
             </div>
             <div className="total"><dt>الإجمالي</dt><dd>{fmt(t.total)} {C}</dd></div>
           </dl>

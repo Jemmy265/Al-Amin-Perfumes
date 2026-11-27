@@ -1,6 +1,6 @@
 /* The same rules run in the admin form and in the Worker API. */
 import { describe, expect, it } from "vitest";
-import { SEED_PRODUCTS } from "../../data/seed/products";
+import { LEGACY_PRODUCTS as SEED_PRODUCTS } from "../../domain/__fixtures__/legacy-data";
 import { crossFieldErrors, fieldErrors, productInputSchema, slugify, toStorefrontProduct, type AdminProduct } from "../product";
 
 const valid = {

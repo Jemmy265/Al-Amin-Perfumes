@@ -13,11 +13,12 @@ const NAV: { route: Route; label: string; icon: string; short: string }[] = [
   { route: { name: "order" }, label: "ترتيب العرض", short: "الترتيب", icon: "sort" },
   { route: { name: "tags" }, label: "وسوم اختبار العطر", short: "الاختبار", icon: "tag" },
   { route: { name: "content" }, label: "محتوى الموقع", short: "المحتوى", icon: "doc" },
+  { route: { name: "pricing" }, label: "الخصومات والشحن", short: "الخصومات", icon: "gift" },
 ];
 
 const TITLES: Record<Route["name"], string> = {
   overview: "نظرة عامة", products: "العطور", new: "إضافة عطر", edit: "تعديل عطر",
-  order: "ترتيب العرض", tags: "وسوم اختبار العطر", content: "محتوى الموقع",
+  order: "ترتيب العرض", tags: "وسوم اختبار العطر", content: "محتوى الموقع", pricing: "الخصومات والشحن",
 };
 
 const active = (route: Route, item: Route) =>
@@ -61,6 +62,7 @@ export function Shell({ route, onLogout, children }: { route: Route; onLogout: (
           <h1 className="a-display">{TITLES[route.name]}</h1>
           <div className="a-topbar-actions">
             <a className="a-icon-btn" href="../" target="_blank" rel="noopener" aria-label="عرض المتجر" title="عرض المتجر"><Icon name="eye" /></a>
+            <a className="a-icon-btn a-only-mobile" href={href({ name: "pricing" })} onClick={go({ name: "pricing" })} aria-label="الخصومات والشحن" title="الخصومات والشحن"><Icon name="gift" /></a>
             <a className="a-icon-btn a-only-mobile" href={href({ name: "content" })} onClick={go({ name: "content" })} aria-label="المحتوى" title="المحتوى"><Icon name="doc" /></a>
             <button type="button" className="a-icon-btn a-only-mobile" onClick={logout} aria-label="تسجيل الخروج" title="تسجيل الخروج"><Icon name="logout" /></button>
           </div>

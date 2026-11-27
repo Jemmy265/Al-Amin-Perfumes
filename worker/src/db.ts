@@ -1,5 +1,7 @@
 /* D1 access for products. All multi-statement writes go through
    DB.batch(), which D1 runs as a single transaction. */
+import { parsePricing, pricingFromLegacy } from "../../src/shared/pricing";
+import type { PricingSettings } from "../../src/types/content";
 import type { AdminProduct, ProductData } from "../../src/shared/product";
 
 interface ProductRow {
@@ -156,7 +158,7 @@ export async function updateTags(db: D1Database, id: string, t: Pick<ProductData
   await db.batch(s);
 }
 
-export async function putSiteKv(db: D1Database, key: "content" | "settings", value: unknown) {
+export async function putSiteKv(db: D1Database, key: "content" | "settings" | "pricing", value: unknown) {
   await db.prepare(
     `INSERT INTO site_kv (key, value) VALUES (?1, ?2)
      ON CONFLICT (key) DO UPDATE SET value = ?2, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')`,
@@ -167,4 +169,15 @@ export async function getSiteKv(db: D1Database): Promise<Record<string, unknown>
   // The catalog snapshot also lives in site_kv; never load it here.
   const r = await db.prepare("SELECT key, value FROM site_kv WHERE key IN ('settings', 'content', 'labels')").all<{ key: string; value: string }>();
   return Object.fromEntries(r.results.map((x) => [x.key, JSON.parse(x.value)]));
+}
+
+/** Discount rules + free shipping (site_kv "pricing"). Before migration 0003 has run,
+    the old single size discount / threshold in "settings" are moved here on first read. */
+export async function getPricing(db: D1Database, settings?: unknown): Promise<PricingSettings> {
+  const row = await db.prepare("SELECT value FROM site_kv WHERE key = 'pricing'").first<{ value: string }>();
+  const stored = row ? parsePricing(JSON.parse(row.value)) : null;
+  if (stored) return stored;
+  const legacy = pricingFromLegacy(settings ?? (await getSiteKv(db)).settings);
+  await db.prepare("INSERT OR IGNORE INTO site_kv (key, value) VALUES ('pricing', ?)").bind(JSON.stringify(legacy)).run();
+  return legacy;
 }

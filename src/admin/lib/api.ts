@@ -3,7 +3,8 @@
    Arabic message the UI can show as-is. */
 import type { AdminProduct, ProductInput } from "../../shared/product";
 import type { EditableSettings } from "../../shared/content";
-import type { SiteContent, StoreSettings } from "../../types/content";
+import type { DiscountRuleInput } from "../../shared/pricing";
+import type { DiscountRule, FreeShipping, PricingSettings, SiteContent, StoreSettings } from "../../types/content";
 
 export class ApiError extends Error {
   constructor(message: string, readonly status: number, readonly fields: Record<string, string> = {}) {
@@ -56,6 +57,12 @@ export const api = {
   content: () => request<{ content: SiteContent; settings: StoreSettings }>("GET", "/admin/content"),
   saveContent: (content: SiteContent) => request<{ ok: true; content: SiteContent }>("PUT", "/admin/content", content),
   saveSettings: (settings: EditableSettings) => request<{ ok: true; settings: StoreSettings }>("PUT", "/admin/settings", settings),
+
+  pricing: () => request<PricingSettings>("GET", "/admin/pricing"),
+  createDiscount: (r: DiscountRuleInput) => request<{ ok: true; rule: DiscountRule; pricing: PricingSettings }>("POST", "/admin/discounts", r),
+  updateDiscount: (id: string, r: Partial<DiscountRuleInput>) => request<{ ok: true; rule: DiscountRule; pricing: PricingSettings }>("PATCH", `/admin/discounts/${encodeURIComponent(id)}`, r),
+  deleteDiscount: (id: string) => request<{ ok: true; pricing: PricingSettings }>("DELETE", `/admin/discounts/${encodeURIComponent(id)}`),
+  saveFreeShipping: (f: FreeShipping) => request<{ ok: true; pricing: PricingSettings }>("PUT", "/admin/free-shipping", f),
 };
 
 /** Upload with progress (XHR — fetch has no upload progress). */

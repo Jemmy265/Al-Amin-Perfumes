@@ -1,6 +1,8 @@
-/* Admin product list cache shared by all pages. */
+/* Admin caches shared by all pages: the product list, and the discount /
+   free-shipping settings (used by «الخصومات والشحن» and the size price previews). */
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import type { AdminProduct } from "../../shared/product";
+import type { PricingSettings } from "../../types/content";
 import { api, ApiError } from "./api";
 
 interface Store {
@@ -36,5 +38,31 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
 export function useProducts() {
   const v = useContext(Ctx);
   if (!v) throw new Error("useProducts outside ProductsProvider");
+  return v;
+}
+
+interface PricingStore {
+  pricing: PricingSettings | null;
+  error: string | null;
+  reload: () => Promise<void>;
+  /** Replace with what the server returned after a save. */
+  set: (p: PricingSettings) => void;
+}
+const PricingCtx = createContext<PricingStore | null>(null);
+
+export function PricingProvider({ children }: { children: ReactNode }) {
+  const [pricing, setPricing] = useState<PricingSettings | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const reload = useCallback(async () => {
+    try { setError(null); setPricing(await api.pricing()); }
+    catch (e) { setError(e instanceof ApiError ? e.message : "تعذّر تحميل الخصومات"); }
+  }, []);
+  useEffect(() => { void reload(); }, [reload]);
+  return <PricingCtx.Provider value={{ pricing, error, reload, set: setPricing }}>{children}</PricingCtx.Provider>;
+}
+
+export function usePricing() {
+  const v = useContext(PricingCtx);
+  if (!v) throw new Error("usePricing outside PricingProvider");
   return v;
 }

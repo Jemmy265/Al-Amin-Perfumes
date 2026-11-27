@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { addItem, EMPTY_CART, orderMessage, setQty, totals } from "../cart";
-import { SEED_PRODUCTS } from "../../data/seed/products";
-import { SEED_SETTINGS } from "../../data/seed/content";
+import { LEGACY_PRODUCTS as SEED_PRODUCTS, LEGACY_SETTINGS as SEED_SETTINGS } from "../__fixtures__/legacy-data";
 
 const byId = (id: string) => SEED_PRODUCTS.find((p) => p.id === id);
 
