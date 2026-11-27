@@ -27,12 +27,25 @@ export function PerfumeView() {
       if (!shown) setScrollY(window.scrollY);
       setShown(p);
       document.title = `${p.name} (${p.nameEn}) | الأمين للعطور`;
-      // The sheet body is what scrolls (not the dialog): start each perfume at the top,
-      // e.g. after tapping a recommendation at the bottom of the previous one.
-      bodyRef.current?.scrollTo({ top: 0, behavior: "instant" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [p]);
+
+  // Once a new perfume has rendered (e.g. after tapping a recommendation at the bottom),
+  // glide the sheet body — the element that scrolls, not the dialog — back up to it.
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el || !shown || el.scrollTop === 0) return;
+    // iOS ignores programmatic scrolling while a swipe is still gliding;
+    // freezing overflow for one frame stops the glide first.
+    el.style.overflowY = "hidden";
+    const raf = requestAnimationFrame(() => {
+      el.style.overflowY = "";
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    });
+    return () => { cancelAnimationFrame(raf); el.style.overflowY = ""; };
+  }, [shown?.id]);
 
   const onClose = () => {
     close();
