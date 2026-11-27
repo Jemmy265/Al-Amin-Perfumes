@@ -22,15 +22,17 @@
 .nav-link {
   position: relative; display: inline-block; padding: .4rem 0;
   background: none; border: 0; color: #d9e0e6; font-size: var(--fs-sm); font-weight: 500;
-  transition: color .2s;
+  transition: color .3s var(--ease);
 }
 .nav-link::after {
   content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background: var(--gold);
-  transform: scaleX(0); transition: transform .25s var(--ease);
+  transform: scaleX(0); transition: transform .35s var(--ease), height .35s var(--ease), background-color .35s var(--ease);
 }
 .nav-link:hover { color: var(--gold-light); }
 .nav-link:hover::after { transform: scaleX(1); }
+/* Section in view: gold text + a line that grows in smoothly under the link. */
 .nav-link.is-active { color: var(--gold-light); }
+.nav-link.is-active::after { transform: scaleX(1); height: 2px; background: var(--gold-light); border-radius: 1px; }
 
 .header-actions { display: flex; align-items: center; gap: .5rem; }
 .cart-btn {
@@ -142,7 +144,7 @@
   .main-nav.is-open { max-height: 420px; box-shadow: 0 16px 24px rgba(5, 15, 27, .25); }
   .main-nav ul { flex-direction: column; align-items: stretch; gap: 0; padding: .5rem var(--gutter) 1rem; }
   .nav-link { display: block; width: 100%; text-align: start; padding: .85rem 0; font-size: var(--fs-md); border-bottom: 1px solid rgba(255, 255, 255, .06); }
-  .nav-link::after { display: none; }
+  .nav-link::after { inset-inline-end: auto; width: 2.5rem; bottom: .45rem; transform-origin: right; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.25rem; }
   .footer-brand { grid-column: 1 / -1; }
 }

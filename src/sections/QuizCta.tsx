@@ -23,7 +23,7 @@ export function QuizCta() {
     gsap.fromTo(q(".discover-art img"), { yPercent: 18, autoAlpha: 0.4 }, { yPercent: -10, autoAlpha: 1, ease: "none", scrollTrigger: st });
   }, { scope: root });
   return (
-    <section className="discover" aria-labelledby="discover-title" ref={root}>
+    <section className="discover" id="discover" aria-labelledby="discover-title" ref={root}>
       <div className="container discover-grid">
         <div className="discover-art" aria-hidden="true">
           <span className="ring ring--1" /><span className="ring ring--2" /><span className="ring ring--3" />
