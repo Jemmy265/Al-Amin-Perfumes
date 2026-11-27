@@ -1,4 +1,6 @@
-/* Customer messages — copied verbatim from the original js/data.js. */
+/* Customer reviews — generated from the D1 database by scripts/pull-seed.ts (remote, 2026-11-27).
+   Mirrors what the live site shows; it is the storefront's fallback when the API is unreachable.
+   Do not edit by hand: change the data in the admin, then run `npm run db:pull-seed`. */
 import type { Review } from "../../types/content";
 
 export const SEED_REVIEWS: Review[] = [

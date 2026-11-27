@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { fmt, productSizes, startingPrice } from "../../domain/pricing";
+import { productSizes } from "../../domain/pricing";
 import { QUIZ, quizResults, type QuizAnswers, type QuizKey } from "../../domain/quiz";
 import { assetUrl } from "../../services/assets";
 import { useStore } from "../../state/StoreProvider";
 import { useUI } from "../../state/UIProvider";
-import { ProductImage } from "../product/parts";
+import { ProductImage, StartingPrice } from "../product/parts";
 import { useAddToCart } from "../product/useAddToCart";
 import { Icon } from "../ui/Icon";
 import { Sheet } from "../ui/Sheet";
@@ -95,7 +95,7 @@ export function QuizModal() {
                     <b>{p.name}</b>
                     <span className="quiz-result-en" dir="ltr">{p.nameEn}</span>
                     <span className="quiz-result-scents">{p.tags.scents.map((s) => labels.scents[s]?.label).join(" · ")}</span>
-                    <span className="quiz-price">يبدأ من {fmt(startingPrice(p, settings))} {settings.currency}</span>
+                    <StartingPrice p={p} className="quiz-price" />
                   </div>
                   <div className="quiz-result-actions">
                     <a className="btn btn-outline btn-sm" href={`#perfume/${p.id}`} onClick={closeQuiz}>التفاصيل</a>

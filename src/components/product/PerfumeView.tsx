@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fmt, productSizes, startingPrice } from "../../domain/pricing";
+import { productSizes } from "../../domain/pricing";
 import { similarTo } from "../../domain/similar";
 import { perfumeUrl, shareMessage, singleOrderMessage, waLink } from "../../domain/whatsapp";
 import { usePerfumeRoute } from "../../hooks/usePerfumeRoute";
@@ -8,7 +8,7 @@ import { useUI } from "../../state/UIProvider";
 import type { Intensity, Product } from "../../types/catalog";
 import { Icon } from "../ui/Icon";
 import { Sheet } from "../ui/Sheet";
-import { metaText, NotesList, ProductChips, ProductImage, SizeSelector } from "./parts";
+import { metaText, NotesList, ProductChips, ProductImage, SelectedPrice, SizeSelector, StartingPrice } from "./parts";
 import { useAddToCart } from "./useAddToCart";
 
 const LEVEL: Record<Intensity, number> = { light: 1, medium: 2, strong: 3 };
@@ -92,6 +92,7 @@ function PerfumeDetails({ p }: { p: Product }) {
           {meta && <p className="product-meta">{meta}</p>}
 
           <SizeSelector p={p} value={size} onChange={setSize} />
+          <SelectedPrice p={p} size={size} />
           <div className="card-actions">
             <button type="button" className="btn btn-navy add-btn" onClick={() => addToCart(p, size)}>
               <Icon name="bag" /><span>أضف للسلة</span>
@@ -120,7 +121,7 @@ function PerfumeDetails({ p }: { p: Product }) {
                 <ProductImage p={x} />
                 <span className="mini-name">{x.name}</span>
                 <span className="mini-en" dir="ltr">{x.nameEn}</span>
-                <span className="mini-price">يبدأ من {fmt(startingPrice(x, settings))} {settings.currency}</span>
+                <StartingPrice p={x} className="mini-price" />
               </a>
             ))}
           </div>

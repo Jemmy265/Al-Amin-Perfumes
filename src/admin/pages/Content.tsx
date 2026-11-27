@@ -10,11 +10,11 @@ import type { Review, SiteContent, StoreSettings } from "../../types/content";
 import { useFeedback } from "../components/feedback";
 import { ImagePicker } from "../components/ImagePicker";
 import { api, ApiError } from "../lib/api";
-import { setLeaveGuard } from "../lib/router";
+import { href, setLeaveGuard } from "../lib/router";
 import { LoadError } from "./Products";
 
 type Errors = Record<string, string>;
-const EDITABLE_SETTINGS = ["whatsappNumber", "generalWhatsappMessage", "freeShippingMin", "sizeDiscount", "shippingZones",
+const EDITABLE_SETTINGS = ["whatsappNumber", "generalWhatsappMessage", "shippingZones",
   "phone", "phoneDisplay", "email", "social"] as const;
 const pickSettings = (s: StoreSettings): EditableSettings =>
   Object.fromEntries(EDITABLE_SETTINGS.map((k) => [k, s[k]])) as EditableSettings;
@@ -259,15 +259,14 @@ export function Content() {
         <Field label="عنوان قسم المميزات" value={c.benefitsTitle} onChange={(v) => setC({ benefitsTitle: v })} error={err("benefitsTitle")} />
       </Panel>
 
-      <Panel {...pp("p-settings")} title="إعدادات البيع والتواصل" hint="الواتساب، الشحن، الخصم، السوشيال">
+      <Panel {...pp("p-settings")} title="إعدادات البيع والتواصل" hint="الواتساب، أسعار الشحن، السوشيال">
         <Field label="رقم الواتساب (للطلبات)" value={s.whatsappNumber} dir="ltr" inputMode="numeric" onChange={(v) => setS({ whatsappNumber: v.replace(/[^\d]/g, "") })} error={err("settings.whatsappNumber")}
           hint="بالصيغة الدولية بدون + وبدون الصفر الأول — مثال: 201006747034" />
         <Field label="رسالة واتساب العامة" value={s.generalWhatsappMessage} multiline onChange={(v) => setS({ generalWhatsappMessage: v })} error={err("settings.generalWhatsappMessage")} />
-        <div className="a-two">
-          <Field label="توصيل مجاني من (ج.م)" value={String(s.freeShippingMin)} inputMode="numeric" onChange={(v) => setS({ freeShippingMin: num(v) })} error={err("settings.freeShippingMin")} />
-          <Field label="نسبة الخصم (%)" value={String(s.sizeDiscount.percent)} inputMode="numeric" onChange={(v) => setS({ sizeDiscount: { ...s.sizeDiscount, percent: num(v) } })} error={err("settings.sizeDiscount.percent")} hint="0 = بدون خصم" />
+        <div className="a-notice">
+          <Icon name="gift" />
+          <p>الخصومات والشحن المجاني اتنقلوا لصفحة <a href={href({ name: "pricing" })}><b>الخصومات والشحن</b></a>.</p>
         </div>
-        <Field label="الخصم على حجم (مل)" value={String(s.sizeDiscount.size)} inputMode="numeric" onChange={(v) => setS({ sizeDiscount: { ...s.sizeDiscount, size: num(v) } })} error={err("settings.sizeDiscount.size")} />
         <SubTitle>أسعار الشحن</SubTitle>
         <ListEditor
           items={s.shippingZones} max={12} min={1} addLabel="منطقة جديدة" itemLabel={(i) => `منطقة ${i + 1}`}
@@ -346,7 +345,7 @@ function RichHint({ vars, quiz }: { vars?: boolean; quiz?: boolean }) {
   return (
     <div className="a-rich-hint">
       <p>عشان كلمة تظهر <b>بخط عريض</b> حطها بين نجمتين: <code dir="ltr">**مجاني**</code></p>
-      {vars && <p><code dir="ltr">{"{freeMin}"}</code> = مبلغ التوصيل المجاني، <code dir="ltr">{"{discount}"}</code> = نسبة الخصم — بيتحدّثوا لوحدهم من الإعدادات.</p>}
+      {vars && <p><code dir="ltr">{"{freeMin}"}</code> = مبلغ التوصيل المجاني، <code dir="ltr">{"{discount}"}</code> = أعلى نسبة خصم شغالة دلوقتي — بيتحدّثوا لوحدهم من «الخصومات والشحن». السطر اللي فيه <code dir="ltr">{"{discount}"}</code> بيختفي لو مفيش خصم شغال، واللي فيه <code dir="ltr">{"{freeMin}"}</code> بيختفي لو الشحن المجاني مقفول.</p>}
       {quiz && <p>عشان تحط زرار يفتح الاختبار: <code dir="ltr">{"{{quiz|اكتشف عطرك}}"}</code></p>}
     </div>
   );

@@ -3,13 +3,12 @@
    (quizResults + similarTo) against the original js/data.js. */
 import { describe, expect, it } from "vitest";
 import golden from "../__fixtures__/legacy-golden.json";
-import { SEED_PRODUCTS } from "../../data/seed/products";
-import { SEED_SETTINGS } from "../../data/seed/content";
+import { LEGACY_PRODUCTS, LEGACY_SETTINGS } from "../__fixtures__/legacy-data";
 import { QUIZ, quizResults, type QuizAnswers } from "../quiz";
 import { similarTo } from "../similar";
 
-const products = [...SEED_PRODUCTS].sort((a, b) => a.sortOrder - b.sortOrder);
-const best = SEED_SETTINGS.bestSellers;
+const products = [...LEGACY_PRODUCTS].sort((a, b) => a.sortOrder - b.sortOrder);
+const best = LEGACY_SETTINGS.bestSellers;
 
 describe("quiz parity with the original site", () => {
   const entries = Object.entries(golden.quiz as Record<string, string[]>);

@@ -75,11 +75,6 @@ const httpsUrl = (label: string) => z.string().trim().url(`${label}: رابط غ
 export const settingsSchema = z.object({
   whatsappNumber: z.string().trim().regex(/^[1-9]\d{7,14}$/, "رقم الواتساب بالصيغة الدولية بدون + وبدون صفر في الأول (مثال 201006747034)"),
   generalWhatsappMessage: t(300, "رسالة الواتساب"),
-  freeShippingMin: z.coerce.number().int("مبلغ التوصيل المجاني رقم صحيح").min(0).max(1_000_000),
-  sizeDiscount: z.object({
-    size: z.coerce.number().int().min(1, "اكتب الحجم").max(1000),
-    percent: z.coerce.number().int("نسبة الخصم رقم صحيح").min(0, "النسبة من 0 لـ 90").max(90, "النسبة من 0 لـ 90"),
-  }),
   shippingZones: z.array(z.object({
     id: z.string().regex(/^[a-z0-9-]{2,40}$/),
     label: t(60, "اسم المنطقة"),
@@ -95,6 +90,8 @@ export type EditableSettings = z.output<typeof settingsSchema>;
 
 /** Settings fields the editor does not touch (kept from the stored document). */
 export const SERVER_SETTINGS_KEYS = ["siteUrl", "currency", "sizes", "bestSellers"] as const satisfies readonly (keyof StoreSettings)[];
+/** Old settings fields now stored with the discount rules (site_kv "pricing"); dropped on the next settings save. */
+export const LEGACY_PRICING_KEYS = ["sizeDiscount", "freeShippingMin"] as const;
 
 /** R2 keys referenced by a content document (for cleaning up replaced uploads). */
 export const siteImageKeys = (c: Pick<SiteContent, "hero" | "about">) =>

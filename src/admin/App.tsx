@@ -3,11 +3,12 @@ import { FeedbackProvider } from "./components/feedback";
 import { Shell } from "./components/Shell";
 import { api, SESSION_EXPIRED } from "./lib/api";
 import { useRoute } from "./lib/router";
-import { ProductsProvider } from "./lib/store";
+import { PricingProvider, ProductsProvider } from "./lib/store";
 import { Content } from "./pages/Content";
 import { Login } from "./pages/Login";
 import { Order } from "./pages/Order";
 import { Overview } from "./pages/Overview";
+import { Pricing } from "./pages/Pricing";
 import { ProductForm } from "./pages/ProductForm";
 import { Products } from "./pages/Products";
 import { QuizTags } from "./pages/QuizTags";
@@ -40,7 +41,9 @@ export function AdminApp() {
       {auth === "out" && <Login onDone={() => setAuth("in")} />}
       {auth === "in" && (
         <ProductsProvider>
-          <Dashboard onLogout={() => setAuth("out")} />
+          <PricingProvider>
+            <Dashboard onLogout={() => setAuth("out")} />
+          </PricingProvider>
         </ProductsProvider>
       )}
     </FeedbackProvider>
@@ -58,6 +61,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       {route.name === "order" && <Order />}
       {route.name === "tags" && <QuizTags />}
       {route.name === "content" && <Content />}
+      {route.name === "pricing" && <Pricing />}
     </Shell>
   );
 }

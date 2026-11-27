@@ -14,6 +14,7 @@
     "db:migrate:remote": "wrangler d1 migrations apply alamin-db --remote",
     "db:reset:local": "rm -rf .wrangler/state/v3/d1 && npm run db:migrate:local",
     "db:seed-sql": "tsx scripts/gen-seed-sql.ts",
+    "db:pull-seed": "tsx scripts/pull-seed.ts",
     "admin:hash-password": "node scripts/hash-password.mjs",
     "build:cf": "VITE_DATA_SOURCE=api npm run build",
     "deploy": "npm run typecheck && npm test && npm run build:cf && wrangler deploy"

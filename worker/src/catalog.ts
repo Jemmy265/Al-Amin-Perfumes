@@ -8,20 +8,28 @@ import { toStorefrontProduct } from "../../src/shared/product";
 import { normalizeSections } from "../../src/shared/content";
 import { LABELS } from "../../src/data/seed/content";
 import type { SiteContent } from "../../src/types/content";
-import { getSiteKv, listProducts } from "./db";
+import { withPricing } from "../../src/shared/pricing";
+import { getPricing, getSiteKv, listProducts } from "./db";
 
 export interface Snapshot { body: string; etag: string }
 
+/** Bumped when the snapshot's shape changes; an older stored snapshot is rebuilt on its next read.
+    v2: settings carry discount rules + free shipping instead of sizeDiscount / freeShippingMin. */
+const SNAPSHOT_VERSION = 2;
+const VERSION_PREFIX = `{"v":${SNAPSHOT_VERSION},`;
+
 export async function buildCatalog(db: D1Database): Promise<string> {
   const [products, kv] = await Promise.all([listProducts(db, { publishedOnly: true }), getSiteKv(db)]);
+  const pricing = await getPricing(db, kv.settings);
   const bestSellers = products
     .filter((p) => p.featuredRank !== null)
     .sort((a, b) => a.featuredRank! - b.featuredRank!)
     .map((p) => p.id);
   const content = kv.content as SiteContent;
   return JSON.stringify({
+    v: SNAPSHOT_VERSION,
     products: products.map(toStorefrontProduct),
-    settings: { ...(kv.settings as object), bestSellers },
+    settings: { ...withPricing(kv.settings as object, pricing), bestSellers },
     content: { ...content, sections: normalizeSections(content.sections) },
     labels: kv.labels ?? LABELS,
   });
@@ -36,10 +44,10 @@ export async function refreshCatalog(db: D1Database): Promise<void> {
   ).bind(json).run();
 }
 
-/** One-row read. Builds the snapshot on first use (fresh database). */
+/** One-row read. Builds the snapshot on first use (fresh database) or after a shape change. */
 export async function readCatalog(db: D1Database): Promise<Snapshot> {
   let row = await db.prepare("SELECT value, updated_at FROM site_kv WHERE key = 'catalog'").first<{ value: string; updated_at: string }>();
-  if (!row) {
+  if (!row || !row.value.startsWith(VERSION_PREFIX)) {
     await refreshCatalog(db);
     row = await db.prepare("SELECT value, updated_at FROM site_kv WHERE key = 'catalog'").first<{ value: string; updated_at: string }>();
   }

@@ -4,7 +4,33 @@
 import type { Audience, Intensity, Occasion, ScentFamily, SizeMl } from "./catalog";
 
 export interface ShippingZone { id: string; label: string; fee: number }
-export interface SizeDiscount { size: SizeMl; percent: number }
+
+/** What a discount rule applies to (one simple choice in the admin). */
+export type DiscountScope =
+  | { kind: "all" }
+  | { kind: "category"; category: Audience }
+  | { kind: "products"; productIds: string[] }
+  | { kind: "sizes"; sizes: SizeMl[] }
+  | { kind: "variant"; productId: string; sizes: SizeMl[] };
+
+/** A percentage discount. Rules never stack: the highest active % on a bottle wins. */
+export interface DiscountRule {
+  id: string;
+  /** Optional badge shown on the site, e.g. "خصم الافتتاح". */
+  name: string;
+  percent: number;
+  scope: DiscountScope;
+  enabled: boolean;
+  /** Whole days in Egypt time (YYYY-MM-DD), inclusive. null = no limit. */
+  startDate: string | null;
+  endDate: string | null;
+}
+
+/** One global threshold, checked against the subtotal after discounts. */
+export interface FreeShipping { enabled: boolean; min: number }
+
+/** Discounts + free shipping: stored together (site_kv "pricing"), edited in "الخصومات والشحن". */
+export interface PricingSettings { discounts: DiscountRule[]; freeShipping: FreeShipping }
 export interface SocialLinks { instagram: string; facebook: string; tiktok: string }
 
 export interface StoreSettings {
@@ -14,8 +40,8 @@ export interface StoreSettings {
   currency: string;
   sizes: SizeMl[];
   shippingZones: ShippingZone[];
-  freeShippingMin: number;
-  sizeDiscount: SizeDiscount;
+  discounts: DiscountRule[];
+  freeShipping: FreeShipping;
   /** Product ids, in rank order. */
   bestSellers: string[];
   phone: string;

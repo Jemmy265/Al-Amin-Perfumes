@@ -2,7 +2,7 @@
 
 **Production:** https://alamin-perfumes.the-curious-atlas.workers.dev (admin: `/admin/`) · Worker `alamin-perfumes` · D1 `alamin-db` · R2 `alamin-images`
 
-The owner manages the store from a phone at **`/admin/`**: add/edit/delete perfumes, upload photos, sizes & prices, quiz tags, draft/publish, the display order of the catalog and of «الأكثر طلبًا», and the **site content** (homepage texts, offers bar, section order/visibility, reviews, FAQ, contact/footer, hero & About photos) plus **sales settings** (WhatsApp number, shipping fees, free-shipping threshold, size discount, phone, email, social links).
+The owner manages the store from a phone at **`/admin/`**: add/edit/delete perfumes, upload photos, sizes & prices, quiz tags, draft/publish, the display order of the catalog and of «الأكثر طلبًا», and the **site content** (homepage texts, offers bar, section order/visibility, reviews, FAQ, contact/footer, hero & About photos) plus **sales settings** (WhatsApp number, shipping fees, phone, email, social links), and **discounts & free shipping** («الخصومات والشحن»: percentage rules by store / category / products / sizes / product+size, on/off, optional dates; highest rule wins, no stacking).
 
 ## Architecture — one Worker
 
@@ -36,7 +36,7 @@ Browser ──► Cloudflare Worker "alamin-perfumes" (wrangler.jsonc)
 | `/static/*` (hashed JS/CSS) | Static Assets | `public, max-age=31536000, immutable` | new deploy = new file names, never stale |
 | `/assets/*` (original photos, logo) | Static Assets | `public, max-age=86400, stale-while-revalidate=604800` | not fingerprinted |
 | HTML (`/`, `/admin/`) | Static Assets | `public, max-age=0, must-revalidate` + ETag | deploys visible immediately; unchanged → 304 |
-| `GET /api/catalog` | Worker | `public, max-age=60, stale-while-revalidate=60` + ETag | 1 D1 row per request; unchanged → 304 |
+| `GET /api/catalog` | Worker (+ edge Cache API) | browser: `public, max-age=0, must-revalidate` + ETag; edge: 10 s fresh + 20 s stale-while-revalidate | unchanged → 304; logged-in admin: `private, no-store`, read straight from D1 |
 | `GET /images/<key>` (uploads) | Worker + R2 | `public, max-age=31536000, immutable` + ETag | keys are random UUIDs, never reused |
 | `/api/admin/*`, `/api/auth/*` | Worker | `private, no-store` / `no-store` | never cached anywhere |
 
@@ -44,9 +44,10 @@ Browser ──► Cloudflare Worker "alamin-perfumes" (wrangler.jsonc)
 
 **Invalidation.** A middleware on `/api/admin/*` rebuilds the snapshot after **every successful write** (create, edit, delete, reorder, featured order, tags, content, settings). The snapshot's `updated_at` is the ETag, so:
 - the owner's browser is refreshed immediately (the admin re-fetches `/api/catalog` with `cache: "reload"` after each save);
-- customers see the change on their next revalidation — at most ~2 minutes (60 s max-age + 60 s stale-while-revalidate), usually on their next visit.
+- the edge copy in the admin's own data center is dropped right away;
+- customers see the change on their next page load — within **30 s** at worst (10 s fresh + 20 s stale-while-revalidate at the edge; browsers always revalidate).
 
-There is no shared/edge cache of API responses: on `*.workers.dev` the Workers Cache API is unavailable, and a stale edge copy is not needed at this traffic level. With a custom domain, edge caching could be added later (see limitations).
+**Edge cache.** On a custom domain (`alamin.win`) the Worker keeps a copy of the snapshot in the Cloudflare Cache API, per data center. It is a no-op on `*.workers.dev`, where every request reads the one D1 row (no delay). There is no purge call. Discount start/end dates are evaluated by the storefront at runtime (Egypt time), so caching never delays a scheduled discount.
 
 
 ## Data model (D1) — `worker/migrations`
@@ -86,6 +87,10 @@ Admin (session required on every route, checked by the Worker):
 | GET | `/api/admin/content` | settings / content / labels |
 | PUT | `/api/admin/content` | whole content document (validated); deletes replaced `site/` photos from R2 |
 | PUT | `/api/admin/settings` | editable settings; `bestSellers`, `sizes`, `currency`, `siteUrl` are kept server-side |
+| GET | `/api/admin/pricing` | discount rules + free shipping (`site_kv` key `pricing`) |
+| POST | `/api/admin/discounts` | new rule `{name?, percent 1–90, scope, enabled?, startDate?, endDate?}` |
+| PUT / PATCH / DELETE | `/api/admin/discounts/:id` | update (merged, then fully validated; e.g. `{enabled:false}`) / delete |
+| PUT | `/api/admin/free-shipping` | `{enabled, min}` — threshold on the subtotal after discounts |
 
 Errors are JSON `{error, fields?}` with Arabic messages (`422` validation, `401` no session, `403` bad origin, `409` stale order, `413/415` upload size/type, `429` too many logins).
 
@@ -183,7 +188,7 @@ Potential costs only if traffic grows well beyond ~100k visits/day (Workers Paid
 ## Known limitations / next steps
 
 - **Login CPU.** PBKDF2 with 100,000 iterations is above the free plan's 10 ms CPU guideline per request. The free plan tolerates occasional bursts, and login happens rarely, but if logins start failing with "exceeded CPU" the options are the Workers Paid plan or lowering the iteration count (weaker hashing).
-- **No edge cache for the API on workers.dev.** Adding a custom domain would allow caching `/api/catalog` at the edge (Cache API) to cut Worker requests further.
+- **No edge cache for the API on workers.dev.** The edge cache only works on the custom domain.
 - A photo uploaded but never saved (form abandoned) stays in R2. Cheap to keep; a cleanup could delete `products/` keys not present in `product_images`.
 - Content text supports `**bold**`, `{{quiz|text}}` and, in the offers bar, `{freeMin}` / `{discount}`.
 - The page `<title>`, meta description and social preview image in `index.html` are static.

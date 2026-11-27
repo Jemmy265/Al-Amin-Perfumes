@@ -1,16 +1,22 @@
 /* Sizes & prices: one row per size, quick-add for the store's usual sizes. */
 import { Icon } from "../../components/ui/Icon";
-import { SEED_SETTINGS } from "../../data/seed/content";
+import { discountLabel, priceInfo } from "../../domain/pricing";
+import type { Audience } from "../../types/catalog";
 import { money } from "../lib/format";
+import { ADMIN_SIZE_OPTIONS } from "../lib/sizes";
+import { usePricing } from "../lib/store";
 
 export interface SizeRow { key: number; sizeMl: string; price: string }
 let seq = 0;
 export const newRow = (sizeMl = "", price = ""): SizeRow => ({ key: ++seq, sizeMl, price });
 
-const COMMON = SEED_SETTINGS.sizes; // 35 / 55 / 110
-const discount = SEED_SETTINGS.sizeDiscount;
+const COMMON = ADMIN_SIZE_OPTIONS; // 20 / 35 / 55 / 110 — admin quick picks only
 
-export function SizeRows({ rows, onChange, error }: { rows: SizeRow[]; onChange: (r: SizeRow[]) => void; error?: string }) {
+/** `product` identifies the perfume being edited, so product / category discount rules preview correctly. */
+export function SizeRows({ rows, onChange, error, product }: {
+  rows: SizeRow[]; onChange: (r: SizeRow[]) => void; error?: string; product: { id: string; category: Audience | "" };
+}) {
+  const { pricing } = usePricing();
   const update = (key: number, patch: Partial<SizeRow>) => onChange(rows.map((r) => (r.key === key ? { ...r, ...patch } : r)));
   const used = new Set(rows.map((r) => Number(r.sizeMl)));
   const digits = (s: string) => s.replace(/[٠-٩]/g, (d) => String("٠١٢٣٤٥٦٧٨٩".indexOf(d))).replace(/[^\d]/g, "");
@@ -19,7 +25,11 @@ export function SizeRows({ rows, onChange, error }: { rows: SizeRow[]; onChange:
     <div className="a-sizes">
       {rows.map((r, i) => {
         const price = Number(r.price);
-        const off = discount.percent && Number(r.sizeMl) === discount.size && price > 0;
+        const sizeMl = Number(r.sizeMl);
+        // Saved discount rules, through the same pricing module the storefront uses.
+        const off = pricing && sizeMl > 0 && price > 0
+          ? priceInfo({ id: product.id, prices: { [sizeMl]: price }, tags: { audience: product.category as Audience } }, sizeMl, pricing)
+          : null;
         return (
           <div key={r.key} className="a-size-row">
             <label className="a-field a-field--compact">
@@ -38,7 +48,7 @@ export function SizeRows({ rows, onChange, error }: { rows: SizeRow[]; onChange:
             </label>
             <button type="button" className="a-icon-btn a-icon-btn--danger" onClick={() => onChange(rows.filter((x) => x.key !== r.key))}
               disabled={rows.length === 1} aria-label={`حذف الحجم ${i + 1}`}><Icon name="trash" /></button>
-            {off ? <p className="a-size-note">على الموقع بعد خصم {discount.percent}%: {money(Math.round(price * (100 - discount.percent) / 100))}</p> : null}
+            {off?.discounted ? <p className="a-size-note">على الموقع بعد {discountLabel(off)}: {money(off.final)}</p> : null}
           </div>
         );
       })}

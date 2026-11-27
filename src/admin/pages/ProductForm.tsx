@@ -200,7 +200,7 @@ export function ProductForm({ id }: { id?: string }) {
         </Section>
 
         <Section n={3} id="s-sizes" title="الأحجام والأسعار">
-          <SizeRows rows={form.rows} onChange={(rows) => set({ rows })} error={errors.variants} />
+          <SizeRows rows={form.rows} onChange={(rows) => set({ rows })} error={errors.variants} product={{ id: id ?? "", category: form.category }} />
         </Section>
 
         <Section n={4} id="s-tags" title="التصنيف ووسوم اختبار العطر" hint="الاختيارات دي بتحدد إمتى العطر يظهر في ترشيحات «اكتشف عطرك».">
