@@ -30,7 +30,7 @@
 }
 .nav-link:hover { color: var(--gold-light); }
 .nav-link:hover::after { transform: scaleX(1); }
-.nav-link--quiz { color: var(--gold-light); }
+.nav-link.is-active { color: var(--gold-light); }
 
 .header-actions { display: flex; align-items: center; gap: .5rem; }
 .cart-btn {

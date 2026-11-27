@@ -5,6 +5,7 @@ import { useUI } from "../../state/UIProvider";
 import { useStore } from "../../state/StoreProvider";
 import { normalizeSections } from "../../shared/content";
 import { Icon } from "../ui/Icon";
+import { useActiveSection } from "../../hooks/useActiveSection";
 
 const NAV = [
   { href: "#hero", label: "الرئيسية" },
@@ -24,6 +25,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const badge = useRef<HTMLSpanElement>(null);
+  const sectionIds = nav.flatMap((n) => ("href" in n ? [n.href.slice(1)] : []));
+  const { active, select } = useActiveSection(sectionIds);
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 10);
@@ -41,7 +44,7 @@ export function Header() {
   return (
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="container header-inner">
-        <a href="#hero" className="brand" aria-label="الأمين للعطور — الرئيسية">
+        <a href="#hero" className="brand" aria-label="الأمين للعطور — الرئيسية" onClick={() => select("hero")}>
           <img src={assetUrl("assets/logo-light.png")} alt="الأمين للعطور" width={472} height={567} />
         </a>
 
@@ -50,8 +53,13 @@ export function Header() {
             {nav.map((n) => (
               <li key={n.label}>
                 {"quiz" in n
-                  ? <button type="button" className="nav-link nav-link--quiz" onClick={() => { setOpen(false); openQuiz(); }}>{n.label}</button>
-                  : <a className="nav-link" href={n.href} onClick={() => setOpen(false)}>{n.label}</a>}
+                  ? <button type="button" className="nav-link" onClick={() => { setOpen(false); openQuiz(); }}>{n.label}</button>
+                  : <a
+                      className={`nav-link${active === n.href.slice(1) ? " is-active" : ""}`}
+                      href={n.href}
+                      aria-current={active === n.href.slice(1) ? "location" : undefined}
+                      onClick={() => { setOpen(false); select(n.href.slice(1)); }}
+                    >{n.label}</a>}
               </li>
             ))}
           </ul>
