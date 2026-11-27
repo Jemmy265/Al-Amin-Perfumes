@@ -99,12 +99,14 @@
 .pv-similar { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); }
 .pv-similar h3 { font-size: 1.25rem; font-weight: 700; color: var(--navy); margin-bottom: 1.25rem; }
 .mini-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-.mini-card { display: flex; flex-direction: column; line-height: 1.5; }
-.mini-card img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); background: var(--ivory-2); margin-bottom: .6rem; transition: opacity .2s; }
+.mini-card { display: flex; flex-direction: column; line-height: 1.5; touch-action: manipulation; }
+.mini-card img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); background: var(--ivory-2); margin-bottom: .6rem; transition: opacity .2s; }
 .mini-card:hover img { opacity: .88; }
 .mini-name { font-weight: 600; color: var(--navy); }
 .mini-en { font-size: 11px; color: var(--muted-2); }
-.mini-price { font-size: var(--fs-xs); color: var(--gold-deep); margin-top: .2rem; }
+.mini-price-row { display: flex; align-items: center; flex-wrap: wrap; gap: .2rem .4rem; margin-top: .2rem; }
+.mini-price { font-size: var(--fs-xs); color: var(--gold-deep); }
+.mini-off { font-size: 9.5px; font-weight: 700; line-height: 1; padding: 3px 4px; background: var(--gold); color: var(--navy); border-radius: 2px; }
 
 /* Compact 2-column cards on phones */
 @media (max-width: 640px) {
@@ -140,7 +142,14 @@
 @media (max-width: 760px) {
   .pv-grid { grid-template-columns: 1fr; }
   .pv-media { position: relative; aspect-ratio: 1 / 1; }
-  .mini-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Recommendations: one swipeable row of compact cards */
+  .mini-grid {
+    display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    --bleed: clamp(1.25rem, 3vw, 2.5rem); /* the sheet body padding */
+    margin-inline: calc(-1 * var(--bleed)); padding-inline: var(--bleed); scroll-padding-inline: var(--bleed); padding-bottom: 4px; scrollbar-width: none;
+  }
+  .mini-grid::-webkit-scrollbar { display: none; }
+  .mini-card { flex: 0 0 40%; scroll-snap-align: start; }
 }
 
 /* Selected size price (product page) and crossed-out "يبدأ من" prices */

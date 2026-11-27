@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { productSizes } from "../../domain/pricing";
+import { useEffect, useRef, useState } from "react";
+import { percentBadge, priceInfo, productSizes } from "../../domain/pricing";
 import { similarTo } from "../../domain/similar";
 import { perfumeUrl, shareMessage, singleOrderMessage, waLink } from "../../domain/whatsapp";
 import { usePerfumeRoute } from "../../hooks/usePerfumeRoute";
@@ -20,16 +20,32 @@ export function PerfumeView() {
   const p = id ? byId(id) : undefined;
   const [shown, setShown] = useState<Product | undefined>(p);
   const [scrollY, setScrollY] = useState(0);
+  const bodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (p) {
       if (!shown) setScrollY(window.scrollY);
       setShown(p);
       document.title = `${p.name} (${p.nameEn}) | الأمين للعطور`;
-      document.querySelector(".sheet--page")?.scrollTo({ top: 0 });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [p]);
+
+  // Once a new perfume has rendered (e.g. after tapping a recommendation at the bottom),
+  // glide the sheet body — the element that scrolls, not the dialog — back up to it.
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el || !shown || el.scrollTop === 0) return;
+    // iOS ignores programmatic scrolling while a swipe is still gliding;
+    // freezing overflow for one frame stops the glide first.
+    el.style.overflowY = "hidden";
+    const raf = requestAnimationFrame(() => {
+      el.style.overflowY = "";
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    });
+    return () => { cancelAnimationFrame(raf); el.style.overflowY = ""; };
+  }, [shown?.id]);
 
   const onClose = () => {
     close();
@@ -43,7 +59,7 @@ export function PerfumeView() {
         <button type="button" className="sheet-back" onClick={onClose}><Icon name="arrowRight" /> رجوع للتشكيلة</button>
         <button type="button" className="sheet-close" onClick={onClose} aria-label="إغلاق"><Icon name="close" /></button>
       </header>
-      <div className="sheet-body">{shown && <PerfumeDetails key={shown.id} p={shown} />}</div>
+      <div className="sheet-body" ref={bodyRef}>{shown && <PerfumeDetails key={shown.id} p={shown} />}</div>
     </Sheet>
   );
 }
@@ -116,17 +132,28 @@ function PerfumeDetails({ p }: { p: Product }) {
         <section className="pv-similar">
           <h3>عطور ممكن تعجبك كمان</h3>
           <div className="mini-grid">
-            {sim.map((x) => (
-              <a key={x.id} className="mini-card" href={`#perfume/${x.id}`}>
-                <ProductImage p={x} />
-                <span className="mini-name">{x.name}</span>
-                <span className="mini-en" dir="ltr">{x.nameEn}</span>
-                <StartingPrice p={x} className="mini-price" />
-              </a>
-            ))}
+            {sim.map((x) => <MiniCard key={x.id} p={x} />)}
           </div>
         </section>
       )}
     </>
+  );
+}
+
+/** Recommendation card: image, name and starting price, with the discount beside the price. */
+function MiniCard({ p }: { p: Product }) {
+  const { settings } = useStore();
+  const first = productSizes(p)[0];
+  const info = first === undefined ? null : priceInfo(p, first, settings);
+  return (
+    <a className="mini-card" href={`#perfume/${p.id}`}>
+      <ProductImage p={p} />
+      <span className="mini-name">{p.name}</span>
+      <span className="mini-en" dir="ltr">{p.nameEn}</span>
+      <span className="mini-price-row">
+        <StartingPrice p={p} className="mini-price" />
+        {info?.discounted && <span className="mini-off" dir="ltr">{percentBadge(info.percent)}</span>}
+      </span>
+    </a>
   );
 }
